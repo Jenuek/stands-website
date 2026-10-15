@@ -31,6 +31,8 @@
     `<ellipse cx="50" cy="96" rx="20" ry="4" fill="${K}"/><rect x="46" y="20" width="8" height="76" fill="${K}"/><ellipse cx="50" cy="14" rx="6" ry="8" fill="${K}"/>`,
     `<rect x="22" y="40" width="22" height="60" fill="${A}" transform="rotate(-8 33 100)"/><rect x="54" y="20" width="22" height="80" fill="${K}" transform="rotate(6 65 100)"/>`,
   ];
+    // on night scenes, dark sculptures turn light so they stay visible
+  const lighten=svg=>svg.split('#111111').join('#F0F0EE').split('#6E6B66').join('#D3D1CC');
   const sizes=['H 3,200','H 1,450','H 2,100','H 6,000','H 2,800','H 1,800','H 2,400','H 3,600'];
 
   const cuts=[]; {let t=1800,d=900,i=0; while(t<9000){cuts.push({t,i}); t+=d; d=Math.max(170,d*.86); i++;}}
@@ -60,7 +62,7 @@
         const n=places.length,last=cuts.length-1,c=cuts[idx];
         const pi=c.i<n?c.i:(((c.i-last+n-1)%n)+n)%n, p=places[pi];
         cur=p; bgimg.src=p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); hero.classList.toggle('dark',!!p.dark);
-        obj.innerHTML=`<svg viewBox="0 -30 100 130" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${shapes[c.i%shapes.length]}</svg>`;
+        obj.innerHTML=`<svg viewBox="0 -30 100 130" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${p.dark ? lighten(shapes[c.i%shapes.length]) : shapes[c.i%shapes.length]}</svg>`;
         tag.textContent=`No.${String(c.i+1).padStart(3,'0')} · ${p.k} ${p.ko} · ${sizes[c.i%sizes.length]}`;
       } else { cur=null; bgimg.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }
       lastCut=idx;
