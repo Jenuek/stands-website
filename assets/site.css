@@ -68,7 +68,7 @@ button{font:inherit;color:inherit}
 .hero .ubar{position:absolute;left:0;right:0;bottom:-.17em;height:.1em;background:currentColor;transform-origin:left center}
 .hero .obj{position:absolute;left:50%;bottom:-.07em;width:2.6em;height:2.9em;transform:translateX(-50%)}
 .hero .obj svg{width:100%;height:100%;display:block;overflow:hidden}
-.hero .loop{position:absolute;inset:0;opacity:0;transition:opacity 2.4s ease;pointer-events:none}
+.hero .loop{position:absolute;inset:0;opacity:0;transition:opacity 1.6s ease;pointer-events:none}
 .hero .loop video{width:100%;height:100%;object-fit:cover;display:block}
 .hero .loop::after{content:"";position:absolute;inset:0;background:rgba(240,240,238,.55)}
 .hero.looping .loop{opacity:1}

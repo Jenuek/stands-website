@@ -81,6 +81,8 @@
     frame.setAttribute('stroke-dasharray',fp>=1?'none':'1000');
     lbar.setAttribute('width',String(312*easeOut(prog(t,12900,13400))));
     hero.classList.toggle('done',t>=DUR);
+    // start buffering the background film while the answer scene plays, so it is ready the moment the logo lands
+    if(t>=9000&&loopvid&&loopvid.preload!=='auto'&&!reduce){ loopvid.preload='auto'; loopvid.load(); }
   }
 
   // after the logo has rested a few seconds, a quiet looping film of a city sculpture park fades in behind it
@@ -91,7 +93,7 @@
       loopvid.preload='auto';
       const go=()=>{ hero.classList.add('looping'); };
       const p=loopvid.play(); if(p&&p.then) p.then(go).catch(()=>{}); else go();
-    },2500);
+    },700);
   }
   function stopLoop(){ clearTimeout(loopTimer); hero.classList.remove('looping'); if(loopvid){ loopvid.pause(); } }
 
