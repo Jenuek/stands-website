@@ -18,8 +18,9 @@
     {k:'RIVERSIDE',ko:'한강변',src:'img/river.jpg',h:.585,dark:true},
     {k:'FOREST',ko:'숲',src:'img/forest.jpg',h:.585,dark:true},
   ];
-  const ready=Promise.all(places.map(p=>{const i=new Image(); i.src=p.src; return i.decode().catch(()=>{});}));
-  let imagesReady=false; ready.then(()=>{ imagesReady=true; });
+  // preload the photos; never wait more than 3s for them
+  const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=p.src;})));
+  let imagesReady=false; ready.then(()=>{ imagesReady=true; }); setTimeout(()=>{ imagesReady=true; },3000);
 
   // placeholder sculptures, standing on y=100
   const A=ACCENT, S='#6E6B66', K='#111111', P='#D9D7D2';
