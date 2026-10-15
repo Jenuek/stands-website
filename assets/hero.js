@@ -19,6 +19,7 @@
     {k:'FOREST',ko:'숲',src:'img/forest.jpg',h:.585,dark:true},
   ];
   const ready=Promise.all(places.map(p=>{const i=new Image(); i.src=p.src; return i.decode().catch(()=>{});}));
+  let imagesReady=false; ready.then(()=>{ imagesReady=true; });
 
   // placeholder sculptures, standing on y=100
   const A=ACCENT, S='#6E6B66', K='#111111', P='#D9D7D2';
@@ -96,11 +97,12 @@
 
   let t=0, playing=false, prev=null;
   function loop(now){
-    if(playing){ if(prev!=null){ t+=now-prev; if(t>=DUR){t=DUR; playing=false; startLoop();} } prev=now; }
+    if(playing){ if(prev!=null){ t+=now-prev; if(!imagesReady&&t>1700) t=1700; if(t>=DUR){t=DUR; playing=false; startLoop();} } prev=now; }
     render(t); requestAnimationFrame(loop);
   }
   if(reduce) t=DUR;
   render(t); requestAnimationFrame(loop);
-  ready.then(()=>{ if(!reduce){ playing=true; prev=null; } });
+  // the intro (WHERE ART + underbar) starts right away; it holds on the underbar until the photos are ready
+  if(!reduce){ playing=true; prev=null; }
   replay.addEventListener('click',()=>{ stopLoop(); t=0; lastCut=-2; prev=null; playing=true; });
 })();
