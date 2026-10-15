@@ -3,8 +3,9 @@
   const hero=document.getElementById('hero'); if(!hero) return;
   const $=id=>document.getElementById(id);
   const bg=$('bg'), bgimg=$('bgimg'), tag=$('tag'), line=$('line'), wa=$('wa'), word=$('word'), bar=$('ubar'), obj=$('obj'),
-        lockup=$('lockup'), frame=$('frame'), lbar=$('lbar'), replay=$('replay');
+        lockup=$('lockup'), frame=$('frame'), lbar=$('lbar'), replay=$('replay'), loopvid=$('loopvid');
   const DUR=15000, ACCENT='#7D7889';
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const IW=1376, IH=768;
   const places=[
@@ -81,14 +82,25 @@
     hero.classList.toggle('done',t>=DUR);
   }
 
+  // after the logo has rested a few seconds, a quiet looping film of a city sculpture park fades in behind it
+  let loopTimer=null;
+  function startLoop(){
+    if(!loopvid||reduce) return;
+    loopTimer=setTimeout(()=>{
+      loopvid.preload='auto';
+      const go=()=>{ hero.classList.add('looping'); };
+      const p=loopvid.play(); if(p&&p.then) p.then(go).catch(()=>{}); else go();
+    },2500);
+  }
+  function stopLoop(){ clearTimeout(loopTimer); hero.classList.remove('looping'); if(loopvid){ loopvid.pause(); } }
+
   let t=0, playing=false, prev=null;
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function loop(now){
-    if(playing){ if(prev!=null){ t+=now-prev; if(t>=DUR){t=DUR; playing=false;} } prev=now; }
+    if(playing){ if(prev!=null){ t+=now-prev; if(t>=DUR){t=DUR; playing=false; startLoop();} } prev=now; }
     render(t); requestAnimationFrame(loop);
   }
   if(reduce) t=DUR;
   render(t); requestAnimationFrame(loop);
   ready.then(()=>{ if(!reduce){ playing=true; prev=null; } });
-  replay.addEventListener('click',()=>{ t=0; lastCut=-2; prev=null; playing=true; });
+  replay.addEventListener('click',()=>{ stopLoop(); t=0; lastCut=-2; prev=null; playing=true; });
 })();
