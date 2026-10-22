@@ -86,17 +86,36 @@
     if(t>=9000&&loopvid&&loopvid.preload!=='auto'&&!reduce){ loopvid.preload='auto'; loopvid.load(); }
   }
 
-  // after the logo has rested a few seconds, a quiet looping film of a city sculpture park fades in behind it
-  let loopTimer=null;
+  // after the logo has rested a moment, a quiet looping film of a city sculpture park fades in behind it.
+  // Mobile notes: the layer becomes visible before play() (iOS pauses muted videos it considers invisible),
+  // the poster frame shows if autoplay is refused (e.g. iPhone Low Power Mode), and playback is retried on
+  // the visitor's first touch or scroll and whenever the page becomes visible again.
+  let loopTimer=null, wantLoop=false;
+  if(loopvid){ loopvid.muted=true; loopvid.defaultMuted=true; loopvid.setAttribute('muted',''); loopvid.setAttribute('playsinline',''); loopvid.setAttribute('webkit-playsinline',''); }
+  function tryPlay(){
+    if(!wantLoop||!loopvid) return;
+    const p=loopvid.play(); if(p&&p.catch) p.catch(()=>{ armGesture(); });
+  }
+  let armed=false;
+  function armGesture(){
+    if(armed) return; armed=true;
+    const once=()=>{ armed=false; ['touchstart','pointerdown','scroll','keydown'].forEach(e=>window.removeEventListener(e,once,true)); tryPlay(); };
+    ['touchstart','pointerdown','scroll','keydown'].forEach(e=>window.addEventListener(e,once,{capture:true,passive:true}));
+  }
+  if(loopvid){
+    loopvid.addEventListener('pause',()=>{ if(wantLoop&&!document.hidden) setTimeout(tryPlay,300); });
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tryPlay(); });
+  }
   function startLoop(){
     if(!loopvid||reduce) return;
     loopTimer=setTimeout(()=>{
-      loopvid.preload='auto';
-      const go=()=>{ hero.classList.add('looping'); };
-      const p=loopvid.play(); if(p&&p.then) p.then(go).catch(()=>{}); else go();
+      wantLoop=true;
+      if(loopvid.preload!=='auto'){ loopvid.preload='auto'; }
+      hero.classList.add('looping');
+      tryPlay();
     },700);
   }
-  function stopLoop(){ clearTimeout(loopTimer); hero.classList.remove('looping'); if(loopvid){ loopvid.pause(); } }
+  function stopLoop(){ wantLoop=false; clearTimeout(loopTimer); hero.classList.remove('looping'); if(loopvid){ loopvid.pause(); } }
 
   let t=0, playing=false, prev=null;
   function loop(now){
