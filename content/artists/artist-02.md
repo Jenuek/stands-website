@@ -13,7 +13,7 @@ history:
     title: 단체전 제목
     place: 부산
 order: 2
-sample: true
+sample: false
 hidden: false
 ---
 작가의 작업 세계를 자세히 소개하는 글이 들어갈 자리입니다.
