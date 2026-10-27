@@ -26,3 +26,43 @@
     });
   }
 })();
+
+// ---------- analytics events (GA4) ----------
+// Every link/button click is sent as `ui_click` with its label, destination and page section, so reports can show
+// what people click and where. Key actions also get their own event names for quick counting.
+(function(){
+  const send=(name,params)=>{ if(typeof window.gtag==='function') window.gtag('event',name,params); };
+  const sectionOf=el=>{
+    const s=el.closest('section,header,footer,nav,.mobile-nav');
+    if(!s) return 'page';
+    return s.getAttribute('aria-label')||s.id||s.className.split(' ')[0]||s.tagName.toLowerCase();
+  };
+  document.addEventListener('click',e=>{
+    const el=e.target.closest('a,button,[data-filter]');
+    if(!el) return;
+    const label=(el.getAttribute('aria-label')||el.textContent||'').replace(/\s+/g,' ').trim().slice(0,80);
+    const href=el.getAttribute('href')||'';
+    const params={link_text:label, link_url:href, section:sectionOf(el), page_path:location.pathname};
+    send('ui_click',params);
+    if(href.includes('contact.html')) send('cta_contact_click',params);
+    if(el.closest('.nav,.mobile-nav')) send('nav_click',params);
+    if(el.classList.contains('card')) send('project_click',params);
+    if(el.classList.contains('artist')) send('artist_click',params);
+    if(el.classList.contains('ed-feature')||el.closest('.list')) send('editorial_click',params);
+    if(el.dataset.filter) send('project_filter',{filter:el.dataset.filter});
+  },{capture:true});
+
+  // scroll depth: 25 / 50 / 75 / 100 %
+  const marks=[25,50,75,100], hit=new Set();
+  const onScroll=()=>{
+    const h=document.documentElement, max=h.scrollHeight-h.clientHeight;
+    const pct=max>0?Math.round((h.scrollTop||document.body.scrollTop)/max*100):100;
+    marks.forEach(m=>{ if(pct>=m&&!hit.has(m)){ hit.add(m); send('scroll_depth',{percent:m, page_path:location.pathname}); } });
+  };
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  // contact form submit attempt
+  const form=document.getElementById('contact-form');
+  if(form) form.addEventListener('submit',()=>send('contact_form_submit',{page_path:location.pathname}));
+  window.__standsSend=send;
+})();

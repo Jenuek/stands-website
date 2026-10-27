@@ -119,12 +119,12 @@
 
   let t=0, playing=false, prev=null;
   function loop(now){
-    if(playing){ if(prev!=null){ t+=now-prev; if(!imagesReady&&t>1700) t=1700; if(t>=DUR){t=DUR; playing=false; startLoop();} } prev=now; }
+    if(playing){ if(prev!=null){ t+=now-prev; if(!imagesReady&&t>1700) t=1700; if(t>=DUR){t=DUR; playing=false; startLoop(); if(window.__standsSend) window.__standsSend('hero_complete',{});} } prev=now; }
     render(t); requestAnimationFrame(loop);
   }
   if(reduce) t=DUR;
   render(t); requestAnimationFrame(loop);
   // the intro (WHERE ART + underbar) starts right away; it holds on the underbar until the photos are ready
   if(!reduce){ playing=true; prev=null; }
-  replay.addEventListener('click',()=>{ stopLoop(); t=0; lastCut=-2; prev=null; playing=true; });
+  replay.addEventListener('click',()=>{ if(window.__standsSend) window.__standsSend('hero_replay',{}); stopLoop(); t=0; lastCut=-2; prev=null; playing=true; });
 })();
