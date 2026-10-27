@@ -110,6 +110,10 @@ OUT = os.environ.get('STANDS_OUT', os.path.join(ROOT, '_site'))
 VER = os.environ.get('STANDS_VER', '20261028')
 E = html.escape
 
+def T(v):
+    """Escape text and keep the line breaks typed in the CMS."""
+    return E(str(v or '').strip()).replace('\r\n', '\n').replace('\n', '<br>')
+
 def read_md(path):
     raw = open(path, encoding='utf-8').read()
     data, body = {}, raw
@@ -147,11 +151,11 @@ def img(p):
     return p[1:] if p.startswith('/') else p
 
 def rich(md_text):
-    out = markdown.markdown(md_text or '', extensions=['extra', 'sane_lists'])
+    out = markdown.markdown(md_text or '', extensions=['extra', 'sane_lists', 'nl2br'])
     return out.replace('src="/img/', 'src="img/').replace('href="/img/', 'href="img/')
 
 def para(text):
-    return ''.join(f'<p>{E(t.strip())}</p>' for t in re.split(r'\n\s*\n', text or '') if t.strip())
+    return ''.join(f'<p>{T(t)}</p>' for t in re.split(r'\n\s*\n', text or '') if t.strip())
 
 def num(v, d=9999):
     try:
@@ -273,7 +277,7 @@ def build():
     fp = pick(H.get('featured_projects')) or PROJECTS[:3]
     fa = pick(H.get('featured_artists')) or ARTISTS[:4]
     fe = (pick(H.get('featured_article')) or ARTICLES[:1])
-    svc = ''.join(f'<div class="svc"><span class="k">{E(s.get("label", ""))}</span><h3>{E(s.get("title", ""))}</h3><p>{E(s.get("text", ""))}</p><span class="plinth"></span></div>'
+    svc = ''.join(f'<div class="svc"><span class="k">{E(s.get("label", ""))}</span><h3>{E(s.get("title", ""))}</h3><p>{T(s.get("text", ""))}</p><span class="plinth"></span></div>'
                   for s in H.get('services', []))
     ncls = ' three' if len(H.get('services', [])) == 3 else ''
     ed = ''
@@ -285,7 +289,7 @@ def build():
     <div class="sec-head"><h2 id="ed-h">Where art<br>stands?</h2><a class="more accent-it" href="editorial.html">Editorial</a></div>
     <a class="ed-feature" href="{a['_url']}">
       <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''}</div>
-      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(a.get('title', ''))}</h3><p>{E(a.get('summary', ''))}</p><span class="more">읽기</span></div>
+      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(a.get('title', ''))}</h3><p>{T(a.get('summary', ''))}</p><span class="more">읽기</span></div>
     </a>
   </div>
 </section>'''
@@ -296,9 +300,9 @@ def build():
     <h1 class="reveal">{E(H.get('headline', ''))} <span class="en ul">STANDS</span>.</h1>
     <div class="grid">
       <div class="story">
-        <p>{E(H.get('story_1', ''))}</p>
+        <p>{T(H.get('story_1', ''))}</p>
         <p class="slogan">WHERE ART STANDS</p>
-        <p>{E(H.get('story_2', ''))}</p>
+        <p>{T(H.get('story_2', ''))}</p>
       </div>
       <p><a class="more" href="about.html">About STANDS</a></p>
     </div>
@@ -331,7 +335,7 @@ def build():
 <section class="cta">
   <div class="wrap">
     <span class="eyebrow" style="color:#9A98A0">Contact</span>
-    <h2>{E(H.get('cta_title', ''))}</h2>
+    <h2>{T(H.get('cta_title', ''))}</h2>
     <a class="btn" href="contact.html">{E(H.get('cta_button', '문의'))}</a>
   </div>
 </section>'''
@@ -339,8 +343,8 @@ def build():
          'index.html', home, f'<script src="assets/hero.js?v={VER}"></script>\n')
 
     # about
-    paras = ''.join(f'<p>{E(t)}</p>' for t in AB.get('paragraphs', []))
-    kv = ''.join(f'<dt>{E(r.get("label", ""))}</dt><dd>{E(r.get("text", ""))}</dd>' for r in AB.get('what_we_do', []))
+    paras = ''.join(f'<p>{T(t)}</p>' for t in AB.get('paragraphs', []))
+    kv = ''.join(f'<dt>{E(r.get("label", ""))}</dt><dd>{T(r.get("text", ""))}</dd>' for r in AB.get('what_we_do', []))
     about = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">About</span><h1 class="long">Art is complete<br>where it <span class="ul">stands</span>.</h1></div></div>
 <section>
   <div class="wrap two-col">
@@ -357,12 +361,12 @@ def build():
     <dl class="kv">{kv}</dl>
   </div>
 </section>
-<section class="cta"><div class="wrap"><h2>{E(AB.get('cta_title', ''))}</h2><a class="btn" href="contact.html">{E(AB.get('cta_button', '문의하기'))}</a></div></section>'''
+<section class="cta"><div class="wrap"><h2>{T(AB.get('cta_title', ''))}</h2><a class="btn" href="contact.html">{E(AB.get('cta_button', '문의하기'))}</a></div></section>'''
     page('about.html', 'About', 'Art is complete where it stands. 작품 선정부터 설치까지, 한 팀이 맡는 아트 컴퍼니 STANDS.', 'about.html', about)
 
     # artists
     artists = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artists</span><h1>Artists</h1>
-<p class="lead">{E(PG.get('artists_lead', ''))}</p></div></div>
+<p class="lead">{T(PG.get('artists_lead', ''))}</p></div></div>
 <section><div class="wrap"><div class="artist-grid">{''.join(artist_card(a) for a in ARTISTS)}</div></div></section>'''
     page('artists.html', 'Artists', 'STANDS 작가.', 'artists.html', artists)
 
@@ -372,7 +376,7 @@ def build():
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artist · {E(a.get('medium', ''))}</span><h1>{E(a.get('name', ''))}</h1>
-<p class="lead">{E(a.get('summary', ''))}{sample(a)}</p></div></div>
+<p class="lead">{T(a.get('summary', ''))}{sample(a)}</p></div></div>
 {f'<div class="full-ph"><img src="{E(photo)}" alt="{E(a.get("name", ""))}"></div>' if photo else ''}
 <section><div class="wrap two-col">
   <dl class="kv"><dt>Born</dt><dd>{E(str(a.get('born', '')))}</dd><dt>Based</dt><dd>{E(a.get('based', ''))}</dd><dt>Media</dt><dd>{E(a.get('medium', ''))}</dd><dt>Contact</dt><dd><a class="more" href="contact.html">작품 문의</a></dd></dl>
@@ -387,7 +391,7 @@ def build():
     chips = '<button class="chip" type="button" data-filter="all" aria-pressed="true">전체</button>' + ''.join(
         f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{TYPES[k]}</button>' for k in used)
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
-<p class="lead">{E(PG.get('projects_lead', ''))}</p></div></div>
+<p class="lead">{T(PG.get('projects_lead', ''))}</p></div></div>
 <section><div class="wrap"><div class="filters" role="group" aria-label="프로젝트 유형">{chips}</div>
 <div class="cards">{''.join(project_card(p) for p in PROJECTS)}</div></div></section>'''
     page('projects.html', 'Projects', 'STANDS 프로젝트.', 'projects.html', projects)
@@ -402,7 +406,7 @@ def build():
         gal = ''.join(f'<div class="ph"><img src="{E(img(g))}" alt="" loading="lazy"></div>' for g in (p.get('gallery') or []) if g)
         nxt = [PROJECTS[(i + k) % len(PROJECTS)] for k in (1, 2, 3) if len(PROJECTS) > k]
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">No.{i+1:03d} · {E(TYPES.get(p.get('type', ''), ''))}</span><h1>{E(p.get('title', ''))}</h1>
-<p class="lead">{E(p.get('summary', ''))}{sample(p)}</p></div></div>
+<p class="lead">{T(p.get('summary', ''))}{sample(p)}</p></div></div>
 {f'<div class="full-ph"><img src="{E(cover)}" alt="{E(p.get("title", ""))}"></div>' if cover else ''}
 <section><div class="wrap two-col">
   <dl class="kv">{kv}</dl>
@@ -414,7 +418,7 @@ def build():
 
     # editorial
     editorial = f'''<div class="page-head" style="background:var(--sky)"><div class="wrap"><span class="eyebrow" style="color:var(--black)">Editorial</span><h1>Where art<br>stands?</h1>
-<p class="lead">{E(PG.get('editorial_lead', ''))}</p></div></div>
+<p class="lead">{T(PG.get('editorial_lead', ''))}</p></div></div>
 <section><div class="wrap"><div class="list">{''.join(article_row(a) for a in ARTICLES)}</div></div></section>'''
     page('editorial.html', 'Editorial', 'WHERE ART STANDS? — STANDS 에디토리얼.', 'editorial.html', editorial)
 
@@ -422,7 +426,7 @@ def build():
         cover = img(a.get('cover'))
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Issue {E(str(a.get('issue', '')))} · Where art stands?</span>
 <h1 style="font-family:var(--body);font-weight:700;text-transform:none;font-size:clamp(36px,6vw,84px);line-height:1.15;letter-spacing:-.03em">{E(a.get('title', ''))}</h1>
-<p class="lead">{E(a.get('summary', ''))}</p></div></div>
+<p class="lead">{T(a.get('summary', ''))}</p></div></div>
 {f'<div class="full-ph"><img src="{E(cover)}" alt=""></div>' if cover else ''}
 <section><div class="wrap two-col"><span class="eyebrow">{E(str(a.get('date', '')))}</span>
 <div class="prose">{rich(a.get('_body'))}</div></div></section>'''
@@ -432,7 +436,7 @@ def build():
     types = CT.get('form_types', []) or ['기타']
     radios = ''.join(f'<input type="radio" name="type" id="t{i}" value="{E(t)}"{" checked" if i == 0 else ""}><label for="t{i}">{E(t)}</label>' for i, t in enumerate(types))
     contact = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Contact</span><h1>Contact</h1>
-<p class="lead">{E(CT.get('lead', ''))}</p></div></div>
+<p class="lead">{T(CT.get('lead', ''))}</p></div></div>
 <section><div class="wrap two-col">
   <dl class="kv"><dt>Email</dt><dd>{E(CT.get('email', ''))}</dd><dt>Address</dt><dd>{E(CT.get('address', ''))}</dd><dt>Tel</dt><dd>{E(CT.get('tel', ''))}</dd><dt>Instagram</dt><dd>{E(CT.get('instagram', ''))}</dd></dl>
   <form class="form" id="contact-form" novalidate>
