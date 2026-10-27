@@ -4,7 +4,7 @@
   const $=id=>document.getElementById(id);
   const bg=$('bg'), bgimg=$('bgimg'), tag=$('tag'), line=$('line'), wa=$('wa'), word=$('word'), bar=$('ubar'), obj=$('obj'),
         lockup=$('lockup'), frame=$('frame'), lbar=$('lbar'), replay=$('replay'), loopvid=$('loopvid');
-  const DUR=15000, ACCENT='#7D7889';
+  const DUR=15000, ACCENT='#7D7889', LBW=parseFloat(lbar.dataset.w)||247.54;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const IW=1376, IH=768;
@@ -56,7 +56,7 @@
     wa.style.opacity=easeOut(prog(t,250,900));
     bar.style.transform=`scaleX(${easeInOut(prog(t,500,1200))})`;
     bar.style.opacity=(t>=9000&&t<10300)?((Math.floor((t-9000)/420)%2===0)?1:.15):1;
-    bar.style.background=t>=10300?ACCENT:'currentColor';
+    bar.style.background=t>=10300?'linear-gradient(90deg,currentColor,'+ACCENT+')':'currentColor';
 
     let idx=-1;
     if(t>=1800&&t<9000){ for(let k=cuts.length-1;k>=0;k--){ if(t>=cuts[k].t){idx=k;break;} } }
@@ -80,7 +80,7 @@
     const fp=easeInOut(prog(t,12150,13150));
     frame.setAttribute('stroke-dashoffset',String(1000*(1-fp)));
     frame.setAttribute('stroke-dasharray',fp>=1?'none':'1000');
-    lbar.setAttribute('width',String(312*easeOut(prog(t,12900,13400))));
+    lbar.setAttribute('width',String(LBW*easeOut(prog(t,12900,13400))));
     hero.classList.toggle('done',t>=DUR);
     // start buffering the background film while the answer scene plays, so it is ready the moment the logo lands
     if(t>=9000&&loopvid&&loopvid.preload!=='auto'&&!reduce){ loopvid.preload='auto'; loopvid.load(); }
