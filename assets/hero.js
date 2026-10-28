@@ -8,6 +8,7 @@
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const IW=1376, IH=768;
+  const BASE=document.documentElement.dataset.base||'', EN=document.documentElement.lang==='en';
   const places=[
     {k:'RESIDENCE',ko:'컬렉터 거실',src:'img/living.jpg',h:.60},
     {k:'GALLERY',ko:'갤러리',src:'img/gallery.jpg',h:.69},
@@ -19,7 +20,7 @@
     {k:'FOREST',ko:'숲',src:'img/forest.jpg',h:.585,dark:true},
   ];
   // preload the photos; never wait more than 3s for them
-  const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=p.src;})));
+  const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=BASE+p.src;})));
   let imagesReady=false; ready.then(()=>{ imagesReady=true; }); setTimeout(()=>{ imagesReady=true; },3000);
 
   // placeholder sculptures, standing on y=100
@@ -64,9 +65,9 @@
       if(idx>=0){
         const n=places.length,last=cuts.length-1,c=cuts[idx];
         const pi=c.i<n?c.i:(((c.i-last+n-1)%n)+n)%n, p=places[pi];
-        cur=p; bgimg.src=p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); hero.classList.toggle('dark',!!p.dark);
+        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); hero.classList.toggle('dark',!!p.dark);
         obj.innerHTML=`<svg viewBox="0 -30 100 130" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${p.dark ? lighten(shapes[c.i%shapes.length]) : shapes[c.i%shapes.length]}</svg>`;
-        tag.textContent=`No.${String(c.i+1).padStart(3,'0')} · ${p.k} ${p.ko} · ${sizes[c.i%sizes.length]}`;
+        tag.textContent=`No.${String(c.i+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${sizes[c.i%sizes.length]}`;
       } else { cur=null; bgimg.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }
       lastCut=idx;
     }

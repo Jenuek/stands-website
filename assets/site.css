@@ -45,6 +45,11 @@ button{font:inherit;color:inherit}
 .nav a{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;position:relative;padding:4px 0}
 .nav a[aria-current="page"]::after,.nav a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:currentColor}
 .nav .lang{font-family:var(--mono);font-size:11px;letter-spacing:.08em;opacity:.8}
+.nav .lang a,.mobile-nav .lang a{font-family:inherit;font-stretch:normal;font-weight:500;font-size:inherit;letter-spacing:inherit;word-spacing:0;text-transform:none;line-height:inherit;padding:2px 0;opacity:.55}
+.nav .lang a::after{display:none}
+.nav .lang a:hover,.mobile-nav .lang a:hover,.nav .lang a[aria-current],.mobile-nav .lang a[aria-current]{opacity:1;text-decoration:underline;text-underline-offset:3px}
+.mobile-nav .lang{position:absolute;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:max(var(--gutter),env(safe-area-inset-left,0px));font-family:var(--mono);font-size:13px;letter-spacing:.1em}
+.mobile-nav .lang a{opacity:.6}
 .menu-btn{display:none;background:none;border:0;padding:10px;margin-right:-10px;cursor:pointer}
 .menu-btn span{display:block;width:24px;height:2px;background:currentColor;margin:5px 0}
 .mobile-nav{position:fixed;inset:0;z-index:60;background:var(--black);color:var(--paper);display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 max(var(--gutter),env(safe-area-inset-left,0px))}

@@ -22,7 +22,7 @@
       e.preventDefault();
       const n=document.getElementById('form-note');
       n.hidden=false;
-      n.textContent='초안 사이트라 문의가 전송되지 않습니다. 오픈 전에 메일 연동을 연결할 예정입니다.';
+      n.textContent=document.documentElement.lang==='en'?'This is a draft site, so inquiries are not sent yet. Email delivery will be connected before launch.':'초안 사이트라 문의가 전송되지 않습니다. 오픈 전에 메일 연동을 연결할 예정입니다.';
     });
   }
 })();
@@ -45,7 +45,8 @@
     const params={link_text:label, link_url:href, section:sectionOf(el), page_path:location.pathname};
     send('ui_click',params);
     if(href.includes('contact.html')) send('cta_contact_click',params);
-    if(el.closest('.nav,.mobile-nav')) send('nav_click',params);
+    if(el.dataset.lang) send('language_switch',{language:el.dataset.lang, page_path:location.pathname});
+    else if(el.closest('.nav,.mobile-nav')) send('nav_click',params);
     if(el.classList.contains('card')) send('project_click',params);
     if(el.classList.contains('artist')) send('artist_click',params);
     if(el.classList.contains('ed-feature')||el.closest('.list')) send('editorial_click',params);
