@@ -1,11 +1,27 @@
 ---
 title: 작품은 어디에서 완성되는가
-issue: "01"
+issue: '01'
 date: 2026-10-01
 summary: 브랜드명, 스토리와 이어지는 주제로, 브랜드 소개를 겸한 창간호로 좋아보입니다.
 cover: /img/gallery.jpg
 sample: true
 hidden: false
+en:
+  title: Where Is a Work Completed?
+  summary: 'A theme that runs straight from the brand name and story: a first issue that doubles as an introduction to STANDS.'
+  body: 'A sculpture fresh from the studio is not yet finished. The floor it rests on, the light it stands under, the eye level at which it meets its viewer: these turn the same work into something else entirely.
+
+
+    The actual article goes here. Each issue holds on to a single question and brings together the voices of artists, architects and collectors.
+
+
+    > Where does art stand?
+
+
+    ## Next issue
+
+
+    Why does lobby sculpture end up as decoration? On why a space and its work should be designed together from the start.'
 ---
 작업실에서 막 나온 조각은 아직 완성되지 않았습니다. 그것이 어떤 바닥 위에, 어떤 빛 아래, 누구의 시선 높이에 놓이는지에 따라 같은 작품도 전혀 다른 것이 됩니다.
 
