@@ -54,35 +54,91 @@ SHAPES = [
     '<rect x="26" y="40" width="20" height="60" fill="#8FCAD8"/><rect x="54" y="20" width="20" height="80" fill="#111"/>',
 ]
 
-def head(title, desc, og=None):
+
+# ---------------------------------------------------------------------------
+# language
+# The site is built twice: Korean at the root, English under /en/.
+# English text lives next to the Korean text in /content:
+#   - plain fields:  an `en:` block in the same entry (e.g. en.title, en.summary, en.body)
+#   - list items:    `<field>_en` inside the item (e.g. services[].title_en)
+# An empty English field falls back to the Korean text, so translations can be filled in gradually.
+# ---------------------------------------------------------------------------
+LANG = 'ko'   # current build language
+P = ''        # path prefix back to the site root ('' for Korean, '../' for English)
+
+def EN():
+    return LANG == 'en'
+
+def U(ko, en):
+    """Fixed interface text."""
+    return en if EN() else ko
+
+def _filled(v):
+    return v not in (None, '', [], {}) and not (isinstance(v, str) and not v.strip())
+
+def L(d, key, default=''):
+    """A content field in the current language (falls back to Korean)."""
+    d = d or {}
+    if EN():
+        v = (d.get('en') or {}).get(key)
+        if _filled(v):
+            return v
+    v = d.get(key)
+    return default if v is None else v
+
+def LI(item, key, default=''):
+    """A field of a list item in the current language (`key_en` falls back to `key`)."""
+    item = item or {}
+    if EN() and _filled(item.get(key + '_en')):
+        return item.get(key + '_en')
+    v = item.get(key)
+    return default if v is None else v
+
+def BODY(d):
+    if EN():
+        v = (d.get('en') or {}).get('body')
+        if _filled(v):
+            return v
+    return d.get('_body')
+
+def head(title, desc, name, og=None):
     t = 'STANDS' if title == 'STANDS' else f'{title} — STANDS'
+    ko_url = f'{BASE_URL}{name}'
+    en_url = f'{BASE_URL}en/{name}'
+    canon = en_url if EN() else ko_url
     return f'''<!doctype html>
-<html lang="ko">
+<html lang="{LANG}" data-base="{P}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>{t}</title>
-<meta name="description" content="{html.escape(desc)}">
-<meta property="og:title" content="{t}">
-<meta property="og:description" content="{html.escape(desc)}">
-<meta property="og:image" content="{og or 'img/gallery.jpg'}">
+<title>{E(t)}</title>
+<meta name="description" content="{E(desc)}">
+<link rel="canonical" href="{canon}">
+<link rel="alternate" hreflang="ko" href="{ko_url}">
+<link rel="alternate" hreflang="en" href="{en_url}">
+<link rel="alternate" hreflang="x-default" href="{ko_url}">
+<meta property="og:title" content="{E(t)}">
+<meta property="og:description" content="{E(desc)}">
+<meta property="og:image" content="{og or P + 'img/gallery.jpg'}">
+<meta property="og:locale" content="{'en_US' if EN() else 'ko_KR'}">
 <meta name="theme-color" content="#F0F0EE">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4HENTDTYNP"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-4HENTDTYNP');</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-4HENTDTYNP',{{site_language:'{LANG}'}});</script>
 <!-- Microsoft Clarity -->
 <script>(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","z46038c0ok");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,800..900&family=Newsreader:ital,opsz,wght@1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="assets/site.css?v={VER}">
+<link rel="stylesheet" href="{P}assets/site.css?v={VER}">
 </head>
 <body>
 '''
 
 
-HERO = f'''<section class="hero" id="hero" aria-label="WHERE ART STANDS">
+def hero():
+    return f'''<section class="hero" id="hero" aria-label="WHERE ART STANDS">
   <div class="bg plain" id="bg"><img id="bgimg" alt="" hidden></div>
   <div class="tag" id="tag"></div>
   <div class="line" id="line" role="img" aria-label="WHERE ART STANDS">
@@ -90,15 +146,14 @@ HERO = f'''<section class="hero" id="hero" aria-label="WHERE ART STANDS">
     <span class="slot"><span class="word" id="word"><svg class="gl" width="3.3249em" height="0.74em" viewBox="{HERO_ST_VIEW}" aria-hidden="true" fill="currentColor" overflow="visible">{HERO_ST}</svg></span><span class="ubar" id="ubar"></span><span class="obj" id="obj"></span></span>
   </div>
   <div class="loop" id="loop" aria-hidden="true">
-    <video id="loopvid" muted loop playsinline preload="none" poster="img/park-poster.jpg"><source src="video/park-loop.mp4" type="video/mp4"><source src="video/park-loop.webm" type="video/webm"></video>
+    <video id="loopvid" muted loop playsinline preload="none" poster="{P}img/park-poster.jpg"><source src="{P}video/park-loop.mp4" type="video/mp4"><source src="{P}video/park-loop.webm" type="video/webm"></video>
   </div>
   <div class="lockup" id="lockup">
     {logo_svg(ids=True, bar_w=0, frame_attrs=' pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"')}
   </div>
   <div class="scroll">SCROLL</div>
-  <div class="controls"><button id="replay" type="button">다시 보기</button></div>
+  <div class="controls"><button id="replay" type="button">{U('다시 보기', 'Replay')}</button></div>
 </section>'''
-
 
 
 # ---------------------------------------------------------------------------
@@ -106,8 +161,10 @@ HERO = f'''<section class="hero" id="hero" aria-label="WHERE ART STANDS">
 # ---------------------------------------------------------------------------
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = os.path.join(ROOT, 'content')
-OUT = os.environ.get('STANDS_OUT', os.path.join(ROOT, '_site'))
+OUT_ROOT = os.environ.get('STANDS_OUT', os.path.join(ROOT, '_site'))
+OUT = OUT_ROOT
 VER = os.environ.get('STANDS_VER', '20261028')
+BASE_URL = os.environ.get('STANDS_URL', 'https://jenuek.github.io/stands-website/')
 E = html.escape
 
 def T(v):
@@ -146,16 +203,15 @@ def collection(name, prefix, sort):
     return sorted(items, key=sort)
 
 def img(p):
-    """CMS stores '/img/x.jpg'; the site lives in a sub-folder, so use relative paths."""
+    """CMS stores '/img/x.jpg'; the site lives in a sub-folder, so use paths relative to the page."""
     p = (p or '').strip()
-    return p[1:] if p.startswith('/') else p
+    if not p or re.match(r'^(https?:|data:)', p):
+        return p
+    return P + (p[1:] if p.startswith('/') else p)
 
 def rich(md_text):
     out = markdown.markdown(md_text or '', extensions=['extra', 'sane_lists', 'nl2br'])
-    return out.replace('src="/img/', 'src="img/').replace('href="/img/', 'href="img/')
-
-def para(text):
-    return ''.join(f'<p>{T(t)}</p>' for t in re.split(r'\n\s*\n', text or '') if t.strip())
+    return out.replace('src="/img/', f'src="{P}img/').replace('href="/img/', f'href="{P}img/')
 
 def num(v, d=9999):
     try:
@@ -187,10 +243,14 @@ def pick(refs):
         refs = [refs]
     return [d for d in (ref(r) for r in (refs or [])) if d]
 
-TYPES = {'space': '공간 프로젝트', 'public': '공공미술', 'exhibition': '전시', 'trade': '거래 · 자문', 'handling': '제작 · 설치'}
-S = '<span class="sample">예시</span>'
+TYPES = {'space': ('공간 프로젝트', 'Space'), 'public': ('공공미술', 'Public Art'), 'exhibition': ('전시', 'Exhibition'),
+         'trade': ('거래 · 자문', 'Dealing · Advisory'), 'handling': ('제작 · 설치', 'Fabrication · Installation')}
+def type_name(k):
+    t = TYPES.get(k)
+    return U(*t) if t else ''
+
 def sample(d):
-    return S if d.get('sample') else ''
+    return f'<span class="sample">{U("예시", "Sample")}</span>' if d.get('sample') else ''
 
 # ---------------------------------------------------------------------------
 # layout
@@ -198,43 +258,59 @@ def sample(d):
 NAV = [('about.html', 'About'), ('artists.html', 'Artists'), ('projects.html', 'Projects'),
        ('editorial.html', 'Editorial'), ('contact.html', 'Contact')]
 
-def header(cur):
+def lang_switch(name):
+    """KO / EN links to the same page in the other language."""
+    ko = (P + name) if EN() else name
+    en = name if EN() else 'en/' + name
+    on = ' aria-current="true"'
+    return (f'<span class="lang"><a href="{ko}" hreflang="ko" lang="ko" data-lang="ko"{on if not EN() else ""}>KO</a> / '
+            f'<a href="{en}" hreflang="en" lang="en" data-lang="en"{on if EN() else ""}>EN</a></span>')
+
+def header(name, cur):
     AC = ' aria-current="page"'
     links = ''.join(f'<a href="{h}"{AC if h == cur else ""}>{n}</a>' for h, n in NAV)
     mlinks = ''.join(f'<a href="{h}">{n}</a>' for h, n in NAV)
     return f'''<header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="index.html" aria-label="STANDS 홈">{logo_svg(label="STANDS", mono=True)}</a>
-    <nav class="nav" aria-label="주요 메뉴">{links}<span class="lang">KO / EN</span></nav>
-    <button class="menu-btn" id="menu-open" type="button" aria-label="메뉴 열기" aria-controls="mobile-nav"><span></span><span></span></button>
+    <a class="brand" href="index.html" aria-label="{U('STANDS 홈', 'STANDS home')}">{logo_svg(label="STANDS", mono=True)}</a>
+    <nav class="nav" aria-label="{U('주요 메뉴', 'Main menu')}">{links}{lang_switch(name)}</nav>
+    <button class="menu-btn" id="menu-open" type="button" aria-label="{U('메뉴 열기', 'Open menu')}" aria-controls="mobile-nav"><span></span><span></span></button>
   </div>
 </header>
 <div class="mobile-nav" id="mobile-nav" hidden>
-  <button class="close" id="menu-close" type="button">닫기</button>
+  <button class="close" id="menu-close" type="button">{U('닫기', 'Close')}</button>
   <a href="index.html">Home</a>{mlinks}
+  {lang_switch(name)}
 </div>
 '''
 
-FOOTER = f'''<footer class="site-footer">
+def footer():
+    c = {k: L(CO, k) for k in ('name', 'ceo', 'business_no', 'art_service_no', 'ecommerce_no')}
+    if EN():
+        legal = (f'{E(c["name"])} · CEO {E(c["ceo"])} · Business Registration No. <span class="ph">{E(c["business_no"])}</span><br>'
+                 f'Art Service Business Reg. No. <span class="ph">{E(c["art_service_no"])}</span> · E-commerce Reg. No. <span class="ph">{E(c["ecommerce_no"])}</span>')
+    else:
+        legal = (f'주식회사 {E(c["name"])} · 대표 {E(c["ceo"])} · 사업자등록번호 <span class="ph">{E(c["business_no"])}</span><br>'
+                 f'미술서비스업 신고번호 <span class="ph">{E(c["art_service_no"])}</span> · 통신판매업 신고번호 <span class="ph">{E(c["ecommerce_no"])}</span>')
+    return f'''<footer class="site-footer">
   <div class="wrap">
     <div class="top">
-      <div class="logo-col"><a class="logo" href="index.html" aria-label="STANDS 홈">{wordmark_svg()}</a><span class="descriptor">Office for Art</span></div>
+      <div class="logo-col"><a class="logo" href="index.html" aria-label="{U('STANDS 홈', 'STANDS home')}">{wordmark_svg()}</a><span class="descriptor">Office for Art</span></div>
       <div><h4>Menu</h4><ul>{''.join(f'<li><a href="{h}">{n}</a></li>' for h, n in NAV)}</ul></div>
-      <div><h4>Contact</h4><ul><li>{E(CT.get('email', ''))}</li><li>{E(CT.get('address', ''))}</li><li>{E(CT.get('tel', ''))}</li></ul></div>
+      <div><h4>Contact</h4><ul><li>{E(CT.get('email', ''))}</li><li>{E(L(CT, 'address'))}</li><li>{E(CT.get('tel', ''))}</li></ul></div>
       <div><h4>Follow</h4><ul><li>Instagram {E(CT.get('instagram', ''))}</li><li><a href="editorial.html">Editorial</a></li></ul></div>
     </div>
     <div class="legal">
-      <div>주식회사 {E(CO.get('name', ''))} · 대표 {E(CO.get('ceo', ''))} · 사업자등록번호 <span class="ph">{E(CO.get('business_no', ''))}</span><br>
-      미술서비스업 신고번호 <span class="ph">{E(CO.get('art_service_no', ''))}</span> · 통신판매업 신고번호 <span class="ph">{E(CO.get('ecommerce_no', ''))}</span></div>
-      <div><a href="privacy.html">개인정보처리방침</a> · © 2026 STANDS</div>
+      <div>{legal}</div>
+      <div><a href="privacy.html">{U('개인정보처리방침', 'Privacy Policy')}</a> · © 2026 STANDS</div>
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v={VER}"></script>
+<script src="{P}assets/site.js?v={VER}"></script>
 '''
 
 def page(name, title, desc, cur, body, extra_js='', og=None):
-    doc = head(title, desc, og) + header(cur) + '<main id="main">\n' + body + '\n</main>\n' + FOOTER + extra_js + '</body>\n</html>\n'
+    doc = head(title, desc, name, og) + header(name, cur) + '<main id="main">\n' + body + '\n</main>\n' + footer() + extra_js + '</body>\n</html>\n'
     open(os.path.join(OUT, name), 'w', encoding='utf-8').write(doc)
 
 # ---------------------------------------------------------------------------
@@ -243,11 +319,11 @@ def page(name, title, desc, cur, body, extra_js='', og=None):
 def project_card(p):
     i = PROJECTS.index(p)
     typ = p.get('type', 'space')
-    meta = ' · '.join(x for x in (f'No.{i+1:03d}', TYPES.get(typ, ''), p.get('location', ''), p.get('size', '')) if x)
+    meta = ' · '.join(x for x in (f'No.{i+1:03d}', type_name(typ), L(p, 'location'), L(p, 'size')) if x)
     cover = img(p.get('cover'))
     ph = f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''
     return (f'<a class="card" href="{p["_url"]}" data-type="{E(typ)}"><div class="ph">{ph}</div>'
-            f'<span class="meta">{E(meta)}</span><h3>{E(p.get("title", ""))}{sample(p)}</h3></a>')
+            f'<span class="meta">{E(meta)}</span><h3>{E(L(p, "title"))}{sample(p)}</h3></a>')
 
 def artist_card(a):
     i = ARTISTS.index(a)
@@ -255,31 +331,24 @@ def artist_card(a):
     plate = (f'<img src="{E(photo)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">' if photo
              else f'<svg viewBox="0 0 100 100" aria-hidden="true">{SHAPES[i % 8]}</svg>')
     return (f'<a class="artist" href="{a["_url"]}"><div class="plate">{plate}</div>'
-            f'<span class="meta">{E(a.get("medium", ""))}</span><h3>{E(a.get("name", ""))}{sample(a)}</h3></a>')
+            f'<span class="meta">{E(L(a, "medium"))}</span><h3>{E(L(a, "name"))}{sample(a)}</h3></a>')
 
 def article_row(a):
     return (f'<a href="{a["_url"]}"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
-            f'<h3>{E(a.get("title", ""))}{sample(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
+            f'<h3>{E(L(a, "title"))}{sample(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
 
 # ---------------------------------------------------------------------------
 # pages
 # ---------------------------------------------------------------------------
-def build():
-    if os.path.isdir(OUT):
-        shutil.rmtree(OUT)
-    os.makedirs(OUT)
-    for d in ('assets', 'img', 'video'):
-        if os.path.isdir(os.path.join(ROOT, d)):
-            shutil.copytree(os.path.join(ROOT, d), os.path.join(OUT, d))
-    open(os.path.join(OUT, '.nojekyll'), 'w').close()
-
+def build_lang():
     # home
     fp = pick(H.get('featured_projects')) or PROJECTS[:3]
     fa = pick(H.get('featured_artists')) or ARTISTS[:4]
     fe = (pick(H.get('featured_article')) or ARTICLES[:1])
-    svc = ''.join(f'<div class="svc"><span class="k">{E(s.get("label", ""))}</span><h3>{E(s.get("title", ""))}</h3><p>{T(s.get("text", ""))}</p><span class="plinth"></span></div>'
-                  for s in H.get('services', []))
-    ncls = ' three' if len(H.get('services', [])) == 3 else ''
+    services = H.get('services', []) or []
+    svc = ''.join(f'<div class="svc"><span class="k">{E(LI(s, "label"))}</span><h3>{E(LI(s, "title"))}</h3><p>{T(LI(s, "text"))}</p><span class="plinth"></span></div>'
+                  for s in services)
+    ncls = ' three' if len(services) == 3 else ''
     ed = ''
     if fe:
         a = fe[0]
@@ -289,20 +358,20 @@ def build():
     <div class="sec-head"><h2 id="ed-h">Where art<br>stands?</h2><a class="more accent-it" href="editorial.html">Editorial</a></div>
     <a class="ed-feature" href="{a['_url']}">
       <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''}</div>
-      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(a.get('title', ''))}</h3><p>{T(a.get('summary', ''))}</p><span class="more">읽기</span></div>
+      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
     </a>
   </div>
 </section>'''
-    home = HERO + f'''
+    home = hero() + f'''
 <section class="statement">
   <div class="wrap">
     <span class="eyebrow">STANDS · Office for Art</span>
-    <h1 class="reveal">{E(H.get('headline', ''))} <span class="en ul">STANDS</span>.</h1>
+    <h1 class="reveal">{E(L(H, 'headline'))} <span class="en ul">STANDS</span>.</h1>
     <div class="grid">
       <div class="story">
-        <p>{T(H.get('story_1', ''))}</p>
+        <p>{T(L(H, 'story_1'))}</p>
         <p class="slogan">WHERE ART STANDS</p>
-        <p>{T(H.get('story_2', ''))}</p>
+        <p>{T(L(H, 'story_2'))}</p>
       </div>
       <p><a class="more" href="about.html">About STANDS</a></p>
     </div>
@@ -318,14 +387,14 @@ def build():
 
 <section aria-labelledby="pj-h">
   <div class="wrap">
-    <div class="sec-head"><h2 id="pj-h">Projects</h2><a class="more" href="projects.html">전체 프로젝트</a></div>
+    <div class="sec-head"><h2 id="pj-h">Projects</h2><a class="more" href="projects.html">{U('전체 프로젝트', 'All projects')}</a></div>
     <div class="cards">{''.join(project_card(p) for p in fp)}</div>
   </div>
 </section>
 
 <section aria-labelledby="ar-h" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><h2 id="ar-h">Artists</h2><a class="more" href="artists.html">전체 작가</a></div>
+    <div class="sec-head"><h2 id="ar-h">Artists</h2><a class="more" href="artists.html">{U('전체 작가', 'All artists')}</a></div>
     <div class="artist-grid">{''.join(artist_card(a) for a in fa)}</div>
   </div>
 </section>
@@ -335,23 +404,25 @@ def build():
 <section class="cta">
   <div class="wrap">
     <span class="eyebrow" style="color:#9A98A0">Contact</span>
-    <h2>{T(H.get('cta_title', ''))}</h2>
-    <a class="btn" href="contact.html">{E(H.get('cta_button', '문의'))}</a>
+    <h2>{T(L(H, 'cta_title'))}</h2>
+    <a class="btn" href="contact.html">{E(L(H, 'cta_button', U('문의', 'Contact')))}</a>
   </div>
 </section>'''
-    page('index.html', 'STANDS', f"{H.get('headline', '')} STANDS. 작품 선정 · 거래, 아트 프로젝트 기획, 건축물 미술작품 제작 · 설치를 직접 수행하는 아트 컴퍼니.",
-         'index.html', home, f'<script src="assets/hero.js?v={VER}"></script>\n')
+    page('index.html', 'STANDS',
+         U(f"{H.get('headline', '')} STANDS. 작품 선정 · 거래, 아트 프로젝트 기획, 건축물 미술작품 제작 · 설치를 직접 수행하는 아트 컴퍼니.",
+           f"{L(H, 'headline')} STANDS. An art company that selects and deals works, plans art projects, and fabricates and installs architectural art."),
+         'index.html', home, f'<script src="{P}assets/hero.js?v={VER}"></script>\n')
 
     # about
-    paras = ''.join(f'<p>{T(t)}</p>' for t in AB.get('paragraphs', []))
-    kv = ''.join(f'<dt>{E(r.get("label", ""))}</dt><dd>{T(r.get("text", ""))}</dd>' for r in AB.get('what_we_do', []))
+    paras = ''.join(f'<p>{T(t)}</p>' for t in (L(AB, 'paragraphs', []) or []))
+    kv = ''.join(f'<dt>{E(LI(r, "label"))}</dt><dd>{T(LI(r, "text"))}</dd>' for r in (AB.get('what_we_do', []) or []))
     about = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">About</span><h1 class="long">Art is complete<br>where it <span class="ul">stands</span>.</h1></div></div>
 <section>
   <div class="wrap two-col">
     <span class="eyebrow">STANDS</span>
     <div class="prose about-copy">
       {paras}
-      <p class="close">{E(AB.get('closing', ''))}</p>
+      <p class="close">{E(L(AB, 'closing'))}</p>
     </div>
   </div>
 </section>
@@ -361,111 +432,141 @@ def build():
     <dl class="kv">{kv}</dl>
   </div>
 </section>
-<section class="cta"><div class="wrap"><h2>{T(AB.get('cta_title', ''))}</h2><a class="btn" href="contact.html">{E(AB.get('cta_button', '문의하기'))}</a></div></section>'''
-    page('about.html', 'About', 'Art is complete where it stands. 작품 선정부터 설치까지, 한 팀이 맡는 아트 컴퍼니 STANDS.', 'about.html', about)
+<section class="cta"><div class="wrap"><h2>{T(L(AB, 'cta_title'))}</h2><a class="btn" href="contact.html">{E(L(AB, 'cta_button', U('문의하기', 'Get in touch')))}</a></div></section>'''
+    page('about.html', 'About', U('Art is complete where it stands. 작품 선정부터 설치까지, 한 팀이 맡는 아트 컴퍼니 STANDS.',
+                                  'Art is complete where it stands. STANDS is an art company where one team takes a work from selection to installation.'),
+         'about.html', about)
 
     # artists
     artists = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artists</span><h1>Artists</h1>
-<p class="lead">{T(PG.get('artists_lead', ''))}</p></div></div>
+<p class="lead">{T(L(PG, 'artists_lead'))}</p></div></div>
 <section><div class="wrap"><div class="artist-grid">{''.join(artist_card(a) for a in ARTISTS)}</div></div></section>'''
-    page('artists.html', 'Artists', 'STANDS 작가.', 'artists.html', artists)
+    page('artists.html', 'Artists', U('STANDS 작가.', 'Artists of STANDS.'), 'artists.html', artists)
 
     for a in ARTISTS:
         works = [p for p in PROJECTS if ref(p.get('artist')) is a]
-        hist = ''.join(f'<a href="{a["_url"]}"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(h.get("title", ""))}</h3><span class="meta">{E(h.get("place", ""))}</span></a>'
+        hist = ''.join(f'<a href="{a["_url"]}"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></a>'
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
-        body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artist · {E(a.get('medium', ''))}</span><h1>{E(a.get('name', ''))}</h1>
-<p class="lead">{T(a.get('summary', ''))}{sample(a)}</p></div></div>
-{f'<div class="full-ph"><img src="{E(photo)}" alt="{E(a.get("name", ""))}"></div>' if photo else ''}
+        name = L(a, 'name')
+        body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artist · {E(L(a, 'medium'))}</span><h1>{E(name)}</h1>
+<p class="lead">{T(L(a, 'summary'))}{sample(a)}</p></div></div>
+{f'<div class="full-ph"><img src="{E(photo)}" alt="{E(name)}"></div>' if photo else ''}
 <section><div class="wrap two-col">
-  <dl class="kv"><dt>Born</dt><dd>{E(str(a.get('born', '')))}</dd><dt>Based</dt><dd>{E(a.get('based', ''))}</dd><dt>Media</dt><dd>{E(a.get('medium', ''))}</dd><dt>Contact</dt><dd><a class="more" href="contact.html">작품 문의</a></dd></dl>
-  <div class="prose">{rich(a.get('_body'))}</div>
+  <dl class="kv"><dt>Born</dt><dd>{E(str(L(a, 'born')))}</dd><dt>Based</dt><dd>{E(L(a, 'based'))}</dd><dt>Media</dt><dd>{E(L(a, 'medium'))}</dd><dt>Contact</dt><dd><a class="more" href="contact.html">{U('작품 문의', 'Inquire about works')}</a></dd></dl>
+  <div class="prose">{rich(BODY(a))}</div>
 </div></section>
 {f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Projects</h2></div><div class="cards">{"".join(project_card(p) for p in works)}</div></div></section>' if works else ''}
 {f'<section style="padding-top:0"><div class="wrap two-col"><span class="eyebrow">Exhibitions</span><div class="list">{hist}</div></div></section>' if hist else ''}'''
-        page(a['_url'], a.get('name', 'Artist'), a.get('summary', '') or 'STANDS 작가.', 'artists.html', body)
+        page(a['_url'], name or 'Artist', L(a, 'summary') or U('STANDS 작가.', 'Artist of STANDS.'), 'artists.html', body)
 
     # projects
     used = [k for k in TYPES if any(p.get('type') == k for p in PROJECTS)]
-    chips = '<button class="chip" type="button" data-filter="all" aria-pressed="true">전체</button>' + ''.join(
-        f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{TYPES[k]}</button>' for k in used)
+    chips = f'<button class="chip" type="button" data-filter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
+        f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{type_name(k)}</button>' for k in used)
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
-<p class="lead">{T(PG.get('projects_lead', ''))}</p></div></div>
-<section><div class="wrap"><div class="filters" role="group" aria-label="프로젝트 유형">{chips}</div>
+<p class="lead">{T(L(PG, 'projects_lead'))}</p></div></div>
+<section><div class="wrap"><div class="filters" role="group" aria-label="{U('프로젝트 유형', 'Project type')}">{chips}</div>
 <div class="cards">{''.join(project_card(p) for p in PROJECTS)}</div></div></section>'''
-    page('projects.html', 'Projects', 'STANDS 프로젝트.', 'projects.html', projects)
+    page('projects.html', 'Projects', U('STANDS 프로젝트.', 'Projects by STANDS.'), 'projects.html', projects)
 
     for i, p in enumerate(PROJECTS):
         art = ref(p.get('artist'))
-        art_dd = f'<a href="{art["_url"]}">{E(art.get("name", ""))}</a>' if art else E(str(p.get('artist') or ''))
-        rows = [('Location', E(p.get('location', ''))), ('Year', E(str(p.get('year', '')))), ('Artist', art_dd),
-                ('Size', E(p.get('size', ''))), ('Client', E(p.get('client', ''))), ('Scope', E(p.get('scope', '')))]
+        art_dd = f'<a href="{art["_url"]}">{E(L(art, "name"))}</a>' if art else E(str(p.get('artist') or ''))
+        rows = [('Location', E(L(p, 'location'))), ('Year', E(str(p.get('year', '')))), ('Artist', art_dd),
+                ('Size', E(L(p, 'size'))), ('Client', E(L(p, 'client'))), ('Scope', E(L(p, 'scope')))]
         kv = ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows if v)
         cover = img(p.get('cover'))
+        title = L(p, 'title')
         gal = ''.join(f'<div class="ph"><img src="{E(img(g))}" alt="" loading="lazy"></div>' for g in (p.get('gallery') or []) if g)
         nxt = [PROJECTS[(i + k) % len(PROJECTS)] for k in (1, 2, 3) if len(PROJECTS) > k]
-        body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">No.{i+1:03d} · {E(TYPES.get(p.get('type', ''), ''))}</span><h1>{E(p.get('title', ''))}</h1>
-<p class="lead">{T(p.get('summary', ''))}{sample(p)}</p></div></div>
-{f'<div class="full-ph"><img src="{E(cover)}" alt="{E(p.get("title", ""))}"></div>' if cover else ''}
+        body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">No.{i+1:03d} · {E(type_name(p.get('type', '')))}</span><h1>{E(title)}</h1>
+<p class="lead">{T(L(p, 'summary'))}{sample(p)}</p></div></div>
+{f'<div class="full-ph"><img src="{E(cover)}" alt="{E(title)}"></div>' if cover else ''}
 <section><div class="wrap two-col">
   <dl class="kv">{kv}</dl>
-  <div class="prose">{rich(p.get('_body'))}</div>
+  <div class="prose">{rich(BODY(p))}</div>
 </div></section>
 {f'<section style="padding-top:0"><div class="wrap"><div class="cards gallery">{gal}</div></div></section>' if gal else ''}
 {f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
-        page(p['_url'], p.get('title', 'Project'), p.get('summary', '') or 'STANDS 프로젝트.', 'projects.html', body, og=cover or None)
+        page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body, og=cover or None)
 
     # editorial
     editorial = f'''<div class="page-head" style="background:var(--sky)"><div class="wrap"><span class="eyebrow" style="color:var(--black)">Editorial</span><h1>Where art<br>stands?</h1>
-<p class="lead">{T(PG.get('editorial_lead', ''))}</p></div></div>
+<p class="lead">{T(L(PG, 'editorial_lead'))}</p></div></div>
 <section><div class="wrap"><div class="list">{''.join(article_row(a) for a in ARTICLES)}</div></div></section>'''
-    page('editorial.html', 'Editorial', 'WHERE ART STANDS? — STANDS 에디토리얼.', 'editorial.html', editorial)
+    page('editorial.html', 'Editorial', U('WHERE ART STANDS? — STANDS 에디토리얼.', 'WHERE ART STANDS? — the STANDS editorial.'), 'editorial.html', editorial)
 
     for a in ARTICLES:
         cover = img(a.get('cover'))
+        title = L(a, 'title')
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Issue {E(str(a.get('issue', '')))} · Where art stands?</span>
-<h1 style="font-family:var(--body);font-weight:700;text-transform:none;font-size:clamp(36px,6vw,84px);line-height:1.15;letter-spacing:-.03em">{E(a.get('title', ''))}</h1>
-<p class="lead">{T(a.get('summary', ''))}</p></div></div>
+<h1 style="font-family:var(--body);font-weight:700;text-transform:none;font-size:clamp(36px,6vw,84px);line-height:1.15;letter-spacing:-.03em">{E(title)}</h1>
+<p class="lead">{T(L(a, 'summary'))}</p></div></div>
 {f'<div class="full-ph"><img src="{E(cover)}" alt=""></div>' if cover else ''}
 <section><div class="wrap two-col"><span class="eyebrow">{E(str(a.get('date', '')))}</span>
-<div class="prose">{rich(a.get('_body'))}</div></div></section>'''
-        page(a['_url'], a.get('title', 'Editorial'), a.get('summary', '') or 'STANDS 에디토리얼.', 'editorial.html', body, og=cover or None)
+<div class="prose">{rich(BODY(a))}</div></div></section>'''
+        page(a['_url'], title or 'Editorial', L(a, 'summary') or U('STANDS 에디토리얼.', 'The STANDS editorial.'), 'editorial.html', body, og=cover or None)
 
     # contact
-    types = CT.get('form_types', []) or ['기타']
+    types = L(CT, 'form_types', []) or [U('기타', 'Other')]
     radios = ''.join(f'<input type="radio" name="type" id="t{i}" value="{E(t)}"{" checked" if i == 0 else ""}><label for="t{i}">{E(t)}</label>' for i, t in enumerate(types))
     contact = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Contact</span><h1>Contact</h1>
-<p class="lead">{T(CT.get('lead', ''))}</p></div></div>
+<p class="lead">{T(L(CT, 'lead'))}</p></div></div>
 <section><div class="wrap two-col">
-  <dl class="kv"><dt>Email</dt><dd>{E(CT.get('email', ''))}</dd><dt>Address</dt><dd>{E(CT.get('address', ''))}</dd><dt>Tel</dt><dd>{E(CT.get('tel', ''))}</dd><dt>Instagram</dt><dd>{E(CT.get('instagram', ''))}</dd></dl>
+  <dl class="kv"><dt>Email</dt><dd>{E(CT.get('email', ''))}</dd><dt>Address</dt><dd>{E(L(CT, 'address'))}</dd><dt>Tel</dt><dd>{E(CT.get('tel', ''))}</dd><dt>Instagram</dt><dd>{E(CT.get('instagram', ''))}</dd></dl>
   <form class="form" id="contact-form" novalidate>
-    <fieldset class="field"><legend>문의 유형</legend><div class="types">{radios}</div></fieldset>
-    <div class="field"><label for="f-name">이름 · 회사</label><input id="f-name" name="name" autocomplete="name"></div>
-    <div class="field"><label for="f-mail">이메일</label><input id="f-mail" name="email" type="email" autocomplete="email"></div>
-    <div class="field"><label for="f-msg">내용</label><textarea id="f-msg" name="message" placeholder="공간, 일정, 예산 등 알고 계신 내용을 적어 주세요."></textarea></div>
-    <div><button class="btn dark" type="submit">보내기</button></div>
+    <fieldset class="field"><legend>{U('문의 유형', 'Inquiry type')}</legend><div class="types">{radios}</div></fieldset>
+    <div class="field"><label for="f-name">{U('이름 · 회사', 'Name · Company')}</label><input id="f-name" name="name" autocomplete="name"></div>
+    <div class="field"><label for="f-mail">{U('이메일', 'Email')}</label><input id="f-mail" name="email" type="email" autocomplete="email"></div>
+    <div class="field"><label for="f-msg">{U('내용', 'Message')}</label><textarea id="f-msg" name="message" placeholder="{U('공간, 일정, 예산 등 알고 계신 내용을 적어 주세요.', 'Tell us what you know so far: the space, schedule, budget and so on.')}"></textarea></div>
+    <div><button class="btn dark" type="submit">{U('보내기', 'Send')}</button></div>
     <p class="notice" id="form-note" role="status" hidden></p>
   </form>
 </div></section>'''
-    page('contact.html', 'Contact', 'STANDS 문의.', 'contact.html', contact)
+    page('contact.html', 'Contact', U('STANDS 문의.', 'Contact STANDS.'), 'contact.html', contact)
 
-    privacy = '''<div class="page-head"><div class="wrap"><span class="eyebrow">Policy</span><h1 style="font-size:clamp(40px,7vw,96px)">Privacy</h1>
+    if EN():
+        privacy = '''<div class="page-head"><div class="wrap"><span class="eyebrow">Policy</span><h1 style="font-size:clamp(40px,7vw,96px)">Privacy</h1>
+<p class="lead">The full privacy policy will be published here before launch, covering what the contact form collects (name, company, email and message), how long it is kept and how it is deleted. The Korean version is the governing text.</p></div></div>
+<section><div class="wrap two-col"><span class="eyebrow">Analytics</span><div class="prose">
+<h2 style="margin-top:0">Visitor analytics</h2>
+<p>To improve the site, STANDS uses Google Analytics 4 and Microsoft Clarity to collect records of visits (behavioral data): pages viewed, menus and buttons clicked, click and scroll positions on the page, time of visit, referral source, device and browser type, and approximate region. We do not collect information that directly identifies you, such as your name or contact details.</p>
+<p>This information is collected through cookies. You can refuse it by blocking cookies in your browser settings or by installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics opt-out add-on</a>. In Microsoft Clarity session recordings, anything typed into input fields is masked and not stored.</p>
+</div></div></section>'''
+        page('privacy.html', 'Privacy Policy', 'STANDS privacy policy (in preparation).', '', privacy)
+    else:
+        privacy = '''<div class="page-head"><div class="wrap"><span class="eyebrow">Policy</span><h1 style="font-size:clamp(40px,7vw,96px)">Privacy</h1>
 <p class="lead">개인정보처리방침이 들어갈 자리입니다. 문의 폼에서 수집하는 항목(이름, 회사, 이메일, 문의 내용)과 보관 기간, 파기 절차를 오픈 전에 확정해 게시합니다.</p></div></div>
 <section><div class="wrap two-col"><span class="eyebrow">Analytics</span><div class="prose">
 <h2 style="margin-top:0">방문 통계 수집</h2>
 <p>STANDS 웹사이트는 서비스 개선을 위해 Google Analytics 4와 Microsoft Clarity를 사용해 방문 기록(행태정보)을 수집합니다. 수집 항목은 방문한 페이지, 클릭한 메뉴와 버튼, 화면 내 클릭·스크롤 위치, 방문 시간, 유입 경로, 기기·브라우저 종류, 대략적인 지역이며, 이름이나 연락처처럼 개인을 직접 식별하는 정보는 수집하지 않습니다.</p>
 <p>이 정보는 쿠키를 통해 수집되며, 브라우저 설정에서 쿠키 저장을 거부하거나 <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics 차단 부가기능</a>을 설치해 수집을 거부할 수 있습니다. Microsoft Clarity의 화면 기록에서는 입력란에 적은 내용이 가려져 저장되지 않습니다.</p>
 </div></div></section>'''
-    page('privacy.html', '개인정보처리방침', 'STANDS 개인정보처리방침 (준비 중).', '', privacy)
+        page('privacy.html', '개인정보처리방침', 'STANDS 개인정보처리방침 (준비 중).', '', privacy)
 
     # old single example pages -> redirect to the first real entry
     for old, target in (('project.html', PROJECTS[0]['_url'] if PROJECTS else 'projects.html'),
                         ('artist.html', ARTISTS[0]['_url'] if ARTISTS else 'artists.html'),
                         ('article.html', ARTICLES[0]['_url'] if ARTICLES else 'editorial.html')):
         open(os.path.join(OUT, old), 'w', encoding='utf-8').write(
-            f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}"><a href="{target}">이동</a>\n')
-    print('built', len(os.listdir(OUT)), 'entries,', len(PROJECTS), 'projects,', len(ARTISTS), 'artists,', len(ARTICLES), 'articles ->', OUT)
+            f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}"><a href="{target}">{U("이동", "Continue")}</a>\n')
+
+
+def build():
+    global LANG, P, OUT
+    if os.path.isdir(OUT_ROOT):
+        shutil.rmtree(OUT_ROOT)
+    os.makedirs(OUT_ROOT)
+    for d in ('assets', 'img', 'video'):
+        if os.path.isdir(os.path.join(ROOT, d)):
+            shutil.copytree(os.path.join(ROOT, d), os.path.join(OUT_ROOT, d))
+    open(os.path.join(OUT_ROOT, '.nojekyll'), 'w').close()
+    for LANG, P, OUT in (('ko', '', OUT_ROOT), ('en', '../', os.path.join(OUT_ROOT, 'en'))):
+        os.makedirs(OUT, exist_ok=True)
+        build_lang()
+    LANG, P, OUT = 'ko', '', OUT_ROOT
+    print('built', len(os.listdir(OUT_ROOT)), 'entries (+ /en),', len(PROJECTS), 'projects,', len(ARTISTS), 'artists,', len(ARTICLES), 'articles ->', OUT_ROOT)
 
 if __name__ == '__main__':
     build()
