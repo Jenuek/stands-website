@@ -73,9 +73,9 @@ def pages():
     # 01 cover -----------------------------------------------------------------
     P.append(('cover', '', f'''
       <div class="cover-logo">{B.logo_svg('box')}</div>
-      <div class="cover-text">
-        <span class="eyebrow">{U("회사 소개서", "Company Profile")} · 2026</span>
-        <h1 class="headline">{E(B.L(home, 'headline'))}</h1>
+      <div class="cover-top mono"><span>{U("회사 소개서", "Company Profile")}</span><span>2026</span></div>
+      <div class="cover-bottom">
+        <p class="cover-line">{E(B.L(home, 'headline'))}</p>
         <p class="mono">Art Dealing · Art Projects · Architectural Art</p>
       </div>'''))
 
@@ -225,7 +225,7 @@ def pages():
           <div><dt class="mono">Web</dt><dd>{E(site_url.replace('https://', ''))}</dd></div>
         </dl>
       </div>
-      <div class="back-logo">{B.logo_svg('box')}</div>'''))
+      <div class="back-logo">{B.wordmark_svg()}</div>'''))
     return P
 
 
@@ -277,10 +277,13 @@ p.tbd{margin:2mm 1.5mm 4mm}
 /* grids */
 .grid{display:grid;gap:var(--gap);height:100%}
 /* cover */
-.cover{display:grid;grid-template-columns:118mm 1fr;gap:16mm;align-items:end;padding-bottom:calc(var(--m) + 2mm)}
-.cover-logo .box{width:118mm;height:118mm;display:block}
-.cover-text .headline{font-size:36pt;margin-bottom:6mm}
-.cover-text .mono{color:var(--muted)}
+.cover{display:flex;align-items:center;justify-content:center}
+.cover-logo .box{width:44mm;height:44mm;display:block}
+.cover-top,.cover-bottom{position:absolute;left:var(--m);right:var(--m);display:flex;justify-content:space-between;align-items:baseline;color:var(--muted)}
+.cover-top{top:var(--m)}
+.cover-bottom{bottom:calc(var(--m) + 4mm);border-top:1px solid var(--line);padding-top:3mm}
+.cover-bottom p{margin:0}
+.cover-line{font-size:9pt;letter-spacing:-.01em;color:var(--black)}
 /* question */
 .g-question{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}
 .year{font-size:120pt;color:var(--paper);line-height:.8}
@@ -347,8 +350,8 @@ p.tbd{margin:2mm 1.5mm 4mm}
 .back .headline{font-size:28pt;margin-bottom:10mm}
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:4mm 10mm;margin:0}
 .contact dt{color:#a9a4b6;margin-bottom:.5mm}.contact dd{margin:0;font-size:11pt}
-.back-logo{position:absolute;right:var(--m);bottom:calc(var(--m) + 4mm);width:58mm;height:58mm;color:var(--black);--paper:#F0F0EE}
-.back-logo .box{width:100%;height:100%}
+.back-logo{position:absolute;right:var(--m);bottom:calc(var(--m) + 5mm);width:62mm;color:var(--paper)}
+.back-logo .wordmark{width:100%;height:auto;display:block}
 '''
 
 
@@ -361,7 +364,7 @@ def render(lang):
     for i, (cls, section, inner) in enumerate(P, 1):
         kind = 'cover' if cls == 'cover' else ''
         top = '' if cls in ('cover',) else f'<div class="chrome top"><span>STANDS</span><span>{E(section)}</span></div>'
-        bottom = f'<div class="chrome bottom"><span>{U("회사 소개서", "Company Profile")} · {VERSION} · {today}</span><span>{i:02d} / {total:02d}</span></div>'
+        bottom = '' if cls == 'cover' else f'<div class="chrome bottom"><span>{U("회사 소개서", "Company Profile")} · {VERSION} · {today}</span><span>{i:02d} / {total:02d}</span></div>'
         body.append(f'<section class="page {E(cls)} {kind}">{top}{inner}{bottom}</section>')
     return f'''<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8">
