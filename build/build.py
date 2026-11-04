@@ -346,8 +346,12 @@ def build_lang():
     fa = pick(H.get('featured_artists')) or ARTISTS[:4]
     fe = (pick(H.get('featured_article')) or ARTICLES[:1])
     services = H.get('services', []) or []
-    svc = ''.join(f'<div class="svc"><span class="k">{E(LI(s, "label"))}</span><h3>{E(LI(s, "title"))}</h3><p>{T(LI(s, "text"))}</p><span class="plinth"></span></div>'
-                  for s in services)
+    # line illustrations from build/illust.js (img/illust/service-01..03.svg), one per card in order
+    def svc_ill(i):
+        fn = f'img/illust/service-{i + 1:02d}.svg'
+        return f'<img class="ill" src="{P}{fn}" alt="" width="240" height="240" loading="lazy">' if os.path.exists(os.path.join(ROOT, fn)) else ''
+    svc = ''.join(f'<div class="svc">{svc_ill(i)}<span class="k">{E(LI(s, "label"))}</span><h3>{E(LI(s, "title"))}</h3><p>{T(LI(s, "text"))}</p><span class="plinth"></span></div>'
+                  for i, s in enumerate(services))
     ncls = ' three' if len(services) == 3 else ''
     ed = ''
     if fe:
@@ -424,6 +428,12 @@ def build_lang():
       {paras}
       <p class="close">{E(L(AB, 'closing'))}</p>
     </div>
+  </div>
+</section>
+<section class="ill-band">
+  <div class="wrap">
+    <figure class="ill-fig"><img src="{P}img/illust/about-places.svg" alt="" width="500" height="240" loading="lazy"><figcaption>{U('같은 작품, 다른 자리', 'One work, two places')}</figcaption></figure>
+    <figure class="ill-fig wide"><img src="{P}img/illust/about-process.svg" alt="" width="760" height="240" loading="lazy"><figcaption>{U('운송 · 설치 · 완성', 'Transport · installation · in place')}</figcaption></figure>
   </div>
 </section>
 <section class="services" style="padding-top:clamp(56px,8vw,110px)">
