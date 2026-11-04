@@ -152,8 +152,10 @@
   render(t); requestAnimationFrame(loop);
   // the intro (WHERE ART + underbar) starts right away; it holds on the underbar until the photos are ready
   if(!reduce){ playing=true; prev=null; }
-  function restart(){ stopLoop(); bgprev.hidden=true; clearTimeout(prevTimer); t=0; lastCut=-2; prev=null; playing=true; }
+  function restart(){ stopLoop(); bgprev.hidden=true; bgimg.hidden=true; bgimg.removeAttribute('src'); bgprev.removeAttribute('src'); clearTimeout(prevTimer); t=0; lastCut=-2; prev=null; playing=true; }
   replay.addEventListener('click',()=>{ if(window.__standsSend) window.__standsSend('hero_replay',{}); restart(); });
   // coming back to the page (back/forward cache): start over cleanly instead of resuming behind a half-faded film
   window.addEventListener('pageshow',e=>{ if(e.persisted&&!reduce) restart(); });
+  // leaving the page: drop the film layer first, so the snapshot Chrome keeps (back/forward, reload) has no film in it
+  window.addEventListener('pagehide',()=>{ if(!reduce) stopLoop(); });
 })();
