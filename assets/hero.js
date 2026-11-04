@@ -32,7 +32,7 @@
   const SW=1.5;
   const pict=p=>{const g=PICTO[p.p], ink=p.dark?'#F0F0EE':'#111111', halo=p.dark?'#111111':'#F0F0EE', [tx,ty,s]=g.t;
     return `<g transform="translate(${tx} ${ty}) scale(${s})" fill="none" stroke-linecap="round" stroke-linejoin="round">`+
-      `<path d="${g.d}" stroke="${halo}" stroke-opacity=".5" stroke-width="${(SW+2.2)/s}"/>`+
+      `<path d="${g.d}" stroke="${halo}" stroke-width="${(SW+1.1)/s}"/>`+
       `<path d="${g.d}" stroke="${ink}" stroke-width="${SW/s}"/></g>`;};
 
   // pass 1: each place once from 1.8s, speeding up from 0.65s to 0.40s per cut (every scene readable)
@@ -60,7 +60,10 @@
     let left=(W-w)/2; if(p.x!=null){ const ob=obj.getBoundingClientRect(), ocx=ob.left+ob.width/2-hr.left; left=Math.min(0,Math.max(W-w,ocx-p.x*w)); }
     Object.assign(bgimg.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px',filter:`saturate(.8) brightness(${p.b||1})`});
   }
-  new ResizeObserver(()=>{ if(cur) placeBg(cur); }).observe(hero);
+  // snap the pictogram box to the device pixel grid (left:50% + translateX(-50%) lands on half pixels)
+  let snapX=0;
+  const snapObj=()=>{ const d=devicePixelRatio||1; obj.style.transform='translateX(-50%)'; const l=obj.getBoundingClientRect().left; snapX=Math.round(l*d)/d-l; };
+  new ResizeObserver(()=>{ if(cur){ placeBg(cur); snapObj(); } }).observe(hero);
 
   let lastCut=-2;
   function render(t){
@@ -78,11 +81,11 @@
         bgimg.style.transition='none'; bgimg.style.opacity='0';
         cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .12s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
         obj.innerHTML=`<svg viewBox="-14 -22 128 122" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${pict(p)}</svg>`;
-        tag.textContent=`No.${String(pi+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${p.size}`;
+        snapObj(); tag.textContent=`No.${String(pi+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${p.size}`;
       } else { cur=null; bgimg.hidden=true; bgprev.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }
       lastCut=idx;
     }
-    if(idx>=0){ const dt=t-cuts[idx].t; obj.style.transform=cuts[idx].fast?'translateX(-50%)':`translateX(-50%) translateY(${(1-easeOut(clamp(dt/140)))*-6}%)`; }
+    if(idx>=0){ const dt=t-cuts[idx].t; const d=devicePixelRatio||1, ty=cuts[idx].fast?0:Math.round((1-easeOut(clamp(dt/140)))*-.06*obj.offsetHeight*d)/d; obj.style.transform=`translateX(calc(-50% + ${snapX.toFixed(3)}px)) translateY(${ty}px)`; }
     // pass 2 motion: slow push-in and a soft blur that peaks mid-burst
     if(t>=P2&&t<A){ const q=prog(t,P2,A); bg.style.transform=`scale(${1+0.035*q})`; bg.style.filter=`blur(${(0.8*Math.sin(Math.PI*q)).toFixed(2)}px)`; }
     else if(bg.style.transform){ bg.style.transform=''; bg.style.filter=''; }
