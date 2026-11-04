@@ -146,7 +146,7 @@ def hero():
     <span class="slot"><span class="word" id="word"><svg class="gl" width="3.3249em" height="0.74em" viewBox="{HERO_ST_VIEW}" aria-hidden="true" fill="currentColor" overflow="visible">{HERO_ST}</svg></span><span class="ubar" id="ubar"></span><span class="obj" id="obj"></span></span>
   </div>
   <div class="loop" id="loop" aria-hidden="true">
-    <video id="loopvid" muted loop playsinline preload="none" poster="{P}img/courtyard-poster.jpg"><source src="{P}video/courtyard-loop.mp4" type="video/mp4"><source src="{P}video/courtyard-loop.webm" type="video/webm"></video>
+    <video id="loopvid" muted loop playsinline preload="none" poster="{P}img/courtyard-poster.jpg"><source src="{P}video/courtyard-loop-v2.mp4" type="video/mp4"><source src="{P}video/courtyard-loop-v2.webm" type="video/webm"></video>
   </div>
   <div class="lockup" id="lockup">
     {logo_svg(ids=True, bar_w=0, frame_attrs=' pathLength="1000" stroke-dasharray="1000" stroke-dashoffset="1000"')}
