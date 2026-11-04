@@ -10,21 +10,24 @@
   const BASE=document.documentElement.dataset.base||'', EN=document.documentElement.lang==='en';
   // 12 places, ordered bright -> dark (gentle brightness steps, one text-colour flip); each has its own pictogram, standing on the slogan's empty underbar. g = where the floor meets the underbar (share of image height)
   const places=[
-    {k:'GALLERY',b:0.885,ko:'갤러리',src:'img/hero/10-gallery.jpg',w:1600,h:893,g:0.75,p:'hall',size:'W 2,400'},
-    {k:'FOREST',b:0.931,ko:'겨울 숲',src:'img/hero/05-forest.jpg',w:1600,h:893,g:0.72,p:'sculpture',size:'H 4,200'},
-    {k:'ATRIUM',b:0.944,ko:'아트리움',src:'img/hero/04-atrium.jpg',w:1600,h:893,g:0.8,p:'concept',size:'H 2,800'},
-    {k:'PLAZA',b:0.956,ko:'공개공지',src:'img/hero/11-plaza.jpg',w:1600,h:893,g:0.75,p:'corporate',size:'H 6,000'},
-    {k:'PARK',b:0.977,ko:'공원',src:'img/hero/08-park.jpg',w:1600,h:893,g:0.68,p:'atrium',size:'H 3,200'},
-    {k:'LOFT',b:0.993,ko:'로프트 갤러리',src:'img/hero/01-loft.jpg',w:1600,h:893,g:0.72,p:'gallery',size:'H 2,400'},
-    {k:'COAST',b:1.026,ko:'해안 테라스',src:'img/hero/12-coast.jpg',w:1600,h:873,g:0.75,p:'poolside',size:'W 4,800'},
-    {k:'GARDEN',b:1.067,ko:'정원',src:'img/hero/07-garden.jpg',w:1600,h:893,g:0.62,p:'garden',size:'W 3,000'},
-    {k:'RESORT',b:1.120,ko:'리조트 로비',src:'img/hero/03-resort.jpg',w:1600,h:893,g:0.72,dark:true,p:'resort',size:'Ø 2,200'},
-    {k:'TERRACE',b:1.120,ko:'루프탑 테라스',src:'img/hero/06-terrace.jpg',w:1600,h:893,g:0.74,dark:true,p:'lobby',size:'H 2,600'},
-    {k:'RIVERSIDE',b:1.120,ko:'한강변',src:'img/hero/02-riverside.jpg',w:1600,h:893,g:0.72,dark:true,p:'modern',size:'H 3,600'},
-    {k:'MUSEUM',b:1.120,ko:'미술관',src:'img/hero/09-museum.jpg',w:1600,h:893,g:0.63,x:0.535,z:1.32,dark:true,p:'museum',size:'H 1,450'},
+    {k:'GALLERY',b:0.885,ko:'갤러리',src:'img/hero/10-gallery.jpg',w:2400,h:1340,g:0.75,p:'hall',size:'W 2,400'},
+    {k:'FOREST',b:0.931,ko:'겨울 숲',src:'img/hero/05-forest.jpg',w:2400,h:1340,g:0.72,p:'sculpture',size:'H 4,200'},
+    {k:'ATRIUM',b:0.944,ko:'아트리움',src:'img/hero/04-atrium.jpg',w:2400,h:1340,g:0.8,p:'concept',size:'H 2,800'},
+    {k:'PLAZA',b:0.956,ko:'공개공지',src:'img/hero/11-plaza.jpg',w:2400,h:1340,g:0.75,p:'corporate',size:'H 6,000'},
+    {k:'PARK',b:0.977,ko:'공원',src:'img/hero/08-park.jpg',w:2400,h:1340,g:0.68,p:'atrium',size:'H 3,200'},
+    {k:'LOFT',b:0.993,ko:'로프트 갤러리',src:'img/hero/01-loft.jpg',w:2400,h:1340,g:0.72,p:'gallery',size:'H 2,400'},
+    {k:'COAST',b:1.026,ko:'해안 테라스',src:'img/hero/12-coast.jpg',w:2400,h:1309,g:0.75,p:'poolside',size:'W 4,800'},
+    {k:'GARDEN',b:1.067,ko:'정원',src:'img/hero/07-garden.jpg',w:2400,h:1340,g:0.62,p:'garden',size:'W 3,000'},
+    {k:'RESORT',b:1.120,ko:'리조트 로비',src:'img/hero/03-resort.jpg',w:2400,h:1340,g:0.72,dark:true,p:'resort',size:'Ø 2,200'},
+    {k:'TERRACE',b:1.120,ko:'루프탑 테라스',src:'img/hero/06-terrace.jpg',w:2400,h:1340,g:0.74,dark:true,p:'lobby',size:'H 2,600'},
+    {k:'RIVERSIDE',b:1.120,ko:'한강변',src:'img/hero/02-riverside.jpg',w:2400,h:1340,g:0.72,dark:true,p:'modern',size:'H 3,600'},
+    {k:'MUSEUM',b:1.120,ko:'미술관',src:'img/hero/09-museum.jpg',w:2400,h:1340,g:0.63,x:0.535,z:1.32,dark:true,p:'museum',size:'H 1,450'},
   ];
   // preload the photos; never wait more than 3s for them
-  const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=BASE+p.src;})));
+  // 2400 px photos for large or high-density screens, 1600 px (-1600.jpg) otherwise
+  const HI=Math.max(screen.width,screen.height)*(devicePixelRatio||1)>1800;
+  const SRC=p=>BASE+(HI?p.src:p.src.replace(/\.jpg$/,'-1600.jpg'));
+  const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=SRC(p);})));
   let imagesReady=false; ready.then(()=>{ imagesReady=true; }); setTimeout(()=>{ imagesReady=true; },3000);
 
   // line pictograms (stroke paths from the brand sheet; t = translate x, y and scale into viewBox -14 -22 128 122, base on y=100)
@@ -79,7 +82,7 @@
         const c=cuts[idx], pi=c.p, p=places[pi];
         if(cur&&!bgimg.hidden){ bgprev.src=bgimg.src; bgprev.style.cssText=bgimg.style.cssText; bgprev.style.opacity='1'; bgprev.hidden=false; clearTimeout(prevTimer); prevTimer=setTimeout(()=>{bgprev.hidden=true;},c.fast?190:200); }
         bgimg.style.transition='none'; bgimg.style.opacity='0';
-        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .12s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
+        cur=p; bgimg.src=SRC(p); bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .12s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
         obj.innerHTML=`<svg viewBox="-14 -22 128 122" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${pict(p)}</svg>`;
         snapObj(); tag.textContent=`No.${String(pi+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${p.size}`;
       } else { cur=null; bgimg.hidden=true; bgprev.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }

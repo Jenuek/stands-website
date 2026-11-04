@@ -29,7 +29,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
 | `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events |
 | `assets/hero.js` | Home hero animation (see below) |
-| `img/hero/01–12-*.jpg` | Hero photos (1600 px wide) |
+| `img/hero/01–12-*.jpg` | Hero photos, 2400 px wide, plus `-1600.jpg` copies for small/1x screens (`hero.js` picks by screen size × DPR). Originals (2752 px) in `photos-src/hero/`, not deployed |
 | `video/courtyard-loop-v2.mp4/.webm`, `img/courtyard-poster.jpg` | Final loop film |
 
 ## Bilingual content
