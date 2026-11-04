@@ -31,7 +31,7 @@ def logo_svg(cls='', label='WHERE ART STANDS', frame_attrs='', bar_attrs='', bar
                 f'<rect x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" fill="none" stroke="currentColor" stroke-width="{t*1.6:.2f}"/>'
                 f'<g fill="currentColor">{BOX_PATHS}</g><rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh*1.3:.2f}" fill="currentColor"/></svg>')
     return (f'<svg class="{cls}" viewBox="0 0 400 400" role="img" aria-label="{label}"><defs>{df}{db}</defs>'
-            f'<rect{fid} x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" style="fill:var(--paper)" stroke="url(#{gf})" stroke-width="{t:.2f}"{frame_attrs}/>'
+            f'<rect{fid} x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" style="fill:var(--paper){";fill-opacity:.72" if ids else ""}" stroke="url(#{gf})" stroke-width="{t:.2f}"{frame_attrs}/>'
             f'<g fill="currentColor">{BOX_PATHS}</g>'
             f'<rect{bid} x="{bx:.2f}" y="{by:.2f}" width="{w:.2f}" height="{bh:.2f}" fill="url(#{gb})" data-w="{bw:.2f}"{bar_attrs}/></svg>')
 
