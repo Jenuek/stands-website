@@ -430,12 +430,6 @@ def build_lang():
     </div>
   </div>
 </section>
-<section class="ill-band">
-  <div class="wrap">
-    <figure class="ill-fig"><img src="{P}img/illust/about-places.svg" alt="" width="500" height="240" loading="lazy"><figcaption>{U('같은 작품, 다른 자리', 'One work, two places')}</figcaption></figure>
-    <figure class="ill-fig wide"><img src="{P}img/illust/about-process.svg" alt="" width="760" height="240" loading="lazy"><figcaption>{U('운송 · 설치 · 완성', 'Transport · installation · in place')}</figcaption></figure>
-  </div>
-</section>
 <section class="services" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
     <div class="sec-head"><h2>What we do</h2></div>

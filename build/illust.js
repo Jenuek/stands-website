@@ -1,4 +1,4 @@
-// Line illustrations for the home "What we do" cards and the About page.
+// Line illustrations for the home "What we do" cards.
 // Free curves for the works, plain lines for frames, plinths and buildings, one shared ground line.
 // Run: node build/illust.js   -> writes img/illust/*.svg (commit the output; the site build does not run this)
 const fs = require('fs');
@@ -62,33 +62,6 @@ const building = (x0, x1, top = 24) => {
 };
 const s3 = building(12, 60) + ground() + sculpture(84) + plinth(84) + person(104, 28);
 
-// ABOUT 1: the same work in two places, a white room and an open plaza (two panels)
-const a1 = (() => {
-  const room = `<path class="g2" d="M10 8H110M10 8V${BASE}"/>` + ground(10, 110) +
-    `<rect class="l" x="20" y="34" width="26" height="20" rx="1"/><rect class="l2" x="23" y="37" width="20" height="14"/>` +
-    sculpture(72) + plinth(72) + person(30, 30);
-  const plaza = `<g transform="translate(130 0)">` +
-    `<circle class="c" cx="40" cy="22" r="8"/>` +
-    `<path class="b" d="${cr([[14, 62], [12, 50], [18, 40], [28, 36], [38, 42], [40, 54], [34, 64], [22, 66]], true)}"/><path class="b" d="M26 ${BASE}V64M26 78L19 70M26 74L32 67"/>` +
-    ground(10, 110) + sculpture(72) + plinth(72) + person(100, 28) + `</g>`;
-  return room + `<path class="dash" d="M120 14V${BASE - 6}"/>` + plaza;
-})();
-
-// ABOUT 2: transport -> lift -> standing (three panels)
-const a2 = (() => {
-  const p1 = ground(10, 110) +
-    `<rect class="l" x="44" y="60" width="44" height="44"/><path class="l2" d="M44 74.7H88M44 89.3H88M48 60V104M84 60V104"/>` +
-    `<path class="c" d="${cr([[54, 60], [58, 44], [70, 38], [78, 48], [74, 60]], true)}"/>` +
-    `<path class="l2" d="${cr([[56, 62], [59, 50], [67, 42], [75, 48], [72, 58], [78, 62]], false)}"/>` +
-    `<path class="g2" d="M22 70H34M18 80H34M24 90H34"/>`;
-  const p2 = `<g transform="translate(130 0)">` + ground(10, 110) +
-    `<path class="g2" d="M90 0V9"/>` + sculpture(84, 18) + plinth(84) +
-    `<path class="arr" d="M66 72V86M63 83L66 86L69 83"/>` + `</g>`;
-  const p3 = `<g transform="translate(260 0)">` + ground(10, 110) + sculpture(64) + plinth(64) + person(94, 28) + `</g>`;
-  const arrow = x => `<path class="arr" d="M${x - 6} 60H${x + 6}M${x + 2.5} 56.5L${x + 6} 60L${x + 2.5} 63.5"/>`;
-  return p1 + arrow(124) + p2 + arrow(254) + p3;
-})();
-
 const CSS = `.l{fill:#F0F0EE;stroke:#1C1A20;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}.n{fill:none}
 .l2{fill:none;stroke:#1C1A20;stroke-width:.9;stroke-linecap:round;stroke-linejoin:round}
 .c{fill:#7D7889;fill-opacity:.28}
@@ -104,8 +77,6 @@ const files = {
   'service-01.svg': svg(120, s1),
   'service-02.svg': svg(120, s2),
   'service-03.svg': svg(120, s3),
-  'about-places.svg': svg(250, a1),
-  'about-process.svg': svg(380, a2),
 };
 for (const [n, s] of Object.entries(files)) fs.writeFileSync(path.join(OUT, n), s);
 console.log('wrote', Object.keys(files).join(', '));
