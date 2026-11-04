@@ -29,6 +29,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
 | `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events |
 | `assets/hero.js` | Home hero animation (see below) |
+| `build/brochure.py`, `build/brochure_pdf.mjs` | Brand brochure (company profile, A4 landscape PDF) from `site.yml`. Placeholders show in lavender dashed boxes. `python build/brochure.py [--lang en] && node build/brochure_pdf.mjs [--png]` → `_brochure/` (not deployed) |
 | `img/hero/01–12-*.jpg` | Hero photos (1600 px wide) |
 | `video/courtyard-loop-v2.mp4/.webm`, `img/courtyard-poster.jpg` | Final loop film |
 
