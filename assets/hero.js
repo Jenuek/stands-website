@@ -35,16 +35,16 @@
       `<path d="${g.d}" stroke="${halo}" stroke-opacity=".5" stroke-width="${(SW+2.2)/s}"/>`+
       `<path d="${g.d}" stroke="${ink}" stroke-width="${SW/s}"/></g>`;};
 
-  // pass 1: each place once, 1.8s -> 8.85s, slowing from 0.82s to 0.40s per cut (calm enough to read every scene)
-  // pass 2: all twelve again in 1.2s (about 0.1s each) as one flowing burst: same bright -> dark order, overlapping
-  //         dissolves, a slow push-in and a touch of blur, so it reads as motion rather than flashing
+  // pass 1: each place once from 1.8s, speeding up from 0.65s to 0.40s per cut (every scene readable)
+  // pass 2: all twelve again in ~1.8s, 0.18s -> 0.13s -> 0.18s per cut (6-7 a second: a flip-book that eases in and lands softly),
+  //         rising to the brightest photo and back down, with overlapping dissolves, a slow push-in and a light blur
   const cuts=[]; let P2=0, A=0;
-  { const n=places.length, r=0.937, ds=Array.from({length:n},(_,k)=>820*Math.pow(r,k)), k0=7050/ds.reduce((a,b)=>a+b,0); let t=1800;
-    ds.forEach((d,i)=>{cuts.push({t:Math.round(t),p:i,fast:false}); t+=d*k0;}); P2=Math.round(t);
-    const fs=Array.from({length:n},(_,k)=>115-30*k/(n-1)), f0=1200/fs.reduce((a,b)=>a+b,0);
+  { const n=places.length, ds=Array.from({length:n},(_,k)=>650*Math.pow(400/650,k/(n-1))); let t=1800;
+    ds.forEach((d,i)=>{cuts.push({t:Math.round(t),p:i,fast:false}); t+=d;}); P2=Math.round(t);
+    const fs=Array.from({length:n},(_,k)=>130+50*Math.pow(2*k/(n-1)-1,2));
     // burst order rises from the dark end (where pass 1 stops) to the brightest and back down, ending dark before the black answer scene
     const burst=[...[...Array(n).keys()].filter(k=>k%2===(n-2)%2).reverse(), ...[...Array(n).keys()].filter(k=>k%2!==(n-2)%2)];
-    fs.forEach((d,i)=>{cuts.push({t:Math.round(t),p:burst[i],fast:true}); t+=d*f0;}); A=Math.round(t); }
+    fs.forEach((d,i)=>{cuts.push({t:Math.round(t),p:burst[i],fast:true}); t+=d;}); A=Math.round(t); }
   const DUR=A+6000;          // A = the moment the photos end and the answer scene (STANDS) begins
   const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), prog=(t,a,b)=>clamp((t-a)/(b-a));
   const easeOut=x=>1-Math.pow(1-x,3), easeInOut=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
@@ -74,9 +74,9 @@
     if(idx!==lastCut){
       if(idx>=0){
         const c=cuts[idx], pi=c.p, p=places[pi];
-        if(cur&&!bgimg.hidden){ bgprev.src=bgimg.src; bgprev.style.cssText=bgimg.style.cssText; bgprev.style.opacity='1'; bgprev.hidden=false; clearTimeout(prevTimer); prevTimer=setTimeout(()=>{bgprev.hidden=true;},c.fast?140:200); }
+        if(cur&&!bgimg.hidden){ bgprev.src=bgimg.src; bgprev.style.cssText=bgimg.style.cssText; bgprev.style.opacity='1'; bgprev.hidden=false; clearTimeout(prevTimer); prevTimer=setTimeout(()=>{bgprev.hidden=true;},c.fast?190:200); }
         bgimg.style.transition='none'; bgimg.style.opacity='0';
-        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .09s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
+        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .12s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
         obj.innerHTML=`<svg viewBox="-14 -22 128 122" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${pict(p)}</svg>`;
         tag.textContent=`No.${String(pi+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${p.size}`;
       } else { cur=null; bgimg.hidden=true; bgprev.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }
@@ -84,7 +84,7 @@
     }
     if(idx>=0){ const dt=t-cuts[idx].t; obj.style.transform=cuts[idx].fast?'translateX(-50%)':`translateX(-50%) translateY(${(1-easeOut(clamp(dt/140)))*-6}%)`; }
     // pass 2 motion: slow push-in and a soft blur that peaks mid-burst
-    if(t>=P2&&t<A){ const q=prog(t,P2,A); bg.style.transform=`scale(${1+0.035*q})`; bg.style.filter=`blur(${(1.3*Math.sin(Math.PI*q)).toFixed(2)}px)`; }
+    if(t>=P2&&t<A){ const q=prog(t,P2,A); bg.style.transform=`scale(${1+0.035*q})`; bg.style.filter=`blur(${(0.8*Math.sin(Math.PI*q)).toFixed(2)}px)`; }
     else if(bg.style.transform){ bg.style.transform=''; bg.style.filter=''; }
 
     hero.classList.toggle('inv',t>=A&&t<A+2100);
