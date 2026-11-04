@@ -227,3 +227,13 @@ fieldset.field{border:0;padding:0;margin:0}
 .about-copy p{font-size:18px;line-height:1.8}
 .about-copy .close{font-weight:700;margin-top:32px}
 .kv{grid-template-columns:140px minmax(0,1fr)}
+
+/* line illustrations (build/illust.js) */
+.svc .ill{display:block;width:min(100%,220px);height:auto;aspect-ratio:1;margin:-8px 0 6px -10px}
+@media (max-width:560px){.svc .ill{width:180px}}
+.ill-band{padding-top:clamp(40px,6vw,80px)}
+.ill-band .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,4vw,64px);align-items:end}
+.ill-fig{margin:0}
+.ill-fig img{display:block;width:100%;height:auto}
+.ill-fig figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+@media (max-width:860px){.ill-band .wrap{grid-template-columns:1fr}}
