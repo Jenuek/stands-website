@@ -4,24 +4,24 @@
   const $=id=>document.getElementById(id);
   const bg=$('bg'), bgimg=$('bgimg'), tag=$('tag'), line=$('line'), wa=$('wa'), word=$('word'), bar=$('ubar'), obj=$('obj'),
         lockup=$('lockup'), frame=$('frame'), lbar=$('lbar'), replay=$('replay'), loopvid=$('loopvid');
-  const DUR=15000, ACCENT='#7D7889', LBW=parseFloat(lbar.dataset.w)||247.54;
+  const ACCENT='#7D7889', LBW=parseFloat(lbar.dataset.w)||247.54;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const BASE=document.documentElement.dataset.base||'', EN=document.documentElement.lang==='en';
   // 12 places, ordered bright -> dark (gentle brightness steps, one text-colour flip); each has its own pictogram, standing on the slogan's empty underbar. g = where the floor meets the underbar (share of image height)
   const places=[
-    {k:'GALLERY',ko:'갤러리',src:'img/hero/10-gallery.jpg',w:1600,h:893,g:0.75,p:'hall',size:'W 2,400'},
-    {k:'FOREST',ko:'겨울 숲',src:'img/hero/05-forest.jpg',w:1600,h:893,g:0.72,p:'sculpture',size:'H 4,200'},
-    {k:'ATRIUM',ko:'아트리움',src:'img/hero/04-atrium.jpg',w:1600,h:893,g:0.8,p:'concept',size:'H 2,800'},
-    {k:'PLAZA',ko:'공개공지',src:'img/hero/11-plaza.jpg',w:1600,h:893,g:0.75,p:'corporate',size:'H 6,000'},
-    {k:'PARK',ko:'공원',src:'img/hero/08-park.jpg',w:1600,h:893,g:0.68,p:'atrium',size:'H 3,200'},
-    {k:'LOFT',ko:'로프트 갤러리',src:'img/hero/01-loft.jpg',w:1600,h:893,g:0.72,p:'gallery',size:'H 2,400'},
-    {k:'COAST',ko:'해안 테라스',src:'img/hero/12-coast.jpg',w:1600,h:873,g:0.75,p:'poolside',size:'W 4,800'},
-    {k:'GARDEN',ko:'정원',src:'img/hero/07-garden.jpg',w:1600,h:893,g:0.62,p:'garden',size:'W 3,000'},
-    {k:'RESORT',ko:'리조트 로비',src:'img/hero/03-resort.jpg',w:1600,h:893,g:0.72,dark:true,p:'resort',size:'Ø 2,200'},
-    {k:'TERRACE',ko:'루프탑 테라스',src:'img/hero/06-terrace.jpg',w:1600,h:893,g:0.74,dark:true,p:'lobby',size:'H 2,600'},
-    {k:'RIVERSIDE',ko:'한강변',src:'img/hero/02-riverside.jpg',w:1600,h:893,g:0.72,dark:true,p:'modern',size:'H 3,600'},
-    {k:'MUSEUM',ko:'미술관',src:'img/hero/09-museum.jpg',w:1600,h:893,g:0.63,x:0.535,z:1.32,dark:true,p:'museum',size:'H 1,450'},
+    {k:'GALLERY',b:0.885,ko:'갤러리',src:'img/hero/10-gallery.jpg',w:1600,h:893,g:0.75,p:'hall',size:'W 2,400'},
+    {k:'FOREST',b:0.931,ko:'겨울 숲',src:'img/hero/05-forest.jpg',w:1600,h:893,g:0.72,p:'sculpture',size:'H 4,200'},
+    {k:'ATRIUM',b:0.944,ko:'아트리움',src:'img/hero/04-atrium.jpg',w:1600,h:893,g:0.8,p:'concept',size:'H 2,800'},
+    {k:'PLAZA',b:0.956,ko:'공개공지',src:'img/hero/11-plaza.jpg',w:1600,h:893,g:0.75,p:'corporate',size:'H 6,000'},
+    {k:'PARK',b:0.977,ko:'공원',src:'img/hero/08-park.jpg',w:1600,h:893,g:0.68,p:'atrium',size:'H 3,200'},
+    {k:'LOFT',b:0.993,ko:'로프트 갤러리',src:'img/hero/01-loft.jpg',w:1600,h:893,g:0.72,p:'gallery',size:'H 2,400'},
+    {k:'COAST',b:1.026,ko:'해안 테라스',src:'img/hero/12-coast.jpg',w:1600,h:873,g:0.75,p:'poolside',size:'W 4,800'},
+    {k:'GARDEN',b:1.067,ko:'정원',src:'img/hero/07-garden.jpg',w:1600,h:893,g:0.62,p:'garden',size:'W 3,000'},
+    {k:'RESORT',b:1.120,ko:'리조트 로비',src:'img/hero/03-resort.jpg',w:1600,h:893,g:0.72,dark:true,p:'resort',size:'Ø 2,200'},
+    {k:'TERRACE',b:1.120,ko:'루프탑 테라스',src:'img/hero/06-terrace.jpg',w:1600,h:893,g:0.74,dark:true,p:'lobby',size:'H 2,600'},
+    {k:'RIVERSIDE',b:1.120,ko:'한강변',src:'img/hero/02-riverside.jpg',w:1600,h:893,g:0.72,dark:true,p:'modern',size:'H 3,600'},
+    {k:'MUSEUM',b:1.120,ko:'미술관',src:'img/hero/09-museum.jpg',w:1600,h:893,g:0.63,x:0.535,z:1.32,dark:true,p:'museum',size:'H 1,450'},
   ];
   // preload the photos; never wait more than 3s for them
   const ready=Promise.all(places.map(p=>new Promise(res=>{const i=new Image(); i.onload=i.onerror=res; i.src=BASE+p.src;})));
@@ -35,20 +35,30 @@
       `<path d="${g.d}" stroke="${halo}" stroke-opacity=".5" stroke-width="${(SW+2.2)/s}"/>`+
       `<path d="${g.d}" stroke="${ink}" stroke-width="${SW/s}"/></g>`;};
 
-  // one cut per place between 1.8s and 9s, speeding up from 0.9s to ~0.36s (under 3 changes a second, easy on the eyes)
-  const cuts=[]; {const n=places.length, r=0.921, ds=Array.from({length:n},(_,k)=>900*Math.pow(r,k)), k0=7200/ds.reduce((a,b)=>a+b,0); let t=1800; ds.forEach((d,i)=>{cuts.push({t:Math.round(t),i}); t+=d*k0;});}
+  // pass 1: each place once, 1.8s -> 8.85s, slowing from 0.82s to 0.40s per cut (calm enough to read every scene)
+  // pass 2: all twelve again in 1.2s (about 0.1s each) as one flowing burst: same bright -> dark order, overlapping
+  //         dissolves, a slow push-in and a touch of blur, so it reads as motion rather than flashing
+  const cuts=[]; let P2=0, A=0;
+  { const n=places.length, r=0.937, ds=Array.from({length:n},(_,k)=>820*Math.pow(r,k)), k0=7050/ds.reduce((a,b)=>a+b,0); let t=1800;
+    ds.forEach((d,i)=>{cuts.push({t:Math.round(t),p:i,fast:false}); t+=d*k0;}); P2=Math.round(t);
+    const fs=Array.from({length:n},(_,k)=>115-30*k/(n-1)), f0=1200/fs.reduce((a,b)=>a+b,0);
+    // burst order rises from the dark end (where pass 1 stops) to the brightest and back down, ending dark before the black answer scene
+    const burst=[...[...Array(n).keys()].filter(k=>k%2===(n-2)%2).reverse(), ...[...Array(n).keys()].filter(k=>k%2!==(n-2)%2)];
+    fs.forEach((d,i)=>{cuts.push({t:Math.round(t),p:burst[i],fast:true}); t+=d*f0;}); A=Math.round(t); }
+  const DUR=A+6000;          // A = the moment the photos end and the answer scene (STANDS) begins
   const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)), prog=(t,a,b)=>clamp((t-a)/(b-a));
   const easeOut=x=>1-Math.pow(1-x,3), easeInOut=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
 
   let cur=null, prevTimer=null;
   const bgprev=bgimg.cloneNode(); bgprev.removeAttribute('id'); bgprev.hidden=true; bg.insertBefore(bgprev,bgimg);
+  const tone=document.createElement('div'); tone.className='tone'; bg.appendChild(tone);   // soft lavender wash that ties the photos together
   function placeBg(p){
     const W=hero.clientWidth,H=hero.clientHeight,hr=hero.getBoundingClientRect(),br=bar.getBoundingClientRect();
     const target=(br.top-hr.top)||H*.55, s=Math.max(W/p.w,H/p.h)*(p.z||1.12), w=p.w*s, h=p.h*s;
     let top=target-p.g*h; top=Math.min(0,Math.max(H-h,top));
     // p.x = the spot in the photo (share of width) that should sit right under the pictogram
     let left=(W-w)/2; if(p.x!=null){ const ob=obj.getBoundingClientRect(), ocx=ob.left+ob.width/2-hr.left; left=Math.min(0,Math.max(W-w,ocx-p.x*w)); }
-    Object.assign(bgimg.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px'});
+    Object.assign(bgimg.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px',filter:`saturate(.8) brightness(${p.b||1})`});
   }
   new ResizeObserver(()=>{ if(cur) placeBg(cur); }).observe(hero);
 
@@ -56,46 +66,48 @@
   function render(t){
     wa.style.opacity=easeOut(prog(t,250,900));
     bar.style.transform=`scaleX(${easeInOut(prog(t,500,1200))})`;
-    bar.style.opacity=(t>=9000&&t<10300)?((Math.floor((t-9000)/420)%2===0)?1:.15):1;
-    bar.style.background=t>=10300?'linear-gradient(90deg,currentColor,'+ACCENT+')':'currentColor';
+    bar.style.opacity=(t>=A&&t<A+1300)?((Math.floor((t-A)/420)%2===0)?1:.15):1;
+    bar.style.background=t>=A+1300?'linear-gradient(90deg,currentColor,'+ACCENT+')':'currentColor';
 
     let idx=-1;
-    if(t>=1800&&t<9000){ for(let k=cuts.length-1;k>=0;k--){ if(t>=cuts[k].t){idx=k;break;} } }
+    if(t>=1800&&t<A){ for(let k=cuts.length-1;k>=0;k--){ if(t>=cuts[k].t){idx=k;break;} } }
     if(idx!==lastCut){
       if(idx>=0){
-        const n=places.length,last=cuts.length-1,c=cuts[idx];
-        const pi=c.i<n?c.i:(((c.i-last+n-1)%n)+n)%n, p=places[pi];
-        if(cur&&!bgimg.hidden){ bgprev.src=bgimg.src; bgprev.style.cssText=bgimg.style.cssText; bgprev.style.opacity='1'; bgprev.hidden=false; clearTimeout(prevTimer); prevTimer=setTimeout(()=>{bgprev.hidden=true;},200); }
+        const c=cuts[idx], pi=c.p, p=places[pi];
+        if(cur&&!bgimg.hidden){ bgprev.src=bgimg.src; bgprev.style.cssText=bgimg.style.cssText; bgprev.style.opacity='1'; bgprev.hidden=false; clearTimeout(prevTimer); prevTimer=setTimeout(()=>{bgprev.hidden=true;},c.fast?140:200); }
         bgimg.style.transition='none'; bgimg.style.opacity='0';
-        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition='opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
+        cur=p; bgimg.src=BASE+p.src; bgimg.hidden=false; bg.classList.remove('plain'); placeBg(p); void bgimg.offsetWidth; bgimg.style.transition=c.fast?'opacity .09s linear':'opacity .12s linear'; bgimg.style.opacity='1'; hero.classList.toggle('dark',!!p.dark);
         obj.innerHTML=`<svg viewBox="-14 -22 128 122" preserveAspectRatio="xMidYMax meet" aria-hidden="true">${pict(p)}</svg>`;
         tag.textContent=`No.${String(pi+1).padStart(3,'0')} · ${EN?p.k:p.k+' '+p.ko} · ${p.size}`;
       } else { cur=null; bgimg.hidden=true; bgprev.hidden=true; bg.classList.add('plain'); hero.classList.remove('dark'); obj.innerHTML=''; tag.textContent=''; }
       lastCut=idx;
     }
-    if(idx>=0){ const dt=t-cuts[idx].t; obj.style.transform=`translateX(-50%) translateY(${(1-easeOut(clamp(dt/140)))*-6}%)`; }
+    if(idx>=0){ const dt=t-cuts[idx].t; obj.style.transform=cuts[idx].fast?'translateX(-50%)':`translateX(-50%) translateY(${(1-easeOut(clamp(dt/140)))*-6}%)`; }
+    // pass 2 motion: slow push-in and a soft blur that peaks mid-burst
+    if(t>=P2&&t<A){ const q=prog(t,P2,A); bg.style.transform=`scale(${1+0.035*q})`; bg.style.filter=`blur(${(1.3*Math.sin(Math.PI*q)).toFixed(2)}px)`; }
+    else if(bg.style.transform){ bg.style.transform=''; bg.style.filter=''; }
 
-    hero.classList.toggle('inv',t>=9000&&t<11100);
-    word.style.visibility=t>=10300?'visible':'hidden';
+    hero.classList.toggle('inv',t>=A&&t<A+2100);
+    word.style.visibility=t>=A+1300?'visible':'hidden';
 
-    line.style.opacity=1-easeInOut(prog(t,12000,12450));
-    lockup.style.opacity=easeInOut(prog(t,12150,12650));
-    const fp=easeInOut(prog(t,12150,13150));
+    line.style.opacity=1-easeInOut(prog(t,A+3000,A+3450));
+    lockup.style.opacity=easeInOut(prog(t,A+3150,A+3650));
+    const fp=easeInOut(prog(t,A+3150,A+4150));
     frame.setAttribute('stroke-dashoffset',String(1000*(1-fp)));
     frame.setAttribute('stroke-dasharray',fp>=1?'none':'1000');
-    lbar.setAttribute('width',String(LBW*easeOut(prog(t,12900,13400))));
+    lbar.setAttribute('width',String(LBW*easeOut(prog(t,A+3900,A+4400))));
     hero.classList.toggle('done',t>=DUR);
     // the background film fades in as soon as the logo box is complete
     if(t>=LOOP_AT&&!loopStarted&&playing){ startLoop(); }
     // start buffering the background film while the answer scene plays, so it is ready the moment the logo lands
-    if(t>=9000&&loopvid&&loopvid.preload!=='auto'&&!reduce){ loopvid.preload='auto'; loopvid.load(); }
+    if(t>=P2&&loopvid&&loopvid.preload!=='auto'&&!reduce){ loopvid.preload='auto'; loopvid.load(); }
   }
 
   // after the logo has rested a moment, a quiet looping film of a courtyard sculpture fades in behind it.
   // Mobile notes: the layer becomes visible before play() (iOS pauses muted videos it considers invisible),
   // the poster frame shows if autoplay is refused (e.g. iPhone Low Power Mode), and playback is retried on
   // the visitor's first touch or scroll and whenever the page becomes visible again.
-  let loopTimer=null, wantLoop=false, loopStarted=false; const LOOP_AT=13500;
+  let loopTimer=null, wantLoop=false, loopStarted=false; const LOOP_AT=A+4500;
   if(loopvid){ loopvid.muted=true; loopvid.defaultMuted=true; loopvid.setAttribute('muted',''); loopvid.setAttribute('playsinline',''); loopvid.setAttribute('webkit-playsinline',''); }
   function tryPlay(){
     if(!wantLoop||!loopvid) return;
@@ -120,7 +132,10 @@
       tryPlay();
     },0);
   }
-  function stopLoop(){ loopStarted=false; wantLoop=false; clearTimeout(loopTimer); hero.classList.remove('looping'); if(loopvid){ loopvid.pause(); } }
+  const loopEl=hero.querySelector('.loop');
+  function stopLoop(){ loopStarted=false; wantLoop=false; clearTimeout(loopTimer);
+    if(loopEl){ loopEl.style.transition='none'; hero.classList.remove('looping'); void loopEl.offsetWidth; loopEl.style.transition=''; } else hero.classList.remove('looping');
+    if(loopvid){ loopvid.pause(); try{ loopvid.currentTime=0; }catch(e){} } }
 
   let t=0, playing=false, prev=null;
   function loop(now){
@@ -131,5 +146,8 @@
   render(t); requestAnimationFrame(loop);
   // the intro (WHERE ART + underbar) starts right away; it holds on the underbar until the photos are ready
   if(!reduce){ playing=true; prev=null; }
-  replay.addEventListener('click',()=>{ if(window.__standsSend) window.__standsSend('hero_replay',{}); stopLoop(); t=0; lastCut=-2; prev=null; playing=true; });
+  function restart(){ stopLoop(); bgprev.hidden=true; clearTimeout(prevTimer); t=0; lastCut=-2; prev=null; playing=true; }
+  replay.addEventListener('click',()=>{ if(window.__standsSend) window.__standsSend('hero_replay',{}); restart(); });
+  // coming back to the page (back/forward cache): start over cleanly instead of resuming behind a half-faded film
+  window.addEventListener('pageshow',e=>{ if(e.persisted&&!reduce) restart(); });
 })();

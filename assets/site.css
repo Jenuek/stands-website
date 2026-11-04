@@ -64,6 +64,9 @@ button{font:inherit;color:inherit}
 .hero .bg img{position:absolute;max-width:none}
 .hero .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 40% at 50% 52%,rgba(240,240,238,.42),rgba(240,240,238,0) 70%);pointer-events:none}
 .hero .bg.plain::after{display:none}
+.hero .bg .tone{position:absolute;inset:0;background:#7D7889;mix-blend-mode:soft-light;opacity:.42;pointer-events:none}
+.hero .bg.plain .tone{display:none}
+.hero .bg{transform-origin:50% 55%}
 .hero.dark .line,.hero.dark .tag{color:var(--paper)}
 .hero.dark .bg::after{background:radial-gradient(70% 40% at 50% 52%,rgba(17,17,17,.35),rgba(17,17,17,0) 70%)}
 .hero.inv .bg{background:var(--black)}
