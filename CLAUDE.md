@@ -54,7 +54,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
   - `dark`: white text and pictogram
   - `p`: pictogram key
   - `size`: tag label
-- **`PICTO`**: stroke paths (touching pieces joined into continuous paths, absolute coords) from June's refined sheet (`~/Desktop/stands-website/pictograms`, source `STANDS_pictograms_sheet.svg`). `t` = translate x, y and scale into viewBox `-14 -22 128 122`, base on y = 100. Stroke `SW = 1.5` plus an opaque paper/ink halo `SW + 1.1` wide (a half-transparent halo read as blur). The `.obj` box is snapped to the device pixel grid (`snapObj`).
+- **`PICTO`**: stroke paths (touching pieces joined into continuous paths; lines within 2° of vertical/horizontal straightened, since slight tilts render as stair-steps; absolute coords) from June's refined sheet (`~/Desktop/stands-website/pictograms`, source `STANDS_pictograms_sheet.svg`). `t` = translate x, y and scale into viewBox `-14 -22 128 122`, base on y = 100. Stroke `SW = 1.5` in `INK` `#2B2930` (paper on dark photos) plus a halo `SW + 1.1` wide at 85% with a ~0.4 px feathered edge (`pict-feather`). Lower contrast hides stair-stepping; a wide half-transparent halo read as blur. The `.obj` box is snapped to the device pixel grid (`snapObj`).
 - **Timing**
   - Pass 1 cuts go from 650 ms to 400 ms (geometric).
   - Pass 2 cuts follow `130 + 50·(2k/11−1)²` ms: 180 → 130 → 180.
