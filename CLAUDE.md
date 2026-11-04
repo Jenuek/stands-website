@@ -29,7 +29,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
 | `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events |
 | `assets/hero.js` | Home hero animation (see below) |
-| `img/hero/01–12-*.jpg` | Hero photos (1600 px wide) |
+| `img/hero/01–12-*.jpg` | Hero photos, 2400 px wide, plus `-1600.jpg` copies for small/1x screens (`hero.js` picks by screen size × DPR). Originals (2752 px) in `photos-src/hero/`, not deployed |
 | `video/courtyard-loop-v2.mp4/.webm`, `img/courtyard-poster.jpg` | Final loop film |
 
 ## Bilingual content
@@ -54,7 +54,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
   - `dark`: white text and pictogram
   - `p`: pictogram key
   - `size`: tag label
-- **`PICTO`**: stroke paths from June's refined sheet (`~/Desktop/stands-website/pictograms`, source `STANDS_pictograms_sheet.svg`). `t` = translate x, y and scale into viewBox `-14 -22 128 122`, base on y = 100. Stroke `SW = 1.5` plus a halo.
+- **`PICTO`**: stroke paths from June's refined sheet (`~/Desktop/stands-website/pictograms`, source `STANDS_pictograms_sheet.svg`). `t` = translate x, y and scale into viewBox `-14 -22 128 122`, base on y = 100. Stroke `SW = 1.5` plus an opaque paper/ink halo `SW + 1.1` wide (a half-transparent halo read as blur). The `.obj` box is snapped to the device pixel grid (`snapObj`).
 - **Timing**
   - Pass 1 cuts go from 650 ms to 400 ms (geometric).
   - Pass 2 cuts follow `130 + 50·(2k/11−1)²` ms: 180 → 130 → 180.
