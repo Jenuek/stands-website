@@ -22,7 +22,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 
 | Path | What |
 | --- | --- |
-| `content/site.yml` | Home, About, list-page leads, contact, company info, home highlights (`featured_*`). `about.what_we_do[]` = `label` ("01. ART DEALING"), `title`, `items[]`, `title_en`, `items_en[]`, shown as number cards (old single `text` "title - a, b" is still parsed) |
+| `content/site.yml` | Home, About, list-page leads, contact, company info, home highlights (`featured_*`). `about.what_we_do[]` (About "Scope" section) = `label` ("01. ART DEALING"), `title`, `items[]`, `title_en`, `items_en[]`, shown as number cards (old single `text` "title - a, b" is still parsed) |
 | `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body |
 | `.pages.yml` | Pages CMS field config. Field names must match what `build.py` reads |
 | `build/build.py` | Whole site generator (pages, cards, header/footer, i18n, GA/Clarity snippets) |
