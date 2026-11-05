@@ -282,3 +282,15 @@ html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:kee
 .process-steps .t{font-size:16px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
 @media (max-width:1000px){.process-steps{grid-template-columns:repeat(3,minmax(0,1fr))}.process-steps li{border-bottom:1px solid var(--line)}}
 @media (max-width:560px){.process-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.process-steps li{padding:16px 12px 20px}}
+
+/* About: What we do cards. Big number, mono label, title, services listed on hairlines; the partner card is tinted */
+.wwd-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--black);border-left:1px solid var(--line)}
+.wwd-card{border-right:1px solid var(--line);padding:22px 20px 30px;display:flex;flex-direction:column;gap:12px;min-height:340px}
+.wwd-card .n{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(48px,5vw,64px);line-height:.9;letter-spacing:-.02em}
+.wwd-card .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.wwd-card h3{margin:0;font-size:19px;line-height:1.35;letter-spacing:-.02em}
+.wwd-card ul{list-style:none;margin:auto 0 0;padding:0;border-top:1px solid var(--line)}
+.wwd-card li{font-size:14px;color:var(--muted);padding:9px 0;border-bottom:1px solid var(--line)}
+.wwd-card.partner{background:rgba(125,120,137,.08)}
+@media (max-width:1000px){.wwd-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wwd-card{border-bottom:1px solid var(--line);min-height:300px}}
+@media (max-width:560px){.wwd-grid{grid-template-columns:1fr}.wwd-card{min-height:0}.wwd-card ul{margin-top:12px}}

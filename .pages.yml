@@ -67,9 +67,11 @@ content:
             type: object
             list: true
             fields:
-              - { name: label, label: 라벨, type: string }
-              - { name: text, label: 내용, type: string }
-              - { name: text_en, label: 내용 (영문), type: string }
+              - { name: label, label: 라벨 (예: 01. ART DEALING), type: string }
+              - { name: title, label: 제목, type: string }
+              - { name: items, label: 세부 항목, type: string, list: true }
+              - { name: title_en, label: 제목 (영문), type: string }
+              - { name: items_en, label: 세부 항목 (영문), type: string, list: true }
           - { name: cta_title, label: 하단 문의 영역 문장, type: string }
           - { name: cta_button, label: 하단 문의 버튼, type: string }
           - name: en
