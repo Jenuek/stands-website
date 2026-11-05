@@ -27,7 +27,7 @@
   }
 
   // header logo: the third line keeps changing. STANDS, then places from the hero and now and then a verb,
-  // each wiped out left to right and revealed left to right like the hero underbar; the bar follows the word.
+  // each wiped out right to left and revealed left to right like the hero underbar; the bar follows the word.
   const lw=document.querySelector('.brand svg');
   if(lw&&lw.querySelector('.lw-line')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     const clip=lw.querySelector('.lw-clip'), base=lw.querySelector('.lw-base'), word=lw.querySelector('.lw-word'), bar=lw.querySelector('.lw-bar');
@@ -43,8 +43,8 @@
       let wd=word.getComputedTextLength(); if(wd>MAXW){ word.setAttribute('textLength',MAXW); word.setAttribute('lengthAdjust','spacingAndGlyphs'); wd=MAXW; }
       return Math.max(60,wd-4); };
     const next=async()=>{ if(document.hidden){ timer=setTimeout(next,600); return; }
-      // wipe out, left to right
-      await tween(OUT,k=>{ clip.setAttribute('x',X0+FULL*k); clip.setAttribute('width',FULL*(1-k)); });
+      // wipe out, right to left
+      await tween(OUT,k=>{ clip.setAttribute('x',X0); clip.setAttribute('width',FULL*(1-k)); });
       await new Promise(r=>setTimeout(r,GAP));
       i=(i+1)%SEQ.length; const w=SEQ[i], from=barW, to=setWord(w);
       // reveal, left to right; the bar grows or shrinks to the new word
