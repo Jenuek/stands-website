@@ -378,8 +378,9 @@ def build_lang():
         <p>{T(L(H, 'story_1'))}</p>
         <p class="slogan">WHERE ART STANDS</p>
         <p>{T(L(H, 'story_2'))}</p>
+        {'<p class="story-more"><a class="more" href="about.html">About STANDS</a></p>' if st_img else ''}
       </div>
-      <div class="statement-side">{st_img}<p><a class="more" href="about.html">About STANDS</a></p></div>
+      {f'<div class="statement-side">{st_img}</div>' if st_img else '<p><a class="more" href="about.html">About STANDS</a></p>'}
     </div>
   </div>
 </section>
