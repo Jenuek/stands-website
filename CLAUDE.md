@@ -80,7 +80,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 
 - **Colours**: paper `#F0F0EE`, black `#000`, lavender accent `#7D7889`, sky `#8FCAD8`, line `#D3D2CE`, muted `#6C6A71`.
 - **Fonts**: Archivo at 75% width for headings; Pretendard for Korean and body text; Newsreader italic for accents; IBM Plex Mono for labels.
-- **Header**: uses the mono box logo with mix-blend-mode.
+- **Header**: uses the mono box logo with mix-blend-mode. Its third line keeps changing (`site.js`, `SEQ`): STANDS, hero place names and now and then a verb (BELONGS, BREATHES, REMAINS, LIVES, MEETS), each wiped out and revealed left to right; the bar follows the word width. New words are Archivo 800, 75% width, 80 units, −2.7 tracking (matched to the logo glyphs); words wider than 322 units are squeezed. Off with reduced motion; `aria-label` stays STANDS.
 
 ## Analytics
 

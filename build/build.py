@@ -27,9 +27,16 @@ def logo_svg(cls='', label='WHERE ART STANDS', frame_attrs='', bar_attrs='', bar
     bid = ' id="lbar"' if ids else ''
     w = bw if bar_w is None else bar_w
     if mono:  # header: drawn with mix-blend-mode difference, so one colour, no fill
+        # The third line (STANDS, the last 6 glyphs) sits in its own clipped group, so site.js can wipe it out and in
+        # and swap in other words set in Archivo 800 at 75% width (sized to match the logo glyphs: 80 units, -2.7 tracking).
+        ps = re.findall(r'<path[^>]*/>', BOX_PATHS)
         return (f'<svg class="{cls}" viewBox="0 0 400 400" role="img" aria-label="{label}">'
+                f'<defs><clipPath id="lw-clip"><rect class="lw-clip" x="30" y="240" width="340" height="80"/></clipPath></defs>'
                 f'<rect x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" fill="none" stroke="currentColor" stroke-width="{t*1.6:.2f}"/>'
-                f'<g fill="currentColor">{BOX_PATHS}</g><rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh*1.3:.2f}" fill="currentColor"/></svg>')
+                f'<g fill="currentColor">{"".join(ps[:-6])}</g>'
+                f'<g class="lw-line" clip-path="url(#lw-clip)" fill="currentColor"><g class="lw-base">{"".join(ps[-6:])}</g>'
+                f'<text class="lw-word" x="35.8" y="306.5" aria-hidden="true" style="display:none;font-family:var(--display);font-weight:800;font-stretch:75%;font-size:80px;letter-spacing:-2.7px"></text></g>'
+                f'<rect class="lw-bar" x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh*1.3:.2f}" fill="currentColor"/></svg>')
     return (f'<svg class="{cls}" viewBox="0 0 400 400" role="img" aria-label="{label}"><defs>{df}{db}</defs>'
             f'<rect{fid} x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" style="fill:var(--paper){";fill-opacity:.72" if ids else ""}" stroke="url(#{gf})" stroke-width="{t:.2f}"{frame_attrs}/>'
             f'<g fill="currentColor">{BOX_PATHS}</g>'
