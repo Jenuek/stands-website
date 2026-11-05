@@ -423,6 +423,18 @@ def build_lang():
     # about
     paras = ''.join(f'<p>{T(t)}</p>' for t in (L(AB, 'paragraphs', []) or []))
     kv = ''.join(f'<dt>{E(LI(r, "label"))}</dt><dd>{T(LI(r, "text"))}</dd>' for r in (AB.get('what_we_do', []) or []))
+    # process pictograms from build/process.js (img/illust/process-01..06.svg)
+    PROCESS = [('01', '공간 분석', 'Site study'), ('02', '작품 제안', 'Proposal'), ('03', '심의', 'Review'),
+               ('04', '제작', 'Fabrication'), ('05', '운송 · 설치', 'Transport · installation'), ('06', '완성', 'In place')]
+    steps = ''.join(f'<li><img src="{P}img/illust/process-{n}.svg" alt="" width="240" height="232" loading="lazy">'
+                    f'<span class="k">{n}</span><span class="t">{U(ko, en)}</span></li>'
+                    for n, ko, en in PROCESS if os.path.exists(os.path.join(ROOT, f'img/illust/process-{n}.svg')))
+    process_band = f'''<section class="process" aria-labelledby="pr-h" style="padding-top:clamp(56px,8vw,110px)">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="pr-h">Process</h2></div>
+    <ol class="process-steps">{steps}</ol>
+  </div>
+</section>''' if steps else ''
     ab_src = img(AB.get('intro_image'))
     ab_img = f'<figure class="about-img"><img src="{E(ab_src)}" alt="" width="660" height="755" loading="lazy"></figure>' if ab_src else ''
     about = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">About</span><h1 class="long">Art is complete<br>where it <span class="ul">stands</span>.</h1></div></div>
@@ -435,6 +447,7 @@ def build_lang():
     </div>
   </div>
 </section>
+{process_band}
 <section class="services" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
     <div class="sec-head"><h2>What we do</h2></div>

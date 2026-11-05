@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 116" width="240" height="232"><style>.l{fill:#F0F0EE;stroke:#1C1A20;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+.l2{fill:none;stroke:#1C1A20;stroke-width:.7;stroke-linecap:round}
+.g{fill:none;stroke:#1C1A20;stroke-width:1.1}
+.b{fill:none;stroke:#9A97A2;stroke-width:.8}
+.gd{fill:none;stroke:#9A97A2;stroke-width:.6;stroke-dasharray:2 2}
+.dash{fill:none;stroke:#1C1A20;stroke-width:1;stroke-dasharray:3 2.4}
+.dim{fill:none;stroke:#6C6A71;stroke-width:.7}
+.acc{fill:none;stroke:#7D7889;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ray{fill:none;stroke:#7D7889;stroke-width:.7;stroke-dasharray:1.6 2;stroke-linecap:round}
+.rib{fill:none;stroke:#1C1A20;stroke-width:.8}
+.spine{fill:none;stroke:#1C1A20;stroke-width:1.1}
+.node{fill:#F0F0EE;stroke:#1C1A20;stroke-width:.6}
+.accf{fill:#7D7889;fill-opacity:.3;stroke:none}</style><path class="g" d="M8 100H112"/><circle class="gd" cx="60" cy="69" r="34"/><path class="accf" d="M63 92A31.45 31.45 0 0 1 63 46A31.45 31.45 0 0 1 63 92Z"/><path class="l" d="M60 92A31.45 31.45 0 0 1 60 46A31.45 31.45 0 0 1 60 92Z"/><rect class="l" x="49" y="92" width="22" height="8"/></svg>
