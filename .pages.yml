@@ -21,6 +21,7 @@ content:
           - { name: headline, label: 메인 제목 (뒤에 STANDS가 붙습니다), type: string, description: "예: 예술이 필요한 곳에," }
           - { name: story_1, label: 소개 첫 문단, type: text }
           - { name: story_2, label: 소개 둘째 문단 (WHERE ART STANDS 아래), type: text }
+          - { name: statement_image, label: 소개글 오른쪽 사진 (세로 4:5, 가로 1200px 이상), type: image }
           - name: services
             label: What we do 항목
             type: object

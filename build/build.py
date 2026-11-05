@@ -366,6 +366,8 @@ def build_lang():
     </a>
   </div>
 </section>'''
+    st_src = img(H.get('statement_image'))
+    st_img = f'<figure class="statement-img"><img src="{E(st_src)}" alt="" width="1200" height="1500" loading="lazy"></figure>' if st_src else ''
     home = hero() + f'''
 <section class="statement">
   <div class="wrap">
@@ -377,7 +379,7 @@ def build_lang():
         <p class="slogan">WHERE ART STANDS</p>
         <p>{T(L(H, 'story_2'))}</p>
       </div>
-      <p><a class="more" href="about.html">About STANDS</a></p>
+      <div class="statement-side">{st_img}<p><a class="more" href="about.html">About STANDS</a></p></div>
     </div>
   </div>
 </section>
