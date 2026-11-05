@@ -31,7 +31,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | `assets/hero.js` | Home hero animation (see below) |
 | `build/illust.js`, `img/illust/*.svg` | Line illustrations: `service-01..03` (home What we do cards, by order). Edit the script, run `node build/illust.js`, commit the SVGs; the site build only links them |
 | `img/home/statement.jpg` | Home photo beside the story (`home.statement_image`, CMS field 소개글 오른쪽 사진). Slim and tall beside the story, a little longer than the text (5:4 under it on phones); reveals with the scroll position and drifts slightly (`site.js`, off with reduced motion); source with the Gemini mark removed , upscaled to 1200 × 1500, in `photos-src/home/` |
-| `img/about/intro.jpg` | About photo under the STANDS label beside the copy (`about.intro_image`, CMS field 소개글 옆 사진). 4:5, sticky while the copy scrolls, same scroll reveal as the home photo; 5:4 above the copy below 860 px. Source (Gemini mark removed) in `photos-src/about/` |
+| `img/about/intro.jpg` | About photo under the STANDS label beside the copy (`about.intro_image`, CMS field 소개글 옆 사진). Cropped to the sculpture and its circular guide lines (660 × 755), exactly as tall as the copy, label above it; same scroll reveal as the home photo; 4:5 above the copy below 860 px. Source (Gemini mark removed) in `photos-src/about/` |
 | `img/hero/01–12-*.jpg` | Hero photos, 2400 px wide, plus `-1600.jpg` copies for small/1x screens (`hero.js` picks by screen size × DPR). Originals (2752 px) in `photos-src/hero/`, not deployed |
 | `video/courtyard-loop-v2.mp4/.webm`, `img/courtyard-poster.jpg` | Final loop film |
 

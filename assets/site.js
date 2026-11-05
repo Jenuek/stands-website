@@ -18,11 +18,8 @@
     const update=()=>{ raf=0; const vh=innerHeight;
       revs.forEach(el=>{ const r=el.getBoundingClientRect(), im=el.querySelector('img');
         // 0 when the top of the photo reaches the bottom of the screen, 1 when 60% of the screen further.
-        // Once fully shown it stays shown (a sticky photo would otherwise re-measure the same spot).
-        if(el.dataset.shown) return;
         const p=clamp((vh-r.top)/(vh*.6),0,1), e=1-Math.pow(1-p,2);
         el.style.setProperty('--reveal',((1-e)*100).toFixed(2)+'%');
-        if(el.classList.contains('about-img')&&p>=1) el.dataset.shown='1';
         const k=clamp(((r.top+r.height/2)-vh/2)/(vh/2+r.height/2),-1,1);
         im.style.setProperty('--drift',(k*r.height*.025).toFixed(1)+'px'); }); };
     addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(update); },{passive:true});
