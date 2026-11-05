@@ -367,7 +367,7 @@ def build_lang():
   </div>
 </section>'''
     st_src = img(H.get('statement_image'))
-    st_img = f'<figure class="statement-img"><img src="{E(st_src)}" alt="" width="922" height="1152" loading="lazy"></figure>' if st_src else ''
+    st_img = f'<figure class="statement-img"><img src="{E(st_src)}" alt="" width="1200" height="1500" loading="lazy"></figure>' if st_src else ''
     home = hero() + f'''
 <section class="statement">
   <div class="wrap">
