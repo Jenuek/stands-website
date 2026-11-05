@@ -30,6 +30,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events |
 | `assets/hero.js` | Home hero animation (see below) |
 | `build/illust.js`, `img/illust/*.svg` | Line illustrations: `service-01..03` (home What we do cards, by order). Edit the script, run `node build/illust.js`, commit the SVGs; the site build only links them |
+| `img/home/statement.jpg` | Home photo beside the story (`home.statement_image`, CMS field 소개글 오른쪽 사진). 4:5; source with the Gemini mark removed in `photos-src/home/` |
 | `img/hero/01–12-*.jpg` | Hero photos, 2400 px wide, plus `-1600.jpg` copies for small/1x screens (`hero.js` picks by screen size × DPR). Originals (2752 px) in `photos-src/hero/`, not deployed |
 | `video/courtyard-loop-v2.mp4/.webm`, `img/courtyard-poster.jpg` | Final loop film |
 
