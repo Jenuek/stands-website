@@ -60,8 +60,9 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
   - `size`: tag label
 - **`PICTO`**: stroke paths (touching pieces joined into continuous paths; lines within 2° of vertical/horizontal straightened, since slight tilts render as stair-steps; absolute coords) from June's refined sheet (`~/Desktop/stands-website/pictograms`, source `STANDS_pictograms_sheet.svg`). `t` = translate x, y and scale into viewBox `-14 -22 128 122`, base on y = 100. Stroke `SW = 1.5` in `INK` `#2B2930` (paper on dark photos) plus a halo `SW + 1.1` wide at 85% with a ~0.4 px feathered edge (`pict-feather`). Lower contrast hides stair-stepping; a wide half-transparent halo read as blur. The `.obj` box is snapped to the device pixel grid (`snapObj`).
 - **Timing**
-  - Pass 1 cuts go from 650 ms to 400 ms (geometric).
-  - Pass 2 cuts follow `130 + 50·(2k/11−1)²` ms: 180 → 130 → 180.
+  - One continuous tempo, no jump between passes.
+  - Pass 1 cuts go from 650 ms to 330 ms (geometric, about 6% shorter each).
+  - Pass 2 carries on from 310 ms down to 130 ms (about 13% shorter each), holds 130 ms twice, then lands at 142, 157, 178 ms.
   - Burst order rises from the dark end to the brightest and back (`burst`).
   - `A` = answer start, `DUR = A + 6000`, `LOOP_AT = A + 4500`.
   - All later events are offsets from `A`.
