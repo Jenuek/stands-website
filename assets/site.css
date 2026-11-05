@@ -257,11 +257,18 @@ fieldset.field{border:0;padding:0;margin:0}
 html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:keep-all;overflow-wrap:break-word}
 :is(p,li,dd,blockquote){text-wrap:pretty}
 
-/* About: photo under the STANDS label beside the copy. Sticky while the copy scrolls past;
-   reveals with the scroll like the home photo (site.js). Stacked below 860 px: a 5:4 crop above the copy. */
-.about-side{display:flex;flex-direction:column;gap:28px}
-.about-img{margin:0;position:sticky;top:96px;aspect-ratio:4/5;overflow:hidden;background:#111}
-.about-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:translate3d(0,var(--drift,0px),0) scale(1.06)}
+/* About: photo beside the copy, exactly as tall as the copy (absolute img, so it adds no height of its own);
+   the STANDS label sits above the photo, outside the row, so photo and copy start on the same line.
+   Same scroll reveal as the home photo (site.js). Below 860 px: label, the 4:5 photo, then the copy. */
+.two-col.has-img{align-items:stretch}
+.two-col.has-img .about-copy>:last-child{margin-bottom:0}
+.two-col.has-img .about-side{position:relative;display:flex;flex-direction:column}
+.two-col.has-img .about-side .eyebrow{position:absolute;left:0;bottom:calc(100% + 18px)}
+.about-img{margin:0;position:relative;flex:1 1 auto;min-height:360px;overflow:hidden;background:#111}
+.about-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:translate3d(0,var(--drift,0px),0) scale(1.06)}
 .js .about-img{clip-path:inset(var(--reveal,100%) 0 0 0)}
-@media (max-width:860px){.about-img{position:relative;top:0;aspect-ratio:5/4}.about-img img{object-position:50% 52%}}
+@media (max-width:860px){
+  .two-col.has-img .about-side .eyebrow{position:static;margin-bottom:18px}
+  .about-img{flex:none;min-height:0;aspect-ratio:4/5}
+}
 @media (prefers-reduced-motion:reduce){.about-img img{transform:none}}
