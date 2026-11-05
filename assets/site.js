@@ -7,22 +7,21 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!menu.hidden) close.click(); });
   }
 
-  // home statement photo: reveal upward once in view, then drift a little slower than the page
+  // home statement photo: the reveal follows the scroll position (it rises as you scroll down and
+  // lowers again as you scroll back), and the image drifts a little slower than the page
   const stImg=document.querySelector('.statement-img');
-  if(stImg){
+  if(stImg&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.classList.add('js');
-    const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(calm||!('IntersectionObserver' in window)){ stImg.classList.add('in'); }
-    else{
-      new IntersectionObserver((es,o)=>{ es.forEach(e=>{ if(e.isIntersecting){ stImg.classList.add('in'); o.disconnect(); } }); },{threshold:.15}).observe(stImg.parentElement);   // the clipped figure itself reports no visible area
-      const im=stImg.querySelector('img'); let raf=0;
-      const drift=()=>{ raf=0; const r=stImg.getBoundingClientRect(), vh=innerHeight;
-        if(r.bottom<0||r.top>vh) return;
-        const k=((r.top+r.height/2)-vh/2)/(vh/2+r.height/2);   // -1 (above) .. 1 (below)
-        im.style.setProperty('--drift',(Math.max(-1,Math.min(1,k))*r.height*.025).toFixed(1)+'px'); };
-      addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(drift); },{passive:true});
-      addEventListener('resize',drift); drift();
-    }
+    const im=stImg.querySelector('img'); let raf=0;
+    const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+    const update=()=>{ raf=0; const r=stImg.getBoundingClientRect(), vh=innerHeight;
+      // 0 when the top of the photo reaches the bottom of the screen, 1 when 60% of the screen further
+      const p=clamp((vh-r.top)/(vh*.6),0,1), e=1-Math.pow(1-p,2);
+      stImg.style.setProperty('--reveal',((1-e)*100).toFixed(2)+'%');
+      const k=clamp(((r.top+r.height/2)-vh/2)/(vh/2+r.height/2),-1,1);
+      im.style.setProperty('--drift',(k*r.height*.025).toFixed(1)+'px'); };
+    addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(update); },{passive:true});
+    addEventListener('resize',update); update();
   }
 
   // project filters
