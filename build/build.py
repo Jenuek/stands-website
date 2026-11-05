@@ -422,7 +422,22 @@ def build_lang():
 
     # about
     paras = ''.join(f'<p>{T(t)}</p>' for t in (L(AB, 'paragraphs', []) or []))
-    kv = ''.join(f'<dt>{E(LI(r, "label"))}</dt><dd>{T(LI(r, "text"))}</dd>' for r in (AB.get('what_we_do', []) or []))
+    # What we do cards: big number, label, title and the list of services.
+    # Older entries with a single `text` ("title - a, b, c") are still read.
+    def wwd_card(r, last):
+        lab = str(LI(r, 'label') or '').strip()
+        m = re.match(r'^(\d+)\.?\s*(.*)$', lab)
+        num, name = (m.group(1), m.group(2)) if m else ('', lab)
+        title, items = LI(r, 'title'), LI(r, 'items', []) or []
+        if not title and LI(r, 'text'):
+            parts = re.split(r'\s+[-–—]\s+', str(LI(r, 'text')).strip(), maxsplit=1)
+            title, items = parts[0], (re.split(r'\s*[,;]\s*', parts[1]) if len(parts) > 1 else [])
+        lis = ''.join(f'<li>{E(str(i).strip())}</li>' for i in items if str(i).strip())
+        return (f'<div class="wwd-card{" partner" if last and "PARTNER" in name.upper() else ""}">'
+                f'<span class="n">{E(num)}</span><span class="k">{E(name)}</span><h3>{E(str(title).strip())}</h3>'
+                f'{f"<ul>{lis}</ul>" if lis else ""}</div>')
+    wwd = AB.get('what_we_do', []) or []
+    kv = ''.join(wwd_card(r, i == len(wwd) - 1) for i, r in enumerate(wwd))
     # process pictograms from build/process.js (img/illust/process-01..06.svg)
     PROCESS = [('01', '공간 분석', 'Site study'), ('02', '작품 제안', 'Proposal'), ('03', '심의', 'Review'),
                ('04', '제작', 'Fabrication'), ('05', '운송 · 설치', 'Transport · installation'), ('06', '완성', 'In place')]
@@ -451,7 +466,7 @@ def build_lang():
 <section class="services" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
     <div class="sec-head"><h2>What we do</h2></div>
-    <dl class="kv">{kv}</dl>
+    <div class="wwd-grid">{kv}</div>
   </div>
 </section>
 <section class="cta"><div class="wrap"><h2>{T(L(AB, 'cta_title'))}</h2><a class="btn" href="contact.html">{E(L(AB, 'cta_button', U('문의하기', 'Get in touch')))}</a></div></section>'''

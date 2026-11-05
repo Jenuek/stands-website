@@ -56,18 +56,52 @@ about:
   closing: 작품을 찾는 일부터 세우는 일까지, 한 팀이 책임집니다.
   intro_image: /img/about/intro.jpg
   what_we_do:
-  - label: '01. ART DEALING '
-    text: '아트 딜링· 작품 소싱과 컬렉션 관리 - 컬렉션 자문, 작품 소싱, 거래, 리세일 '
-    text_en: Art Dealing · Sourcing & Collection Management — collection advisory, sourcing, transactions, resale
-  - label: '02. ART PROJECTS '
-    text: 아트 프로젝트 기획 - 작가 커미션, 브랜드 아트 협업, 전시 기획과 운영
-    text_en: Art Project Planning — artist commissions, brand art collaborations, exhibition planning and operation
-  - label: '03. ARCHITECTURAL ART '
-    text: 건축물 미술작품 - 기획, 작가 선정, 심의 대행, 작품 제작 및 설치
-    text_en: Architectural Art — planning, artist selection, review management, fabrication and installation
+  - label: 01. ART DEALING
+    title: 아트 딜링· 작품 소싱과 컬렉션 관리
+    items:
+    - 컬렉션 자문
+    - 작품 소싱
+    - 거래
+    - 리세일
+    title_en: Art Dealing · Sourcing & Collection Management
+    items_en:
+    - Collection advisory
+    - Sourcing
+    - Transactions
+    - Resale
+  - label: 02. ART PROJECTS
+    title: 아트 프로젝트 기획
+    items:
+    - 작가 커미션
+    - 브랜드 아트 협업
+    - 전시 기획과 운영
+    title_en: Art Project Planning
+    items_en:
+    - Artist commissions
+    - Brand art collaborations
+    - Exhibition planning and operation
+  - label: 03. ARCHITECTURAL ART
+    title: 건축물 미술작품
+    items:
+    - 기획
+    - 작가 선정
+    - 심의 대행
+    - 작품 제작 및 설치
+    title_en: Architectural Art
+    items_en:
+    - Planning
+    - Artist selection
+    - Review management
+    - Fabrication and installation
   - label: 04. PARTNER
-    text: '마롱컴퍼니 - 공공미술 프로젝트, 조형물 기획·제작·설치 '
-    text_en: Malong Company — public art projects; planning, fabrication and installation of sculpture
+    title: 마롱컴퍼니
+    items:
+    - 공공미술 프로젝트
+    - 조형물 기획·제작·설치
+    title_en: Malong Company
+    items_en:
+    - Public art projects
+    - Sculpture planning, fabrication and installation
   cta_title: 프로젝트를 이야기해 주세요.
   cta_button: 문의하기
   en:
