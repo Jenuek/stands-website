@@ -9,17 +9,22 @@
 
   // home statement photo: the reveal follows the scroll position (it rises as you scroll down and
   // lowers again as you scroll back), and the image drifts a little slower than the page
-  const stImg=document.querySelector('.statement-img');
-  if(stImg&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  // (also used for the About photo)
+  const revs=[...document.querySelectorAll('.statement-img,.about-img')];
+  if(revs.length&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.classList.add('js');
-    const im=stImg.querySelector('img'); let raf=0;
+    let raf=0;
     const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
-    const update=()=>{ raf=0; const r=stImg.getBoundingClientRect(), vh=innerHeight;
-      // 0 when the top of the photo reaches the bottom of the screen, 1 when 60% of the screen further
-      const p=clamp((vh-r.top)/(vh*.6),0,1), e=1-Math.pow(1-p,2);
-      stImg.style.setProperty('--reveal',((1-e)*100).toFixed(2)+'%');
-      const k=clamp(((r.top+r.height/2)-vh/2)/(vh/2+r.height/2),-1,1);
-      im.style.setProperty('--drift',(k*r.height*.025).toFixed(1)+'px'); };
+    const update=()=>{ raf=0; const vh=innerHeight;
+      revs.forEach(el=>{ const r=el.getBoundingClientRect(), im=el.querySelector('img');
+        // 0 when the top of the photo reaches the bottom of the screen, 1 when 60% of the screen further.
+        // Once fully shown it stays shown (a sticky photo would otherwise re-measure the same spot).
+        if(el.dataset.shown) return;
+        const p=clamp((vh-r.top)/(vh*.6),0,1), e=1-Math.pow(1-p,2);
+        el.style.setProperty('--reveal',((1-e)*100).toFixed(2)+'%');
+        if(el.classList.contains('about-img')&&p>=1) el.dataset.shown='1';
+        const k=clamp(((r.top+r.height/2)-vh/2)/(vh/2+r.height/2),-1,1);
+        im.style.setProperty('--drift',(k*r.height*.025).toFixed(1)+'px'); }); };
     addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(update); },{passive:true});
     addEventListener('resize',update); update();
   }
