@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 116" width="240" height="232"><style>.l{fill:#F0F0EE;stroke:#1C1A20;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+.l2{fill:none;stroke:#1C1A20;stroke-width:.7;stroke-linecap:round}
+.g{fill:none;stroke:#1C1A20;stroke-width:1.1}
+.b{fill:none;stroke:#9A97A2;stroke-width:.8}
+.gd{fill:none;stroke:#9A97A2;stroke-width:.6;stroke-dasharray:2 2}
+.dash{fill:none;stroke:#1C1A20;stroke-width:1;stroke-dasharray:3 2.4}
+.dim{fill:none;stroke:#6C6A71;stroke-width:.7}
+.acc{fill:none;stroke:#7D7889;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.ray{fill:none;stroke:#7D7889;stroke-width:.7;stroke-dasharray:1.6 2;stroke-linecap:round}
+.rib{fill:none;stroke:#1C1A20;stroke-width:.8}
+.spine{fill:none;stroke:#1C1A20;stroke-width:1.1}
+.node{fill:#F0F0EE;stroke:#1C1A20;stroke-width:.6}
+.accf{fill:#7D7889;fill-opacity:.3;stroke:none}</style><path class="g" d="M8 100H112"/><defs><clipPath id="skin4"><rect x="0" y="54" width="120" height="120"/></clipPath></defs><path class="accf" clip-path="url(#skin4)" d="M60 86A41.63 41.63 0 0 1 60 22A41.63 41.63 0 0 1 60 86Z"/><path class="dash" d="M60 86A41.63 41.63 0 0 1 60 22A41.63 41.63 0 0 1 60 86Z"/><path class="l" style="fill:none" clip-path="url(#skin4)" d="M60 86A41.63 41.63 0 0 1 60 22A41.63 41.63 0 0 1 60 86Z"/><path class="spine" d="M60 22V86"/><path class="rib" d="M50.88 32.67H69.12"/><path class="rib" d="M46.39 43.33H73.61"/><path class="rib" d="M45 54H75"/><path class="rib" d="M46.39 64.67H73.61"/><path class="rib" d="M50.88 75.33H69.12"/><circle class="node" cx="50.88" cy="32.67" r="1.5"/><circle class="node" cx="69.12" cy="32.67" r="1.5"/><circle class="node" cx="46.39" cy="43.33" r="1.5"/><circle class="node" cx="73.61" cy="43.33" r="1.5"/><circle class="node" cx="45" cy="54" r="1.5"/><circle class="node" cx="75" cy="54" r="1.5"/><circle class="node" cx="46.39" cy="64.67" r="1.5"/><circle class="node" cx="73.61" cy="64.67" r="1.5"/><circle class="node" cx="50.88" cy="75.33" r="1.5"/><circle class="node" cx="69.12" cy="75.33" r="1.5"/><path class="acc" d="M38 54H43M77 54H82"/><path class="l" d="M26 86H94"/><path class="l" style="fill:none" d="M32 86V100M88 86V100"/></svg>
