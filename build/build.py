@@ -472,7 +472,7 @@ def build_lang():
 {process_band}
 <section class="services" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
-    <div class="sec-head"><h2>What we do</h2></div>
+    <div class="sec-head"><h2 id="scope-h">Scope</h2></div>
     <div class="wwd-grid">{kv}</div>
   </div>
 </section>
