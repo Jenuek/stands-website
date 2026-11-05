@@ -61,6 +61,7 @@ content:
         fields:
           - { name: paragraphs, label: 회사 소개 문단, type: text, list: true }
           - { name: closing, label: 마지막 강조 문장, type: string }
+          - { name: intro_image, label: 소개글 옆 사진 (세로 4:5), type: image }
           - name: what_we_do
             label: What we do 목록
             type: object

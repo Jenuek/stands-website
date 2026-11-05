@@ -423,10 +423,12 @@ def build_lang():
     # about
     paras = ''.join(f'<p>{T(t)}</p>' for t in (L(AB, 'paragraphs', []) or []))
     kv = ''.join(f'<dt>{E(LI(r, "label"))}</dt><dd>{T(LI(r, "text"))}</dd>' for r in (AB.get('what_we_do', []) or []))
+    ab_src = img(AB.get('intro_image'))
+    ab_img = f'<figure class="about-img"><img src="{E(ab_src)}" alt="" width="922" height="1152" loading="lazy"></figure>' if ab_src else ''
     about = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">About</span><h1 class="long">Art is complete<br>where it <span class="ul">stands</span>.</h1></div></div>
 <section>
-  <div class="wrap two-col">
-    <span class="eyebrow">STANDS</span>
+  <div class="wrap two-col{' has-img' if ab_img else ''}">
+    <div class="about-side"><span class="eyebrow">STANDS</span>{ab_img}</div>
     <div class="prose about-copy">
       {paras}
       <p class="close">{E(L(AB, 'closing'))}</p>
