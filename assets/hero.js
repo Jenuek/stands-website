@@ -41,13 +41,15 @@
       `<path d="${g.d}" stroke="${halo}" stroke-opacity=".85" stroke-width="${(SW+1.1)/s}" filter="url(#pict-feather)"/>`+
       `<path d="${g.d}" stroke="${ink}" stroke-width="${SW/s}"/></g>`;};
 
-  // pass 1: each place once from 1.8s, speeding up from 0.65s to 0.40s per cut (every scene readable)
-  // pass 2: all twelve again in ~1.8s, 0.18s -> 0.13s -> 0.18s per cut (6-7 a second: a flip-book that eases in and lands softly),
+  // One continuous tempo across both passes, so pass 2 never jumps in speed:
+  // pass 1: each place once from 1.8s, 0.65s -> 0.33s per cut (every ~6% shorter, every scene readable)
+  // pass 2: carries on from there, 0.31s -> 0.13s (every ~13% shorter), holds 0.13s, then lands softly 0.14 -> 0.18s;
   //         rising to the brightest photo and back down, with overlapping dissolves, a slow push-in and a light blur
   const cuts=[]; let P2=0, A=0;
-  { const n=places.length, ds=Array.from({length:n},(_,k)=>650*Math.pow(400/650,k/(n-1))); let t=1800;
+  { const n=places.length, END1=330, ds=Array.from({length:n},(_,k)=>650*Math.pow(END1/650,k/(n-1))); let t=1800;
     ds.forEach((d,i)=>{cuts.push({t:Math.round(t),p:i,fast:false}); t+=d;}); P2=Math.round(t);
-    const fs=Array.from({length:n},(_,k)=>130+50*Math.pow(2*k/(n-1)-1,2));
+    const r1=Math.pow(END1/650,1/(n-1)), F0=END1*r1, MIN=130, r2=Math.pow(MIN/F0,1/6);
+    const fs=Array.from({length:n},(_,k)=>k<=6?F0*Math.pow(r2,k):k<=8?MIN:MIN+[12,27,48][k-9]);
     // burst order rises from the dark end (where pass 1 stops) to the brightest and back down, ending dark before the black answer scene
     const burst=[...[...Array(n).keys()].filter(k=>k%2===(n-2)%2).reverse(), ...[...Array(n).keys()].filter(k=>k%2!==(n-2)%2)];
     fs.forEach((d,i)=>{cuts.push({t:Math.round(t),p:burst[i],fast:true}); t+=d;}); A=Math.round(t); }
