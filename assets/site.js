@@ -7,6 +7,24 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!menu.hidden) close.click(); });
   }
 
+  // home statement photo: reveal upward once in view, then drift a little slower than the page
+  const stImg=document.querySelector('.statement-img');
+  if(stImg){
+    document.documentElement.classList.add('js');
+    const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(calm||!('IntersectionObserver' in window)){ stImg.classList.add('in'); }
+    else{
+      new IntersectionObserver((es,o)=>{ es.forEach(e=>{ if(e.isIntersecting){ stImg.classList.add('in'); o.disconnect(); } }); },{threshold:.15}).observe(stImg.parentElement);   // the clipped figure itself reports no visible area
+      const im=stImg.querySelector('img'); let raf=0;
+      const drift=()=>{ raf=0; const r=stImg.getBoundingClientRect(), vh=innerHeight;
+        if(r.bottom<0||r.top>vh) return;
+        const k=((r.top+r.height/2)-vh/2)/(vh/2+r.height/2);   // -1 (above) .. 1 (below)
+        im.style.setProperty('--drift',(Math.max(-1,Math.min(1,k))*r.height*.025).toFixed(1)+'px'); };
+      addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(drift); },{passive:true});
+      addEventListener('resize',drift); drift();
+    }
+  }
+
   // project filters
   const chips=document.querySelectorAll('[data-filter]');
   chips.forEach(ch=>ch.addEventListener('click',()=>{

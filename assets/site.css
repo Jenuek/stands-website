@@ -232,13 +232,17 @@ fieldset.field{border:0;padding:0;margin:0}
 .svc .ill{display:block;width:min(100%,220px);height:auto;aspect-ratio:1;margin:-8px 0 6px -10px}
 @media (max-width:560px){.svc .ill{width:180px}}
 
-/* home statement: photo beside the story. On wide screens the photo takes exactly the story's height
-   (absolute img, so it never adds height of its own); stacked on phones it keeps 4:5 */
-.statement .grid:has(.statement-img){grid-template-columns:minmax(0,7fr) minmax(0,5fr);align-items:stretch}
-.statement-side{display:flex;flex-direction:column;gap:20px}
-.statement-img{margin:0;position:relative;flex:1 1 auto;min-height:320px;overflow:hidden;background:var(--line)}
-.statement-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
-@media (max-width:760px){.statement .grid:has(.statement-img){grid-template-columns:1fr}.statement-img{flex:none;aspect-ratio:4/5;min-height:0}}
+/* home statement: a tall 4:5 photo that runs off the right edge of the screen; the story sits low beside it.
+   The figure reveals upward when it enters the view and drifts slightly slower than the page (site.js). */
+.statement{overflow-x:clip}
+.statement .grid:has(.statement-img){grid-template-columns:minmax(0,7fr) minmax(0,5fr);align-items:end}
+.statement .story-more{margin-top:2.2em}
+.statement-img{margin:0 calc(-1 * max(var(--gutter), (100vw - var(--maxw)) / 2 + var(--gutter))) 0 0;aspect-ratio:4/5;overflow:hidden;background:var(--line)}
+.statement-img img{display:block;width:100%;height:100%;object-fit:cover;transform:translate3d(0,var(--drift,0px),0) scale(1.06)}
+.js .statement-img{clip-path:inset(100% 0 0 0);transition:clip-path 1.4s cubic-bezier(.22,.61,.36,1)}
+.js .statement-img.in{clip-path:inset(0 0 0 0)}
+@media (max-width:760px){.statement .grid:has(.statement-img){grid-template-columns:1fr}.statement-img{margin-right:calc(-1 * max(var(--gutter),env(safe-area-inset-right,0px)))}}
+@media (prefers-reduced-motion:reduce){.js .statement-img{clip-path:none;transition:none}.statement-img img{transform:none}}
 
 /* Korean line breaks: break between words, not inside them, and avoid one-word last lines */
 html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:keep-all;overflow-wrap:break-word}
