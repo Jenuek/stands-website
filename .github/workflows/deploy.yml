@@ -25,6 +25,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pyyaml markdown
+      # Pages CMS cannot open the site if .pages.yml is not valid YAML (e.g. an unquoted label with ": ")
+      - name: Check Pages CMS config
+        run: python -c "import yaml; yaml.safe_load(open('.pages.yml', encoding='utf-8'))"
       - run: python build/build.py
         env:
           STANDS_VER: ${{ github.run_number }}
