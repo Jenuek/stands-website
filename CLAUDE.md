@@ -23,7 +23,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | Path | What |
 | --- | --- |
 | `content/site.yml` | Home, About, list-page leads, contact, company info, home highlights (`featured_*`). `about.what_we_do[]` (About "Scope" section) = `label` ("01. ART DEALING"), `title`, `items[]`, `title_en`, `items_en[]`, shown as number cards (old single `text` "title - a, b" is still parsed) |
-| `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body. Editorial `upcoming: true` lists the issue as "공개 예정 / Coming soon" (not a link, no page built); `cover_focus` sets the crop of the cover |
+| `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body. Editorial `upcoming: true` lists the issue as "공개 예정 / Coming soon" (not a link, no page built); the newest published issue gets a LATEST tag automatically (list and home feature); `cover_focus` sets the crop of the cover |
 | `.pages.yml` | Pages CMS field config. Field names must match what `build.py` reads |
 | `build/build.py` | Whole site generator (pages, cards, header/footer, i18n, GA/Clarity snippets) |
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
