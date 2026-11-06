@@ -26,6 +26,9 @@ img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+/* Korean line breaks: break between words, not inside them, and avoid one-word last lines */
+html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:keep-all;overflow-wrap:break-word}
+:is(p,li,dd,blockquote){text-wrap:pretty}
 .wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(var(--gutter),env(safe-area-inset-left,0px));padding-right:max(var(--gutter),env(safe-area-inset-right,0px))}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:18px}
@@ -100,6 +103,29 @@ section{padding-block:clamp(72px,11vw,150px)}
 .statement .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);margin-top:clamp(56px,8vw,110px);align-items:end}
 .statement p{max-width:34em;margin:0;font-size:17px}
 @media (max-width:760px){.statement .grid{grid-template-columns:1fr}}
+.statement .story p{max-width:34em}
+.statement .story p+p{margin-top:1.3em}
+.statement .story .slogan{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:900;font-size:clamp(22px,2.4vw,30px);letter-spacing:0;line-height:1}
+
+.statement{overflow-x:clip}
+/* home statement: a slim, tall photo (240-360 px wide) beside the story. It runs from a little above the first line down to the
+   About link (the story starts lower by --st-lift, which also opens the gap under the headline).
+   Phones: a 5:4 crop under the story. Reveals with the scroll and drifts slightly (site.js). */
+.statement .grid:has(.statement-img){--st-lift:clamp(28px,3.5vw,56px);grid-template-columns:minmax(0,1fr) clamp(240px,25vw,360px);align-items:stretch;gap:clamp(40px,8vw,140px);margin-top:clamp(40px,5vw,72px)}
+.statement .grid:has(.statement-img) .story{padding-top:var(--st-lift)}
+.statement .story-more{margin-top:2.2em}
+.statement-side{display:flex}
+.statement-img{margin:0;position:relative;flex:1 1 auto;min-height:420px;overflow:hidden;background:var(--line)}
+.statement-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%;transform:translate3d(0,var(--drift,0px),0) scale(1.06)}
+.js .statement-img{clip-path:inset(var(--reveal,100%) 0 0 0)}
+@media (max-width:760px){
+  .statement .grid:has(.statement-img){grid-template-columns:1fr}
+  .statement .grid:has(.statement-img) .story{padding-top:0}
+  .statement-side{display:block}
+  .statement-img{flex:none;width:100%;min-height:0;aspect-ratio:5/4}
+  .statement-img img{object-position:50% 52%}
+}
+@media (prefers-reduced-motion:reduce){.statement-img img{transform:none}}
 
 .sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,64px)}
 .sec-head h2{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:900;font-size:clamp(36px,6vw,88px);text-transform:uppercase;line-height:.92;margin:0;letter-spacing:-.01em}
@@ -115,6 +141,11 @@ section{padding-block:clamp(72px,11vw,150px)}
 .svc .plinth{margin-top:auto;height:6px;width:56px;background:linear-gradient(90deg,var(--black),var(--accent))}
 @media (max-width:1000px){.svc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.svc{border-bottom:1px solid var(--line)}}
 @media (max-width:560px){.svc-grid{grid-template-columns:1fr}.svc{min-height:0}}
+.svc-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1000px){.svc-grid.three{grid-template-columns:1fr}.svc-grid.three .svc{min-height:0}}
+/* line illustrations on the cards (build/illust.js) */
+.svc .ill{display:block;width:min(100%,220px);height:auto;aspect-ratio:1;margin:-8px 0 6px -10px}
+@media (max-width:560px){.svc .ill{width:180px}}
 
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
 .cards.two{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -173,6 +204,7 @@ section{padding-block:clamp(72px,11vw,150px)}
 .page-head{padding-top:calc(190px + env(safe-area-inset-top,0px));padding-bottom:clamp(40px,6vw,80px);border-bottom:1px solid var(--black)}
 .page-head h1{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:900;font-size:clamp(52px,11vw,170px);text-transform:uppercase;line-height:.88;margin:0;letter-spacing:-.02em}
 .page-head .lead{margin:28px 0 0;font-size:clamp(17px,1.6vw,21px);max-width:36em;color:#3A393E}
+.page-head h1.long{font-size:clamp(32px,5vw,80px);line-height:.95}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:40px}
 .chip{background:transparent;border:1px solid var(--black);padding:8px 14px;font-size:13px;cursor:pointer;border-radius:999px}
 .chip[aria-pressed="true"]{background:var(--black);color:var(--paper)}
@@ -183,80 +215,16 @@ section{padding-block:clamp(72px,11vw,150px)}
 .prose h2{font-size:26px;letter-spacing:-.02em;line-height:1.35;margin:56px 0 16px}
 .prose p{margin:0 0 20px}
 .prose blockquote{margin:40px 0;padding-left:22px;border-left:4px solid var(--sky);font-size:22px;line-height:1.5;letter-spacing:-.01em}
+.about-copy p{font-size:18px;line-height:1.8}
+.about-copy .close{font-weight:700;margin-top:32px}
 .manifesto{font-size:clamp(22px,2.6vw,34px);line-height:1.6;letter-spacing:-.02em;font-weight:500;max-width:22em}
 .manifesto p{margin:0 0 1.2em}
 .manifesto .last{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:900;letter-spacing:0}
-.kv{display:grid;grid-template-columns:120px minmax(0,1fr);border-top:1px solid var(--black)}
+.kv{display:grid;grid-template-columns:140px minmax(0,1fr);border-top:1px solid var(--black)}
 .kv dt,.kv dd{margin:0;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
 .kv dt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:17px}
-.full-ph{aspect-ratio:16/8;overflow:hidden;margin-top:0}
-.full-ph img{width:100%;height:100%;object-fit:cover}
-.list{border-top:1px solid var(--black)}
-.list a,.list .row{display:grid;grid-template-columns:100px minmax(0,1fr) 140px;gap:20px;padding:24px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.list a:hover h3{text-decoration:underline;text-decoration-color:var(--sky);text-decoration-thickness:2px;text-underline-offset:5px}
-.list h3{margin:0;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em;line-height:1.35}
-.list .meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
-@media (max-width:640px){.list a,.list .row{grid-template-columns:1fr;gap:6px}}
 
-/* contact form */
-.form{display:grid;gap:22px;max-width:640px}
-.field{display:grid;gap:8px}
-.field label,.field legend{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.field input,.field textarea,.field select{font:inherit;font-size:16px;background:transparent;border:0;border-bottom:1px solid var(--black);padding:10px 0;color:var(--black);border-radius:0}
-.field textarea{min-height:140px;resize:vertical}
-.field input:focus,.field textarea:focus{outline:none;border-bottom:2px solid var(--sky-deep)}
-fieldset.field{border:0;padding:0;margin:0}
-.types{display:flex;flex-wrap:wrap;gap:8px}
-.types input{position:absolute;opacity:0;pointer-events:none}
-.types label{border:1px solid var(--black);border-radius:999px;padding:8px 14px;font-family:var(--body);font-size:14px;letter-spacing:0;text-transform:none;color:var(--black);cursor:pointer}
-.types input:checked+label{background:var(--black);color:var(--paper)}
-.types input:focus-visible+label{outline:2px solid var(--sky);outline-offset:2px}
-.notice{padding:14px 16px;border-left:3px solid var(--sky);background:var(--paper-2);font-size:14px}
-.reveal{opacity:1}
-@media (prefers-reduced-motion:no-preference){
-  .reveal{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
-  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-}
-/* copy update: home story, 3 services, long about title */
-.statement .story p{max-width:34em}
-.statement .story p+p{margin-top:1.3em}
-.statement .story .slogan{font-family:var(--display);font-stretch:75%;word-spacing:.12em;font-weight:900;font-size:clamp(22px,2.4vw,30px);letter-spacing:0;line-height:1}
-.svc-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media (max-width:1000px){.svc-grid.three{grid-template-columns:1fr}.svc-grid.three .svc{min-height:0}}
-.page-head h1.long{font-size:clamp(32px,5vw,80px);line-height:.95}
-.about-copy p{font-size:18px;line-height:1.8}
-.about-copy .close{font-weight:700;margin-top:32px}
-.kv{grid-template-columns:140px minmax(0,1fr)}
-
-/* line illustrations (build/illust.js) */
-.svc .ill{display:block;width:min(100%,220px);height:auto;aspect-ratio:1;margin:-8px 0 6px -10px}
-@media (max-width:560px){.svc .ill{width:180px}}
-
-/* keep */
-.statement{overflow-x:clip}
-/* home statement: a slim, tall photo (240-360 px wide) beside the story. It runs from a little above the first line down to the
-   About link (the story starts lower by --st-lift, which also opens the gap under the headline).
-   Phones: a 5:4 crop under the story. Reveals with the scroll and drifts slightly (site.js). */
-.statement .grid:has(.statement-img){--st-lift:clamp(28px,3.5vw,56px);grid-template-columns:minmax(0,1fr) clamp(240px,25vw,360px);align-items:stretch;gap:clamp(40px,8vw,140px);margin-top:clamp(40px,5vw,72px)}
-.statement .grid:has(.statement-img) .story{padding-top:var(--st-lift)}
-.statement .story-more{margin-top:2.2em}
-.statement-side{display:flex}
-.statement-img{margin:0;position:relative;flex:1 1 auto;min-height:420px;overflow:hidden;background:var(--line)}
-.statement-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%;transform:translate3d(0,var(--drift,0px),0) scale(1.06)}
-.js .statement-img{clip-path:inset(var(--reveal,100%) 0 0 0)}
-@media (max-width:760px){
-  .statement .grid:has(.statement-img){grid-template-columns:1fr}
-  .statement .grid:has(.statement-img) .story{padding-top:0}
-  .statement-side{display:block}
-  .statement-img{flex:none;width:100%;min-height:0;aspect-ratio:5/4}
-  .statement-img img{object-position:50% 52%}
-}
-@media (prefers-reduced-motion:reduce){.statement-img img{transform:none}}
-
-/* Korean line breaks: break between words, not inside them, and avoid one-word last lines */
-html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:keep-all;overflow-wrap:break-word}
-:is(p,li,dd,blockquote){text-wrap:pretty}
-
+/* ---------- about ---------- */
 /* About: photo beside the copy, exactly as tall as the copy (absolute img, so it adds no height of its own);
    the STANDS label sits above the photo, outside the row, so photo and copy start on the same line.
    Same scroll reveal as the home photo (site.js). Below 860 px: label, the 4:5 photo, then the copy. */
@@ -299,6 +267,16 @@ html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:kee
 #scope{scroll-margin-top:32px}
 @media (max-width:760px){#scope{scroll-margin-top:56px}}
 
+.full-ph{aspect-ratio:16/8;overflow:hidden;margin-top:0}
+.full-ph img{width:100%;height:100%;object-fit:cover}
+.list{border-top:1px solid var(--black)}
+.list a,.list .row{display:grid;grid-template-columns:100px minmax(0,1fr) 140px;gap:20px;padding:24px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.list a:hover h3{text-decoration:underline;text-decoration-color:var(--sky);text-decoration-thickness:2px;text-underline-offset:5px}
+.list h3{margin:0;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em;line-height:1.35}
+.list .meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+@media (max-width:640px){.list a,.list .row{grid-template-columns:1fr;gap:6px}}
+
+/* ---------- editorial ---------- */
 /* editorial cover: the issue line set as text over the photo (not baked into the image), dark ink on the light upper wall */
 .ed-cover{position:relative}
 .ed-cover-tag{position:absolute;left:max(var(--gutter),calc((100vw - var(--maxw))/2 + var(--gutter)));top:clamp(18px,3vw,40px);font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1C1A20;display:flex;align-items:center;gap:14px}
@@ -315,3 +293,23 @@ html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:kee
 /* LATEST tag on the newest published editorial issue (list and home feature) */
 .latest{display:inline-block;vertical-align:middle;margin-left:14px;padding:4px 8px 3px;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.12em;line-height:1.2;text-transform:uppercase;color:var(--paper);background:var(--black);position:relative;top:-2px}
 .ed-feature .latest{color:var(--black);background:var(--paper);top:-3px}
+
+/* contact form */
+.form{display:grid;gap:22px;max-width:640px}
+.field{display:grid;gap:8px}
+.field label,.field legend{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea,.field select{font:inherit;font-size:16px;background:transparent;border:0;border-bottom:1px solid var(--black);padding:10px 0;color:var(--black);border-radius:0}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-bottom:2px solid var(--sky-deep)}
+fieldset.field{border:0;padding:0;margin:0}
+.types{display:flex;flex-wrap:wrap;gap:8px}
+.types input{position:absolute;opacity:0;pointer-events:none}
+.types label{border:1px solid var(--black);border-radius:999px;padding:8px 14px;font-family:var(--body);font-size:14px;letter-spacing:0;text-transform:none;color:var(--black);cursor:pointer}
+.types input:checked+label{background:var(--black);color:var(--paper)}
+.types input:focus-visible+label{outline:2px solid var(--sky);outline-offset:2px}
+.notice{padding:14px 16px;border-left:3px solid var(--sky);background:var(--paper-2);font-size:14px}
+.reveal{opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  .reveal{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+}
