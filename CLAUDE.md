@@ -11,12 +11,12 @@ Owner/designer: June. Talk to June in Korean. Copy tone: clear and assertive, ne
 ## Build and preview locally
 
 ```bash
-pip install pyyaml markdown
+pip install -r requirements.txt   # pyyaml, markdown (pinned)
 python build/build.py                 # writes _site/ (env: STANDS_OUT, STANDS_VER, STANDS_URL)
 python -m http.server 8000 -d _site   # http://localhost:8000
 ```
 
-Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the first static version; nothing serves them.
+`assets/site.css` is grouped by page area (base, header, hero, home sections, footer, inner pages, about, editorial, contact form). Add new rules to their area, not at the end of the file.
 
 ## Layout
 
