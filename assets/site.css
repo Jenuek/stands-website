@@ -294,3 +294,7 @@ html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:kee
 .wwd-card.partner{background:rgba(125,120,137,.08)}
 @media (max-width:1000px){.wwd-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wwd-card{border-bottom:1px solid var(--line);min-height:300px}}
 @media (max-width:560px){.wwd-grid{grid-template-columns:1fr}.wwd-card{min-height:0}.wwd-card ul{margin-top:12px}}
+
+/* the home "업무 범위" link lands on About #scope clear of the fixed header */
+#scope{scroll-margin-top:32px}
+@media (max-width:760px){#scope{scroll-margin-top:56px}}

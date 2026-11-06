@@ -394,7 +394,7 @@ def build_lang():
 
 <section class="services" aria-labelledby="svc-h">
   <div class="wrap">
-    <div class="sec-head"><h2 id="svc-h">What we do</h2></div>
+    <div class="sec-head"><h2 id="svc-h">What we do</h2><a class="more" href="about.html#scope">{U('업무 범위', 'Scope')}</a></div>
     <div class="svc-grid{ncls}">{svc}</div>
   </div>
 </section>
@@ -470,7 +470,7 @@ def build_lang():
   </div>
 </section>
 {process_band}
-<section class="services" style="padding-top:clamp(56px,8vw,110px)">
+<section class="services" id="scope" aria-labelledby="scope-h" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
     <div class="sec-head"><h2 id="scope-h">Scope</h2></div>
     <div class="wwd-grid">{kv}</div>
