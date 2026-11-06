@@ -298,3 +298,8 @@ html[lang="ko"] :is(p,li,dd,dt,h1,h2,h3,h4,figcaption,blockquote){word-break:kee
 /* the home "업무 범위" link lands on About #scope clear of the fixed header */
 #scope{scroll-margin-top:32px}
 @media (max-width:760px){#scope{scroll-margin-top:56px}}
+
+/* editorial cover: the issue line set as text over the photo (not baked into the image), dark ink on the light upper wall */
+.ed-cover{position:relative}
+.ed-cover-tag{position:absolute;left:max(var(--gutter),calc((100vw - var(--maxw))/2 + var(--gutter)));top:clamp(18px,3vw,40px);font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1C1A20;display:flex;align-items:center;gap:14px}
+.ed-cover-tag::before{content:"";width:40px;height:1px;background:currentColor}
