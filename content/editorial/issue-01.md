@@ -3,7 +3,8 @@ title: 작품은 어디에서 완성되는가
 issue: "01"
 date: 2026-11-02
 summary: '"작품은 서 있는 곳에서 완성된다." 무심한 공간에 조각 하나가 놓여 고유한 장소로 바뀌는 조용한 변화에 대하여.'
-cover: /img/gallery-1.jpg
+cover: /img/editorial/issue-01-cover.jpg
+cover_focus: 50% 46%
 en:
   title: Where Is a Work Completed?
   summary: "A theme that runs straight from the brand name and story: a first

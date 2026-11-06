@@ -364,11 +364,13 @@ def build_lang():
     if fe:
         a = fe[0]
         cover = img(a.get('cover'))
+        _cf = str(a.get('cover_focus') or '').strip()
+        cfocus = f' style="object-position:{E(_cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', _cf) else ''
         ed = f'''<section class="editorial-band" aria-labelledby="ed-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="ed-h">Where art<br>stands?</h2><a class="more accent-it" href="editorial.html">Editorial</a></div>
     <a class="ed-feature" href="{a['_url']}">
-      <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''}</div>
+      <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy"{cfocus}>' if cover else ''}</div>
       <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
     </a>
   </div>
@@ -543,11 +545,14 @@ def build_lang():
 
     for a in ARTICLES:
         cover = img(a.get('cover'))
+        # optional cover_focus ("50% 46%"): which part of the photo stays in frame in the wide crops
+        cf = str(a.get('cover_focus') or '').strip()
+        focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
         title = L(a, 'title')
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Issue {E(str(a.get('issue', '')))} · Where art stands?</span>
 <h1 style="font-family:var(--body);font-weight:700;text-transform:none;font-size:clamp(36px,6vw,84px);line-height:1.15;letter-spacing:-.03em">{E(title)}</h1>
 <p class="lead">{T(L(a, 'summary'))}</p></div></div>
-{f'<div class="full-ph"><img src="{E(cover)}" alt=""></div>' if cover else ''}
+{f'<div class="full-ph ed-cover"><img src="{E(cover)}" alt=""{focus}><span class="ed-cover-tag">Issue {E(str(a.get("issue", "")))} · Where art stands</span></div>' if cover else ''}
 <section><div class="wrap two-col"><span class="eyebrow">{E(str(a.get('date', '')))}</span>
 <div class="prose">{rich(BODY(a))}</div></div></section>'''
         page(a['_url'], title or 'Editorial', L(a, 'summary') or U('STANDS 에디토리얼.', 'The STANDS editorial.'), 'editorial.html', body, og=cover or None)
