@@ -21,7 +21,8 @@ en:
     Using one of our large sculptures for an architectural art review project
     would give us high-quality factory photography.
   body: The article goes here.
-sample: true
+sample: false
+upcoming: true
 hidden: false
 ---
 원고가 들어갈 자리입니다.
