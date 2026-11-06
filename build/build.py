@@ -341,12 +341,16 @@ def artist_card(a):
     return (f'<a class="artist" href="{a["_url"]}"><div class="plate">{plate}</div>'
             f'<span class="meta">{E(L(a, "medium"))}</span><h3>{E(L(a, "name"))}{sample(a)}</h3></a>')
 
+def latest(a):
+    """LATEST tag on the newest published issue (moves on by itself when the next one is published)."""
+    return '<span class="latest">Latest</span>' if PUBLISHED and a is PUBLISHED[0] else ''
+
 def article_row(a):
     if a.get('upcoming'):  # listed as a teaser: not a link, no page built yet
         return (f'<div class="row upcoming" aria-disabled="true"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
                 f'<h3>{E(L(a, "title"))}</h3><span class="meta soon">{U("공개 예정", "Coming soon")}</span></div>')
     return (f'<a href="{a["_url"]}"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
-            f'<h3>{E(L(a, "title"))}{sample(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
+            f'<h3>{E(L(a, "title"))}{sample(a)}{latest(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
 
 # ---------------------------------------------------------------------------
 # pages
@@ -375,7 +379,7 @@ def build_lang():
     <div class="sec-head"><h2 id="ed-h">Where art<br>stands?</h2><a class="more accent-it" href="editorial.html">Editorial</a></div>
     <a class="ed-feature" href="{a['_url']}">
       <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy"{cfocus}>' if cover else ''}</div>
-      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
+      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span>{latest(a)}<h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
     </a>
   </div>
 </section>'''
