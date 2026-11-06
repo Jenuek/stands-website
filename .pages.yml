@@ -253,4 +253,5 @@ content:
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
       - { name: sample, label: "'예시' 표시", type: boolean }
+      - { name: upcoming, label: 공개 예정, type: boolean, description: 켜면 목록에 제목만 '공개 예정'으로 나오고 글은 열리지 않습니다 }
       - { name: hidden, label: 비공개, type: boolean, description: 켜면 사이트에 나오지 않습니다 }

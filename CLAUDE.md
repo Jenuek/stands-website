@@ -23,7 +23,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 | Path | What |
 | --- | --- |
 | `content/site.yml` | Home, About, list-page leads, contact, company info, home highlights (`featured_*`). `about.what_we_do[]` (About "Scope" section) = `label` ("01. ART DEALING"), `title`, `items[]`, `title_en`, `items_en[]`, shown as number cards (old single `text` "title - a, b" is still parsed) |
-| `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body |
+| `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body. Editorial `upcoming: true` lists the issue as "공개 예정 / Coming soon" (not a link, no page built); `cover_focus` sets the crop of the cover |
 | `.pages.yml` | Pages CMS field config. Field names must match what `build.py` reads |
 | `build/build.py` | Whole site generator (pages, cards, header/footer, i18n, GA/Clarity snippets) |
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
@@ -93,7 +93,7 @@ Root `*.html`, `park-loop.*` and `img/park-poster.jpg` are leftovers from the fi
 - [ ] Fill company info, phone and address. Finalise the privacy policy (KO/EN).
 - [ ] Hide `sample: true` entries. Add real domestic artists and 3–5 마롱컴퍼니 Partner Works. Check whether FRIENDSWITHYOU (overseas) can be listed.
 - [ ] Confirm English artist names (Kwon Chi-gyu, Kim Byoungho, Kim Woojin, Lee Sungok) and "Malong Company".
-- [ ] Editorial issues 02/03 still hold planning memos as summaries. The issue 01 draft is in June's Claude Doc.
+- [ ] Editorial issues 02/03 are listed as upcoming; their summaries are still planning memos (not shown while upcoming). Write them before switching `upcoming` off.
 - [ ] Custom domain, then transfer the repo to the company org. Re-install the Pages CMS app on the org and update `STANDS_URL`.
 - [ ] Mark `cta_contact_click` as a GA4 key event. Register with Search Console and Naver Search Advisor.
 - [ ] Optional: move hero timing values into `site.yml` / `.pages.yml` so June can tune them in the CMS.

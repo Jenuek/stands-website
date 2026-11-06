@@ -233,6 +233,7 @@ PROJECTS = collection('projects', 'project', lambda d: (num(d.get('order')), d.g
 ARTISTS = collection('artists', 'artist', lambda d: (num(d.get('order')), d.get('name', '')))
 ARTICLES = collection('editorial', 'article', lambda d: str(d.get('date', '')), )
 ARTICLES.reverse()  # newest first
+PUBLISHED = [a for a in ARTICLES if not a.get('upcoming')]  # upcoming issues are listed but get no page
 BY_PATH = {d['_path']: d for d in PROJECTS + ARTISTS + ARTICLES}
 BY_STEM = {}
 for _d in PROJECTS + ARTISTS + ARTICLES:
@@ -341,6 +342,9 @@ def artist_card(a):
             f'<span class="meta">{E(L(a, "medium"))}</span><h3>{E(L(a, "name"))}{sample(a)}</h3></a>')
 
 def article_row(a):
+    if a.get('upcoming'):  # listed as a teaser: not a link, no page built yet
+        return (f'<div class="row upcoming" aria-disabled="true"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
+                f'<h3>{E(L(a, "title"))}</h3><span class="meta soon">{U("공개 예정", "Coming soon")}</span></div>')
     return (f'<a href="{a["_url"]}"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
             f'<h3>{E(L(a, "title"))}{sample(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
 
@@ -351,7 +355,7 @@ def build_lang():
     # home
     fp = pick(H.get('featured_projects')) or PROJECTS[:3]
     fa = pick(H.get('featured_artists')) or ARTISTS[:4]
-    fe = (pick(H.get('featured_article')) or ARTICLES[:1])
+    fe = [a for a in (pick(H.get('featured_article')) or PUBLISHED[:1]) if not a.get('upcoming')] or PUBLISHED[:1]
     services = H.get('services', []) or []
     # line illustrations from build/illust.js (img/illust/service-01..03.svg), one per card in order
     def svc_ill(i):
@@ -543,7 +547,7 @@ def build_lang():
 <section><div class="wrap"><div class="list">{''.join(article_row(a) for a in ARTICLES)}</div></div></section>'''
     page('editorial.html', 'Editorial', U('WHERE ART STANDS? — STANDS 에디토리얼.', 'WHERE ART STANDS? — the STANDS editorial.'), 'editorial.html', editorial)
 
-    for a in ARTICLES:
+    for a in PUBLISHED:
         cover = img(a.get('cover'))
         # optional cover_focus ("50% 46%"): which part of the photo stays in frame in the wide crops
         cf = str(a.get('cover_focus') or '').strip()
@@ -597,7 +601,7 @@ def build_lang():
     # old single example pages -> redirect to the first real entry
     for old, target in (('project.html', PROJECTS[0]['_url'] if PROJECTS else 'projects.html'),
                         ('artist.html', ARTISTS[0]['_url'] if ARTISTS else 'artists.html'),
-                        ('article.html', ARTICLES[0]['_url'] if ARTICLES else 'editorial.html')):
+                        ('article.html', PUBLISHED[0]['_url'] if PUBLISHED else 'editorial.html')):
         open(os.path.join(OUT, old), 'w', encoding='utf-8').write(
             f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}"><a href="{target}">{U("이동", "Continue")}</a>\n')
 
