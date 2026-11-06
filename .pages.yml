@@ -67,7 +67,7 @@ content:
             type: object
             list: true
             fields:
-              - { name: label, label: 라벨 (예: 01. ART DEALING), type: string }
+              - { name: label, label: "라벨 (예: 01. ART DEALING)", type: string }
               - { name: title, label: 제목, type: string }
               - { name: items, label: 세부 항목, type: string, list: true }
               - { name: title_en, label: 제목 (영문), type: string }
@@ -242,7 +242,7 @@ content:
       - { name: date, label: 발행일, type: date }
       - { name: summary, label: 요약 (목록과 홈에 표시), type: text }
       - { name: cover, label: 대표 이미지, type: image }
-      - { name: cover_focus, label: 대표 이미지 초점 (예: 50% 46%), type: string, description: "가로로 잘릴 때 보일 부분. 가로% 세로%. 비우면 가운데" }
+      - { name: cover_focus, label: "대표 이미지 초점 (예: 50% 46%)", type: string, description: "가로로 잘릴 때 보일 부분. 가로% 세로%. 비우면 가운데" }
       - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
       - name: en
         label: 영문 (English)
