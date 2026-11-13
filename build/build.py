@@ -500,7 +500,7 @@ def build_lang():
     for a in ARTISTS:
         # sample projects are placeholders, so they are not shown on a real artist's page
         works = [p for p in PROJECTS if ref(p.get('artist')) is a and not (p.get('sample') and not a.get('sample'))]
-        hist = ''.join(f'<a href="{a["_url"]}"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></a>'
+        hist = ''.join(f'<div class="row"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></div>'
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
         name = L(a, 'name')
