@@ -2,6 +2,26 @@
 name: 작가 이름 08
 sample: true
 hidden: false
+hero_image: ''
+hero_caption: ''
+quote: 작가의 한 문장이 들어갈 자리입니다.
+works:
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+note: STANDS가 보는 이 작가에 대한 짧은 글이 들어갈 자리입니다. 작품의 성격과 어울리는 공간을 3~4문장으로 씁니다.
+fit:
+- '[어울리는 자리]'
+installs: []
 order: 8
 medium: 혼합 재료
 born: '[입력]'
@@ -20,6 +40,8 @@ history:
   title_en: Group exhibition title
   place_en: Busan
 en:
+  quote: The artist's own sentence goes here.
+  note: 'A short STANDS note on the artist goes here: the character of the work and the spaces it suits, in three or four sentences.'
   name: Artist Name 08
   medium: Mixed media
   born: '[To be added]'

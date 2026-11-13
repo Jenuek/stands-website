@@ -498,20 +498,60 @@ def build_lang():
     page('artists.html', 'Artists', U('STANDS 작가.', 'Artists of STANDS.'), 'artists.html', artists)
 
     for a in ARTISTS:
-        works = [p for p in PROJECTS if ref(p.get('artist')) is a]
+        # sample projects are placeholders, so they are not shown on a real artist's page
+        works = [p for p in PROJECTS if ref(p.get('artist')) is a and not (p.get('sample') and not a.get('sample'))]
         hist = ''.join(f'<a href="{a["_url"]}"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></a>'
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
         name = L(a, 'name')
+        # every block below is optional: an artist with only a name and a summary still gets a tidy page
+        hero_src = img(a.get('hero_image')) or photo
+        cap = L(a, 'hero_caption')
+        hero_html = (f'<figure class="full-ph artist-hero"><img src="{E(hero_src)}" alt="{E(cap or name)}">'
+                     f'{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>') if hero_src else ''
+        quote = L(a, 'quote')
+        quote_html = (f'<section class="artist-quote"><div class="wrap"><blockquote><p>{E(quote)}</p>'
+                      f'<cite>— {E(name)}</cite></blockquote></div></section>') if quote else ''
+        # works: optional `group` starts a sub-heading when it changes (e.g. hanging / wall / proposals);
+        # `contain` shows the whole photo (wide panels); a work without a photo keeps an empty frame as a placeholder
+        wlist = [w for w in (a.get('works') or []) if w.get('image') or w.get('title')]
+        works_html, cur = '', None
+        for w in wlist:
+            g = LI(w, 'group')
+            if g != cur:
+                works_html += f'<h3 class="works-group">{E(g)}</h3>' if g else ''
+                cur = g
+            pic = (f'<img src="{E(img(w["image"]))}" alt="{E(LI(w, "title"))}" loading="lazy">' if w.get('image') else '')
+            meta = " · ".join(x for x in (str(w.get("year") or ""), LI(w, "material"), LI(w, "size")) if x)
+            works_html += (f'<figure class="work{" contain" if w.get("contain") else ""}{" empty" if not w.get("image") else ""}"><div class="ph">{pic}</div>'
+                           f'<figcaption><span class="t">{E(LI(w, "title"))}</span><span class="m">{E(meta)}</span></figcaption></figure>')
+        works_sec = (f'<section class="artist-works"><div class="wrap"><div class="sec-head"><h2>Selected Works</h2>'
+                     f'<a class="more" href="contact.html">{U("작품 문의", "Inquire about works")}</a></div><div class="works-grid">{works_html}</div></div></section>') if works_html else ''
+        note, fit = L(a, 'note'), [x for x in (L(a, 'fit', []) or []) if x]
+        note_sec = (f'<section class="artist-note"><div class="wrap two-col"><span class="eyebrow">STANDS Note</span><div>'
+                    f'{f"<p class=\"note\">{T(note)}</p>" if note else ""}'
+                    f'{("<div class=\"fit\"><span class=\"k\">" + U("어울리는 자리", "Where it stands") + "</span><ul>" + "".join(f"<li>{E(x)}</li>" for x in fit) + "</ul></div>") if fit else ""}'
+                    f'</div></div></section>') if (note or fit) else ''
+        inst = [i for i in (a.get('installs') or []) if i.get('image')]
+        inst_html = ''.join(f'<figure><div class="ph"><img src="{E(img(i["image"]))}" alt="{E(LI(i, "place"))}" loading="lazy"></div>'
+                            f'<figcaption><span class="t">{E(LI(i, "place"))}</span><span class="m">{E(str(i.get("year") or ""))}</span></figcaption></figure>' for i in inst)
+        inst_sec = (f'<section class="artist-installs"><div class="wrap"><div class="sec-head"><h2>Installed</h2></div>'
+                    f'<div class="installs">{inst_html}</div></div></section>') if inst_html else ''
+        facts = [(k, v) for k, v in (('Born', str(L(a, 'born') or '')), ('Based', L(a, 'based')), ('Media', L(a, 'medium'))) if v and not str(v).startswith('[')]
+        kv = ''.join(f'<dt>{k}</dt><dd>{E(v)}</dd>' for k, v in facts)
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artist · {E(L(a, 'medium'))}</span><h1>{E(name)}</h1>
 <p class="lead">{T(L(a, 'summary'))}{sample(a)}</p></div></div>
-{f'<div class="full-ph"><img src="{E(photo)}" alt="{E(name)}"></div>' if photo else ''}
-<section><div class="wrap two-col">
-  <dl class="kv"><dt>Born</dt><dd>{E(str(L(a, 'born')))}</dd><dt>Based</dt><dd>{E(L(a, 'based'))}</dd><dt>Media</dt><dd>{E(L(a, 'medium'))}</dd><dt>Contact</dt><dd><a class="more" href="contact.html">{U('작품 문의', 'Inquire about works')}</a></dd></dl>
+{hero_html}
+{quote_html}
+{works_sec}
+{note_sec}
+{inst_sec}
+{f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Projects</h2></div><div class="cards">{"".join(project_card(p) for p in works)}</div></div></section>' if works else ''}
+<section class="artist-cv"><div class="wrap two-col">
+  <div><span class="eyebrow">Profile</span><dl class="kv">{kv}<dt>Contact</dt><dd><a class="more" href="contact.html">{U('작품 문의', 'Inquire about works')}</a></dd></dl></div>
   <div class="prose">{rich(BODY(a))}</div>
 </div></section>
-{f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Projects</h2></div><div class="cards">{"".join(project_card(p) for p in works)}</div></div></section>' if works else ''}
-{f'<section style="padding-top:0"><div class="wrap two-col"><span class="eyebrow">Exhibitions</span><div class="list">{hist}</div></div></section>' if hist else ''}'''
+{f'<section style="padding-top:0"><div class="wrap two-col"><span class="eyebrow">Solo Exhibitions</span><div class="list">{hist}</div></div></section>' if hist else ''}'''
         page(a['_url'], name or 'Artist', L(a, 'summary') or U('STANDS 작가.', 'Artist of STANDS.'), 'artists.html', body)
 
     # projects

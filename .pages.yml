@@ -199,7 +199,36 @@ content:
       - { name: based, label: 활동 지역, type: string }
       - { name: photo, label: 대표 이미지 (비우면 기본 도형), type: image }
       - { name: summary, label: 소개 (한두 문장), type: text }
-      - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
+      - { name: body, label: "본문 (학력·경력·수상·소장)", type: rich-text, options: { format: markdown } }
+      - { name: hero_image, label: 대표작 사진 (페이지 상단 크게), type: image }
+      - { name: hero_caption, label: "대표작 캡션 (예: 작품명, 연도)", type: string }
+      - { name: quote, label: 작가의 한 문장, type: text }
+      - name: works
+        label: 작품 (Selected Works)
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 사진, type: image }
+          - { name: title, label: 작품명, type: string }
+          - { name: year, label: 연도, type: string }
+          - { name: material, label: 재료, type: string }
+          - { name: size, label: 크기, type: string }
+          - { name: group, label: "묶음 (예: 매다는 작품, 벽면 작품)", type: string, description: 바로 앞 작품과 다르면 새 소제목이 생깁니다 }
+          - { name: contain, label: 사진 전체 보이기 (가로로 긴 작품), type: boolean }
+          - { name: title_en, label: 작품명 (영문), type: string }
+          - { name: material_en, label: 재료 (영문), type: string }
+          - { name: group_en, label: 묶음 (영문), type: string }
+      - { name: note, label: STANDS가 보는 이 작가, type: text }
+      - { name: fit, label: 어울리는 자리, type: string, list: true }
+      - name: installs
+        label: 설치 사례 (Installed)
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 사진, type: image }
+          - { name: place, label: 장소, type: string }
+          - { name: year, label: 연도, type: string }
+          - { name: place_en, label: 장소 (영문), type: string }
       - name: history
         label: 전시 · 프로젝트 이력
         type: object
@@ -221,6 +250,10 @@ content:
           - { name: based, label: 활동 지역 (영문), type: string }
           - { name: summary, label: 소개 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
+          - { name: hero_caption, label: 대표작 캡션 (영문), type: string }
+          - { name: quote, label: 작가의 한 문장 (영문), type: text }
+          - { name: note, label: STANDS가 보는 이 작가 (영문), type: text }
+          - { name: fit, label: 어울리는 자리 (영문), type: string, list: true }
       - { name: order, label: 정렬 순서 (작을수록 앞), type: number }
       - { name: sample, label: "'예시' 표시", type: boolean, description: 실제 작가면 끄세요 }
       - { name: hidden, label: 비공개, type: boolean, description: 켜면 사이트에 나오지 않습니다 }

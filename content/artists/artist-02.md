@@ -5,6 +5,26 @@ born: '[입력]'
 based: 서울
 photo: /img/6798256823302155.jpg
 summary: 작가 소개 한두 문장이 들어갈 자리입니다. 작업의 재료, 태도, 대표 프로젝트를 짧게 소개합니다.
+hero_image: /img/6798256823302155.jpg
+hero_caption: ''
+quote: 작가의 한 문장이 들어갈 자리입니다.
+works:
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+- title: 작품명
+  year: '[연도]'
+  material: '[재료]'
+  size: '[크기]'
+note: STANDS가 보는 이 작가에 대한 짧은 글이 들어갈 자리입니다. 작품의 성격과 어울리는 공간을 3~4문장으로 씁니다.
+fit:
+- '[어울리는 자리]'
+installs: []
 history:
 - year: '2026'
   title: 개인전 제목
@@ -20,6 +40,8 @@ order: 2
 sample: false
 hidden: false
 en:
+  quote: The artist's own sentence goes here.
+  note: 'A short STANDS note on the artist goes here: the character of the work and the spaces it suits, in three or four sentences.'
   name: Kim Byoungho
   medium: Metal
   born: '[To be added]'
