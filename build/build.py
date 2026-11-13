@@ -512,11 +512,19 @@ def build_lang():
         quote = L(a, 'quote')
         quote_html = (f'<section class="artist-quote"><div class="wrap"><blockquote><p>{E(quote)}</p>'
                       f'<cite>— {E(name)}</cite></blockquote></div></section>') if quote else ''
-        wlist = [w for w in (a.get('works') or []) if w.get('image')]
-        works_html = ''.join(
-            f'<figure class="work"><div class="ph"><img src="{E(img(w["image"]))}" alt="{E(LI(w, "title"))}" loading="lazy"></div>'
-            f'<figcaption><span class="t">{E(LI(w, "title"))}</span><span class="m">{E(" · ".join(x for x in (str(w.get("year") or ""), LI(w, "material"), LI(w, "size")) if x))}</span></figcaption></figure>'
-            for w in wlist)
+        # works: optional `group` starts a sub-heading when it changes (e.g. hanging / wall / proposals);
+        # `contain` shows the whole photo (wide panels); a work without a photo keeps an empty frame as a placeholder
+        wlist = [w for w in (a.get('works') or []) if w.get('image') or w.get('title')]
+        works_html, cur = '', None
+        for w in wlist:
+            g = LI(w, 'group')
+            if g != cur:
+                works_html += f'<h3 class="works-group">{E(g)}</h3>' if g else ''
+                cur = g
+            pic = (f'<img src="{E(img(w["image"]))}" alt="{E(LI(w, "title"))}" loading="lazy">' if w.get('image') else '')
+            meta = " · ".join(x for x in (str(w.get("year") or ""), LI(w, "material"), LI(w, "size")) if x)
+            works_html += (f'<figure class="work{" contain" if w.get("contain") else ""}{" empty" if not w.get("image") else ""}"><div class="ph">{pic}</div>'
+                           f'<figcaption><span class="t">{E(LI(w, "title"))}</span><span class="m">{E(meta)}</span></figcaption></figure>')
         works_sec = (f'<section class="artist-works"><div class="wrap"><div class="sec-head"><h2>Selected Works</h2>'
                      f'<a class="more" href="contact.html">{U("작품 문의", "Inquire about works")}</a></div><div class="works-grid">{works_html}</div></div></section>') if works_html else ''
         note, fit = L(a, 'note'), [x for x in (L(a, 'fit', []) or []) if x]

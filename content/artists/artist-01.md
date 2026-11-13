@@ -10,27 +10,122 @@ hero_caption: Mother Nature Network(대자연네트워크), 2021
 quote: 색(色)은 존재의 표정이고, 형태(形態)는 힘의 흔적이다.
 works:
 - image: /img/artists/kwon-chi-gyu/future-forest-2023.jpg
-  title: 미래의 숲
+  title: '미래의 숲'
   year: '2023'
-  title_en: Future Forest
+  group: '매다는 작품'
+  title_en: 'Future Forest'
+  group_en: 'Hanging works'
 - image: /img/artists/kwon-chi-gyu/universe-2020.jpg
-  title: Bio-Resilience – Universe
+  title: 'Bio-Resilience – Universe'
   year: '2020'
+  group: '매다는 작품'
+  group_en: 'Hanging works'
 - image: /img/artists/kwon-chi-gyu/daeguk-2023.jpg
-  title: 대국(對局)
+  title: '대국(對局)'
   year: '2023'
-  title_en: Daeguk (對局)
+  group: '매다는 작품'
+  title_en: 'Daeguk (對局)'
+  group_en: 'Hanging works'
 - image: /img/artists/kwon-chi-gyu/firefly-2020.jpg
-  title: Bio Resilience – 반딧불이
+  title: 'Bio Resilience – 반딧불이'
   year: '2020'
-  title_en: Bio Resilience – Firefly
+  group: '매다는 작품'
+  title_en: 'Bio Resilience – Firefly'
+  group_en: 'Hanging works'
 - image: /img/artists/kwon-chi-gyu/universe-2022.jpg
-  title: Bio-Resilience – Universe
+  title: 'Bio-Resilience – Universe'
   year: '2022'
+  group: '매다는 작품'
+  group_en: 'Hanging works'
 - image: /img/artists/kwon-chi-gyu/positive-forest-2023.jpg
   title: 'Resilience : 긍정의 숲'
   year: '2023'
+  group: '매다는 작품'
   title_en: 'Resilience: Positive Forest'
+  group_en: 'Hanging works'
+- image: /img/artists/kwon-chi-gyu/wall-full-moon-2020.jpg
+  title: 'Resilience – 만월'
+  year: '2020'
+  size: '각 1,200 × 150(D) × 1,200(H)mm'
+  group: '벽면 작품'
+  title_en: 'Resilience – Full Moon'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-three-windows-2020.jpg
+  title: 'Resilience – 세 개의 창'
+  year: '2020'
+  size: '각 700 × 120(D) × 700(H)mm'
+  contain: true
+  group: '벽면 작품'
+  title_en: 'Resilience – Three Windows'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-forest-2016.jpg
+  title: 'Resilience – 숲'
+  year: '2016'
+  size: '2,400 × 180 × 650(H)mm'
+  contain: true
+  group: '벽면 작품'
+  title_en: 'Resilience – Forest'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-forest-circle-2016.jpg
+  title: 'Resilience – Forest (Circle Black – White)'
+  year: '2016'
+  size: '각 Φ580 × 80(D)mm'
+  group: '벽면 작품'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-flow-2016.jpg
+  title: 'Resilience – flow'
+  year: '2016'
+  size: '각 500 × 100(D) × 500(H)mm'
+  group: '벽면 작품'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-pine-2023.jpg
+  title: 'Bio-Resilience – pine'
+  year: '2023'
+  size: '각 2,000 × 120 × 500(H)mm'
+  contain: true
+  group: '벽면 작품'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-wind-2023.jpg
+  title: 'Resilience – wind'
+  year: '2023'
+  size: '1,000 × 100 × 470(H)mm'
+  contain: true
+  group: '벽면 작품'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/wall-inner-forest-2023.jpg
+  title: 'Resilience : 내면의 숲'
+  year: '2023'
+  group: '벽면 작품'
+  title_en: 'Resilience: Inner Forest'
+  group_en: 'Wall works'
+- image: /img/artists/kwon-chi-gyu/proposal-isumok.jpg
+  title: '이수목(利水木)'
+  group: '공공미술 설치 제안 (렌더링)'
+  title_en: 'Isumok (利水木)'
+  group_en: 'Public art proposals (renderings)'
+- image: /img/artists/kwon-chi-gyu/proposal-full-moon.jpg
+  title: '만월(滿月)'
+  group: '공공미술 설치 제안 (렌더링)'
+  title_en: 'Full Moon (滿月)'
+  group_en: 'Public art proposals (renderings)'
+- image: /img/artists/kwon-chi-gyu/proposal-ring.jpg
+  title: 'Ring'
+  group: '공공미술 설치 제안 (렌더링)'
+  group_en: 'Public art proposals (renderings)'
+- image: /img/artists/kwon-chi-gyu/proposal-universe.jpg
+  title: '유니버스'
+  group: '공공미술 설치 제안 (렌더링)'
+  title_en: 'Universe'
+  group_en: 'Public art proposals (renderings)'
+- image: /img/artists/kwon-chi-gyu/proposal-seasons-of-lights.jpg
+  title: 'Seasons of Lights – 사계의 빛'
+  group: '공공미술 설치 제안 (렌더링)'
+  title_en: 'Seasons of Lights'
+  group_en: 'Public art proposals (renderings)'
+- image: /img/artists/kwon-chi-gyu/proposal-resilience.jpg
+  title: 'Resilience'
+  group: '공공미술 설치 제안 (렌더링)'
+  group_en: 'Public art proposals (renderings)'
 note: 권치규의 조각은 서 있는 자리를 비추고, 그 자리를 작품 안으로 들인다. 거울처럼 마감한 바깥 면은 주변의 건축과 하늘을 담고, 안쪽의 색 면은 빛을 받아 형태를 드러낸다. 천장에 매달면 로비가 숲의 그늘이 되고, 광장에 세우면 사람이 모이는 나무가 된다. 아파트 단지, 병원, 기업 사옥의 공개공지에서 이미 그 쓰임이 확인되었다.
 fit:
 - 로비 천장

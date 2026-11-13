@@ -213,8 +213,11 @@ content:
           - { name: year, label: 연도, type: string }
           - { name: material, label: 재료, type: string }
           - { name: size, label: 크기, type: string }
+          - { name: group, label: "묶음 (예: 매다는 작품, 벽면 작품)", type: string, description: 바로 앞 작품과 다르면 새 소제목이 생깁니다 }
+          - { name: contain, label: 사진 전체 보이기 (가로로 긴 작품), type: boolean }
           - { name: title_en, label: 작품명 (영문), type: string }
           - { name: material_en, label: 재료 (영문), type: string }
+          - { name: group_en, label: 묶음 (영문), type: string }
       - { name: note, label: STANDS가 보는 이 작가, type: text }
       - { name: fit, label: 어울리는 자리, type: string, list: true }
       - name: installs
