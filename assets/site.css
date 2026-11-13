@@ -164,6 +164,7 @@ section{padding-block:clamp(72px,11vw,150px)}
 .artist .plate{aspect-ratio:3/4;background:var(--paper-2);position:relative;overflow:hidden}
 .artist .plate svg{position:absolute;left:50%;bottom:18%;width:46%;transform:translateX(-50%)}
 .artist .plate::after{content:"";position:absolute;left:20%;right:20%;bottom:calc(18% - 6px);height:6px;background:var(--black)}
+.artist .plate:has(img)::after{display:none}
 .artist h3{margin:0;font-size:18px}
 .artist .meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
 @media (max-width:900px){.artist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -275,6 +276,38 @@ section{padding-block:clamp(72px,11vw,150px)}
 .list h3{margin:0;font-size:clamp(19px,2vw,26px);letter-spacing:-.02em;line-height:1.35}
 .list .meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
 @media (max-width:640px){.list a,.list .row{grid-template-columns:1fr;gap:6px}}
+
+/* ---------- artist page ---------- */
+/* hero work with its caption, the artist's own sentence, selected works, STANDS note with fitting places, installed works */
+.artist-hero{position:relative;margin:0}
+.artist-hero figcaption{position:absolute;left:max(var(--gutter),calc((100vw - var(--maxw))/2 + var(--gutter)));bottom:clamp(16px,2.6vw,32px);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)}
+.artist-quote{padding-block:clamp(72px,10vw,140px) clamp(40px,6vw,80px)}
+.artist-quote blockquote{margin:0}
+.artist-quote p{margin:0;max-width:18em;font-size:clamp(26px,3.4vw,46px);line-height:1.4;letter-spacing:-.03em;font-weight:600}
+.artist-quote cite{display:block;margin-top:22px;font-style:normal;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.artist-works{padding-top:clamp(40px,6vw,80px)}
+.works-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,36px) clamp(16px,2vw,28px)}
+.work{margin:0;display:flex;flex-direction:column;gap:12px}
+.work .ph{aspect-ratio:4/3;overflow:hidden;background:var(--paper-2)}
+.work .ph img{width:100%;height:100%;object-fit:cover}
+.work figcaption,.installs figcaption{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.work .t,.installs .t{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.work .m,.installs .m{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.artist-note{border-top:1px solid var(--black)}
+.artist-note .note{margin:0;font-size:clamp(19px,1.8vw,23px);line-height:1.75;letter-spacing:-.01em;max-width:34em}
+.artist-note .fit{margin-top:36px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.artist-note .fit .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.artist-note .fit ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.artist-note .fit li{border:1px solid var(--black);border-radius:999px;padding:6px 14px;font-size:14px}
+.artist-installs{border-top:1px solid var(--black)}
+.installs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,1fr);gap:clamp(14px,1.6vw,22px);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.installs figure{margin:0;display:flex;flex-direction:column;gap:12px;scroll-snap-align:start}
+.installs .ph{aspect-ratio:3/4;overflow:hidden;background:var(--paper-2)}
+.installs .ph img{width:100%;height:100%;object-fit:cover}
+.artist-cv{border-top:1px solid var(--black)}
+.artist-cv .prose p{font-size:15px;line-height:1.75}
+@media (max-width:900px){.works-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.works-grid{grid-template-columns:1fr}.installs{grid-auto-columns:72%}}
 
 /* ---------- editorial ---------- */
 /* editorial cover: the issue line set as text over the photo (not baked into the image), dark ink on the light upper wall */
