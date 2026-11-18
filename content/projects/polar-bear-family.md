@@ -12,6 +12,7 @@ client: '[입력]'
 scope: '[입력]'
 cover: /img/projects/polar-bear-family/main.jpg
 gallery:
+- /img/projects/polar-bear-family/detail-00.jpg
 - /img/projects/polar-bear-family/detail-01.jpg
 - /img/projects/polar-bear-family/detail-02.jpg
 - /img/projects/polar-bear-family/detail-03.jpg
