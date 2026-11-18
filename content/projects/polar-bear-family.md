@@ -2,13 +2,13 @@
 title: Sculpture for an Office Site
 sample: false
 hidden: false
-order: 0
+order: 2
 type: public
 location: 성남 판교
 year: '2025'
 size: 2,900 × 4,300 × 1,800(H)mm
 artist: 김도훈
-place_type: 상업시설
+place_type: 업무시설
 scope: 심의 · 제작 · 설치
 cover: /img/projects/polar-bear-family/main.jpg
 gallery:
@@ -20,7 +20,7 @@ summary: 김도훈 작가의 「북극곰 가족」. 업무 지구의 녹지에 
 en:
   title: Sculpture for an Office Site
   location: Pangyo, Seongnam
-  place_type: Commercial
+  place_type: Office
   scope: Review · Fabrication · Installation
   summary: Kim Dohoon's Polar Bear Family, set in the green of a business district. Its surface of stainless-steel pieces laid layer upon layer reflects the surrounding buildings, the sky and the grass.
   body: |-

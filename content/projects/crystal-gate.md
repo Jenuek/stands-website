@@ -2,7 +2,7 @@
 title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
-order: 0.8
+order: 5
 type: public
 location: 경기 안산
 year: ''
