@@ -4,7 +4,7 @@ sample: false
 hidden: false
 order: 0.9
 type: public
-location: 경기 화성 동탄
+location: 화성 동탄
 year: ''
 size: ''
 artist: 양세훈
