@@ -171,7 +171,7 @@ CONTENT = os.path.join(ROOT, 'content')
 OUT_ROOT = os.environ.get('STANDS_OUT', os.path.join(ROOT, '_site'))
 OUT = OUT_ROOT
 VER = os.environ.get('STANDS_VER', '20261028')
-BASE_URL = os.environ.get('STANDS_URL', 'https://jenuek.github.io/stands-website/')
+BASE_URL = os.environ.get('STANDS_URL', 'https://stands.art/')
 E = html.escape
 
 def T(v):
