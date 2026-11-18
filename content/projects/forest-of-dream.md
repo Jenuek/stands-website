@@ -9,7 +9,7 @@ year: ''
 size: ''
 artist: 김태호
 place_type: 공동주택
-scope: ''
+scope: 심의 · 제작 · 설치
 cover: /img/projects/forest-of-dream/main.jpg
 gallery:
 - /img/projects/forest-of-dream/detail-01.jpg
@@ -20,6 +20,7 @@ en:
   title: Sculpture for an Apartment Complex
   location: Ansan, Gyeonggi
   place_type: Residential
+  scope: Review · Fabrication · Installation
   summary: Kim Taeho's Forest of Dream. Five spheres of different sizes rest on the lawn of a Hillstate apartment complex in Ansan.
   body: |-
     Five spheres of different sizes rest on a strip of lawn along the complex's main walkway. Each mirror-finished surface is wrapped in black lines that branch like twigs, and between them the surrounding buildings, the trees and the people passing by are reflected.

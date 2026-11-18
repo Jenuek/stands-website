@@ -9,7 +9,7 @@ year: ''
 size: ''
 artist: 양세훈
 place_type: 공동주택
-scope: ''
+scope: 심의 · 제작 · 설치
 cover: /img/projects/nabillera/main.jpg
 gallery:
 - /img/projects/nabillera/detail-01.jpg
@@ -20,6 +20,7 @@ en:
   title: Sculpture for an Apartment Complex
   location: Dongtan, Hwaseong
   place_type: Residential
+  scope: Review · Fabrication · Installation
   summary: Yang Sehoon's Nabillera. In the garden of an apartment complex in Dongtan, a form like a butterfly settling on a wave.
   body: |-
     The work shows a symbol of life and abundance settling lightly on the waves of the sea. Within the calm of a butterfly coming to rest, it gives organic form to the branches of a tree of life, and holds the birth of abundance and harmony.

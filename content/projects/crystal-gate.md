@@ -9,7 +9,7 @@ year: ''
 size: ''
 artist: 김도훈
 place_type: 공동주택
-scope: ''
+scope: 심의 · 제작 · 설치
 cover: /img/projects/crystal-gate/main.jpg
 gallery:
 - /img/projects/crystal-gate/detail-01.jpg
@@ -19,6 +19,7 @@ en:
   title: Sculpture for an Apartment Complex
   location: Ansan, Gyeonggi
   place_type: Residential
+  scope: Review · Fabrication · Installation
   summary: Kim Dohoon's Crystal Gate. On the central walkway of a Hillstate apartment complex in Ansan, two crystal-like masses face each other like a gate.
   body: |-
     Two masses cut into facets like a crystal stand on a stone base in the middle of the complex's central walkway. Between them the path runs on, so residents pass through the work as through a gate.

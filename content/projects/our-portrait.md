@@ -9,7 +9,7 @@ year: '2022'
 size: ''
 artist: content/artists/artist-03.md
 place_type: 공동주택
-scope: ''
+scope: 심의 · 제작 · 설치
 cover: /img/projects/our-portrait/main.jpg
 gallery:
 - /img/projects/our-portrait/detail-01.jpg
@@ -21,6 +21,7 @@ en:
   title: Sculpture for an Apartment Complex
   location: Pangyo, Seongnam
   place_type: Residential
+  scope: Review · Fabrication · Installation
   summary: Kim Woojin's Our Portrait. A family of horses in colours as vivid as a crayon drawing roams the resting place of an apartment complex.
   body: |-
     The work stages a fairy-tale scene in a resting place where residents take time out from the day, and offers them a moment of rest.

@@ -9,7 +9,7 @@ year: '2023'
 size: 4,000(H) × 2,200 × 12,000mm
 artist: content/artists/artist-02.md
 place_type: 상업시설
-scope: ''
+scope: 심의 · 제작 · 설치
 cover: /img/projects/horizontal-gardens/main.jpg
 gallery:
 - /img/projects/horizontal-gardens/detail-01.jpg
@@ -20,6 +20,7 @@ en:
   title: Sculpture for an Office Site
   location: Godeok, Gangdong, Seoul
   place_type: Commercial
+  scope: Review · Fabrication · Installation
   summary: Kim Byoungho's 233 Horizontal Gardens. In front of a building in the Godeok business district, 233 golden spheres stretch out above a stone wall.
   body: |-
     The "horizontal garden" stands for a well-tended material civilisation. It is an assembly of geometric, linear units put together by a strict plan. Through the image of an artificial garden, it expresses the cool beauty of modern society. The 233 spheres are crystallisations of rational beauty; as if casting a spell on one another, they repeat projection and reflection and so complete themselves.
