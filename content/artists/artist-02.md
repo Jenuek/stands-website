@@ -3,7 +3,7 @@ name: 김병호
 medium: 알루미늄, 스테인리스 스틸, 황동
 born: '1974'
 based: 서울
-photo: /img/artists/kim-byoungho/vertical-gardens-96-2023.jpg
+photo: /img/artists/kim-byoungho/thumb.jpg
 summary: 판화를 전공하고 공학을 공부한 조각가. 손 드로잉 대신 정밀한 설계 도면과 분업화된 제작 시스템으로, 같은 단위가 반복·증식하는 금속 조각을 만든다. 개인전 15회 이상, 국내외 단체전 100회 이상.
 hero_image: /img/artists/kim-byoungho/silent-propagations-236-2022.jpg
 hero_caption: 236 Silent Propagations, 2022

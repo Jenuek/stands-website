@@ -3,7 +3,7 @@ name: 권치규
 medium: 금속, 복합매체
 born: ''
 based: 서울
-photo: /img/artists/kwon-chi-gyu/future-forest-2023.jpg
+photo: /img/artists/kwon-chi-gyu/thumb.jpg
 summary: 나무와 숲의 형태를 단순한 형상으로 옮기고, 거울처럼 반사되는 금속 면과 선명한 색을 맞세워 생명의 회복력(Resilience)을 조각한다. 개인전 33회, 초대전·단체전 500여 회. 현 한국조각가협회 이사장.
 hero_image: /img/artists/kwon-chi-gyu/mother-nature-network-2021.jpg
 hero_caption: Mother Nature Network(대자연네트워크), 2021

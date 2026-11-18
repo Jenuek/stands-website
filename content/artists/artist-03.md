@@ -3,7 +3,7 @@ name: 김우진
 medium: 스테인리스 스틸, 우레탄 도장
 born: ''
 based: 논산
-photo: /img/artists/kim-woojin/scene-07.jpg
+photo: /img/artists/kim-woojin/thumb.jpg
 summary: 스테인리스 스틸 조각에 선명한 색 조각을 이어 붙여 사슴, 말, 새 같은 동물의 형상을 만든다. 개인전 40회 이상, 국내외 아트페어와 단체전 다수. 공동주택, 호텔, 기업 사옥 등 70곳 이상에 작품이 소장되어 있다.
 hero_image: /img/artists/kim-woojin/scene-07.jpg
 hero_caption: 사슴 가족, 공간 연출 시뮬레이션
