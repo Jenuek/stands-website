@@ -93,7 +93,8 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 
 - [ ] Contact form only shows a notice. Wire real delivery (e.g. Formspree) to the company inbox.
 - [ ] Fill company info, phone and address. Finalise the privacy policy (KO/EN).
-- [ ] Hide `sample: true` entries. Add real domestic artists and 3–5 마롱컴퍼니 Partner Works. Check whether FRIENDSWITHYOU (overseas) can be listed.
+- [x] Sample projects and sample artists removed (2026-11-18); 6 real projects, all Scope 심의 · 제작 · 설치. Home features 233 Horizontal Gardens, Forest of Dream, Polar Bear Family.
+- [ ] Check whether FRIENDSWITHYOU (overseas) can be listed. Fill missing year/size on projects.
 - English site check (2026-11-18): no Korean text left on /en/ pages; Korean placeholders like [입력] render as [To be added] there (`page()` in build.py).
 - [ ] Confirm English artist names (Kwon Chi-gyu, Kim Byoungho, Kim Woojin, Lee Sungok) and "Malong Company".
 - [ ] Editorial issues 02/03 are listed as upcoming; their summaries are still planning memos (not shown while upcoming). Write them before switching `upcoming` off.

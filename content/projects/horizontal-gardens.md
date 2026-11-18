@@ -8,7 +8,7 @@ location: 서울 강동 고덕
 year: '2023'
 size: 4,000(H) × 2,200 × 12,000mm
 artist: content/artists/artist-02.md
-place_type: 상업시설
+place_type: 업무시설
 scope: 심의 · 제작 · 설치
 cover: /img/projects/horizontal-gardens/main.jpg
 gallery:
@@ -19,7 +19,7 @@ summary: 김병호 작가의 「233개의 수평정원」. 고덕 업무지구 �
 en:
   title: Sculpture for an Office Site
   location: Godeok, Gangdong, Seoul
-  place_type: Commercial
+  place_type: Office
   scope: Review · Fabrication · Installation
   summary: Kim Byoungho's 233 Horizontal Gardens. In front of a building in the Godeok business district, 233 golden spheres stretch out above a stone wall.
   body: |-

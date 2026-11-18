@@ -2,7 +2,7 @@
 title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
-order: 0.9
+order: 6
 type: public
 location: 화성 동탄
 year: ''

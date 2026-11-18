@@ -20,9 +20,9 @@ home:
     title_en: Architectural Art
     text_en: 'We propose and realize works that fit the context of a building and its space. We run the whole project: planning, artist selection and the public review, through fabrication, transport and installation.'
   featured_projects:
+  - content/projects/horizontal-gardens.md
+  - content/projects/forest-of-dream.md
   - content/projects/polar-bear-family.md
-  - content/projects/office-lobby.md
-  - content/projects/residential-plaza.md
   featured_artists:
   - content/artists/artist-01.md
   - content/artists/artist-02.md
@@ -116,12 +116,12 @@ about:
     cta_title: Tell us about your project.
     cta_button: Get in touch
 pages:
-  projects_lead: 작품이 선 자리들. 아래 프로젝트와 사진은 구조를 보여주기 위한 예시입니다.
-  artists_lead: STANDS와 함께하는 작가들입니다. 현재 목록은 구조를 보여주기 위한 예시입니다.
+  projects_lead: STANDS의 대표 프로젝트입니다.
+  artists_lead: STANDS와 함께하는 작가들입니다.
   editorial_lead: 작품이 놓이는 자리에 대해 묻는 STANDS의 에디토리얼 시리즈.
   en:
-    projects_lead: Places where works stand. The projects and photos below are samples that show the structure of the site.
-    artists_lead: Artists working with STANDS. The current list is a sample that shows the structure of the site.
+    projects_lead: Selected projects by STANDS.
+    artists_lead: Artists working with STANDS.
     editorial_lead: The STANDS editorial series, asking about the places where art stands.
 contact:
   lead: 작품이 설 자리, 함께 세울 프로젝트를 이야기해 주세요.

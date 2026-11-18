@@ -2,7 +2,7 @@
 title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
-order: 0.5
+order: 3
 type: public
 location: 성남 판교
 year: '2022'
