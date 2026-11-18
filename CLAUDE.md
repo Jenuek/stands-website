@@ -3,7 +3,7 @@
 Brand site for **STANDS** (art company: art dealing, art projects, architectural art; partner 마롱컴퍼니).
 Owner/designer: June. Talk to June in Korean. Copy tone: clear and assertive, never sentimental. Verify facts before writing them.
 
-- Live: https://jenuek.github.io/stands-website/ (Korean at root, English under `/en/`)
+- Live: https://stands.art/ (Korean at root, English under `/en/`). Domain bought at 가비아; DNS: 4 A records on @ to GitHub Pages, `www` CNAME to `jenuek.github.io`. Custom domain is set in repo Settings → Pages (no CNAME file: the site deploys through Actions). Old address https://jenuek.github.io/stands-website/ redirects
 - Repo: https://github.com/Jenuek/stands-website, branch `main`
 - Deploy: every push to `main` runs `.github/workflows/deploy.yml` → `python build/build.py` → `_site/` → GitHub Pages (about 1 minute)
 - **Always `git pull` before editing.** June edits content in Pages CMS (https://app.pagescms.org), which commits straight to `main`.
@@ -98,6 +98,7 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 - English site check (2026-11-18): no Korean text left on /en/ pages; Korean placeholders like [입력] render as [To be added] there (`page()` in build.py).
 - [ ] Confirm English artist names (Kwon Chi-gyu, Kim Byoungho, Kim Woojin, Lee Sungok) and "Malong Company".
 - [ ] Editorial issues 02/03 are listed as upcoming; their summaries are still planning memos (not shown while upcoming). Write them before switching `upcoming` off.
-- [ ] Custom domain, then transfer the repo to the company org. Re-install the Pages CMS app on the org and update `STANDS_URL`.
+- [x] Custom domain stands.art (2026-11-18), `BASE_URL` default updated.
+- [ ] Transfer the repo to the company org. Re-install the Pages CMS app on the org; change the `www` CNAME to `<org>.github.io`.
 - [ ] Mark `cta_contact_click` as a GA4 key event. Register with Search Console and Naver Search Advisor.
 - [ ] Optional: move hero timing values into `site.yml` / `.pages.yml` so June can tune them in the CMS.
