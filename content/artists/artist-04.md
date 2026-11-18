@@ -3,7 +3,7 @@ name: 이성옥
 medium: 스테인리스 스틸
 born: '1960'
 based: 용인
-photo: /img/artists/lee-sungok/isf-2025.jpg
+photo: /img/artists/lee-sungok/thumb.jpg
 summary: 스테인리스 스틸로 잠자리, 나비, 벌 같은 자연의 생물과 빛을 조각한다. 거울처럼 마감한 표면이 주변 공간과 관람객을 작품 안으로 끌어들인다. 개인전 28회, 단체전 550여 회. 한국조각가협회 부이사장.
 hero_image: /img/artists/lee-sungok/harbour-city-2019.jpg
 hero_caption: 자연의 소리(Sound of Nature), 하버시티 아트리움, 홍콩, 2019
