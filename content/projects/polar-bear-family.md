@@ -1,5 +1,5 @@
 ---
-title: 북극곰 가족
+title: 오피스 부지 조각 작품
 sample: false
 hidden: false
 order: 0
@@ -16,13 +16,13 @@ gallery:
 - /img/projects/polar-bear-family/detail-01.jpg
 - /img/projects/polar-bear-family/detail-02.jpg
 - /img/projects/polar-bear-family/detail-03.jpg
-summary: 업무 지구의 녹지에 놓인 북극곰 가족. 스테인리스 스틸 조각을 겹겹이 이어 붙인 표면이 주변의 건물과 하늘, 풀빛을 비춘다.
+summary: 김도훈 작가의 「북극곰 가족」. 업무 지구의 녹지에 놓였다. 스테인리스 스틸 조각을 겹겹이 이어 붙인 표면이 주변의 건물과 하늘, 풀빛을 비춘다.
 en:
-  title: Polar Bear Family
+  title: Sculpture for an Office Site
   location: Pangyo, Seongnam
   place_type: Commercial
   scope: Review · Fabrication · Installation
-  summary: A polar bear family set in the green of a business district. Its surface of stainless-steel pieces laid layer upon layer reflects the surrounding buildings, the sky and the grass.
+  summary: Kim Dohoon's Polar Bear Family, set in the green of a business district. Its surface of stainless-steel pieces laid layer upon layer reflects the surrounding buildings, the sky and the grass.
   body: |-
     The work gives form to an ordinary, happy day in the life of a polar bear family, so that passers-by meet a scene from a fairy tale.
 
