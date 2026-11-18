@@ -53,6 +53,20 @@
     (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{ timer=setTimeout(next,HOLD_STANDS); });
   }
 
+  // project detail photos: prev / next buttons appear only when the strip runs past the screen
+  document.querySelectorAll('.gallery-strip').forEach(st=>{
+    const nav=document.createElement('div'); nav.className='strip-nav'; nav.hidden=true;
+    const en=document.documentElement.lang==='en';
+    nav.innerHTML=`<button type="button" data-d="-1" aria-label="${en?'Previous photos':'이전 사진'}">←</button><button type="button" data-d="1" aria-label="${en?'Next photos':'다음 사진'}">→</button>`;
+    st.parentNode.insertBefore(nav,st);
+    const sync=()=>{ const over=st.scrollWidth>st.clientWidth+2; nav.hidden=!over; if(!over) return;
+      nav.children[0].disabled=st.scrollLeft<=2; nav.children[1].disabled=st.scrollLeft+st.clientWidth>=st.scrollWidth-2; };
+    nav.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return;
+      const step=(st.firstElementChild?st.firstElementChild.getBoundingClientRect().width:st.clientWidth)+parseFloat(getComputedStyle(st).columnGap||0);
+      st.scrollBy({left:+b.dataset.d*step,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}); });
+    st.addEventListener('scroll',()=>requestAnimationFrame(sync),{passive:true}); addEventListener('resize',sync); sync();
+  });
+
   // project filters
   const chips=document.querySelectorAll('[data-filter]');
   chips.forEach(ch=>ch.addEventListener('click',()=>{

@@ -570,7 +570,7 @@ def build_lang():
         art = ref(p.get('artist'))
         art_dd = f'<a href="{art["_url"]}">{E(L(art, "name"))}</a>' if art else E(str(p.get('artist') or ''))
         rows = [('Location', E(L(p, 'location'))), ('Year', E(str(p.get('year', '')))), ('Artist', art_dd),
-                ('Size', E(L(p, 'size'))), ('Client', E(L(p, 'client'))), ('Scope', E(L(p, 'scope')))]
+                ('Size', E(L(p, 'size'))), ('Type', E(L(p, 'place_type'))), ('Scope', E(L(p, 'scope')))]
         kv = ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows if v)
         cover = img(p.get('cover'))
         title = L(p, 'title')
@@ -583,7 +583,7 @@ def build_lang():
   <dl class="kv">{kv}</dl>
   <div class="prose">{rich(BODY(p))}</div>
 </div></section>
-{f'<section style="padding-top:0"><div class="wrap"><div class="cards gallery">{gal}</div></div></section>' if gal else ''}
+{f'<section class="proj-gallery" style="padding-top:0"><div class="wrap"><div class="gallery-strip" tabindex="0" aria-label="{U("추가 사진", "More photos")}">{gal}</div></div></section>' if gal else ''}
 {f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
         page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body, og=cover or None)
 

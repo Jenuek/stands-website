@@ -20,9 +20,9 @@ home:
     title_en: Architectural Art
     text_en: 'We propose and realize works that fit the context of a building and its space. We run the whole project: planning, artist selection and the public review, through fabrication, transport and installation.'
   featured_projects:
+  - content/projects/polar-bear-family.md
   - content/projects/office-lobby.md
   - content/projects/residential-plaza.md
-  - content/projects/solo-exhibition.md
   featured_artists:
   - content/artists/artist-01.md
   - content/artists/artist-02.md
