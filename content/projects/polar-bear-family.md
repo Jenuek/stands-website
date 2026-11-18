@@ -1,5 +1,5 @@
 ---
-title: 오피스 부지 조각 작품
+title: Sculpture for an Office Site
 sample: false
 hidden: false
 order: 0
