@@ -1,5 +1,5 @@
 ---
-title: 아파트 단지 조각 작품
+title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
 order: 0.5
