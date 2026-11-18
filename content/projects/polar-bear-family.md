@@ -8,8 +8,8 @@ location: 성남 판교
 year: '2025'
 size: 2,900 × 4,300 × 1,800(H)mm
 artist: 김도훈
-client: '[입력]'
-scope: '[입력]'
+place_type: 상업시설
+scope: 심의 · 제작 · 설치
 cover: /img/projects/polar-bear-family/main.jpg
 gallery:
 - /img/projects/polar-bear-family/detail-00.jpg
@@ -20,8 +20,8 @@ summary: 업무 지구의 녹지에 놓인 북극곰 가족. 스테인리스 스
 en:
   title: Polar Bear Family
   location: Pangyo, Seongnam
-  client: '[To be added]'
-  scope: '[To be added]'
+  place_type: Commercial
+  scope: Review · Fabrication · Installation
   summary: A polar bear family set in the green of a business district. Its surface of stainless-steel pieces laid layer upon layer reflects the surrounding buildings, the sky and the grass.
   body: |-
     The work gives form to an ordinary, happy day in the life of a polar bear family, so that passers-by meet a scene from a fairy tale.

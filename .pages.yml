@@ -159,7 +159,7 @@ content:
         label: 작가
         type: reference
         options: { collection: artists, search: name, value: "{path}", label: "{name}" }
-      - { name: client, label: 클라이언트, type: string }
+      - { name: place_type, label: "공간 유형 (Type, 예: 상업시설)", type: string }
       - { name: scope, label: 업무 범위, type: string, description: "예: 기획 · 제작 · 설치" }
       - { name: cover, label: 대표 사진, type: image }
       - { name: gallery, label: 추가 사진, type: image, options: { multiple: { max: 12 } } }
@@ -173,7 +173,7 @@ content:
           - { name: title, label: 프로젝트명 (영문), type: string }
           - { name: location, label: 위치 (영문), type: string, description: "예: Jung-gu, Seoul" }
           - { name: size, label: 규모 (영문), type: string, description: "숫자만이면 비워두세요. 예: 12 works" }
-          - { name: client, label: 클라이언트 (영문), type: string }
+          - { name: place_type, label: "공간 유형 (영문, 예: Commercial)", type: string }
           - { name: scope, label: 업무 범위 (영문), type: string, description: "예: Planning · Fabrication · Installation" }
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
