@@ -47,6 +47,7 @@ works:
   title: 'Resilience – 만월'
   year: '2020'
   size: '각 1,200 × 150(D) × 1,200(H)mm'
+  size_en: 'each 1,200 × 150(D) × 1,200(H)mm'
   group: '벽면 작품'
   title_en: 'Resilience – Full Moon'
   group_en: 'Wall works'
@@ -54,6 +55,7 @@ works:
   title: 'Resilience – 세 개의 창'
   year: '2020'
   size: '각 700 × 120(D) × 700(H)mm'
+  size_en: 'each 700 × 120(D) × 700(H)mm'
   contain: true
   group: '벽면 작품'
   title_en: 'Resilience – Three Windows'
@@ -70,18 +72,21 @@ works:
   title: 'Resilience – Forest (Circle Black – White)'
   year: '2016'
   size: '각 Φ580 × 80(D)mm'
+  size_en: 'each Φ580 × 80(D)mm'
   group: '벽면 작품'
   group_en: 'Wall works'
 - image: /img/artists/kwon-chi-gyu/wall-flow-2016.jpg
   title: 'Resilience – flow'
   year: '2016'
   size: '각 500 × 100(D) × 500(H)mm'
+  size_en: 'each 500 × 100(D) × 500(H)mm'
   group: '벽면 작품'
   group_en: 'Wall works'
 - image: /img/artists/kwon-chi-gyu/wall-pine-2023.jpg
   title: 'Bio-Resilience – pine'
   year: '2023'
   size: '각 2,000 × 120 × 500(H)mm'
+  size_en: 'each 2,000 × 120 × 500(H)mm'
   contain: true
   group: '벽면 작품'
   group_en: 'Wall works'
