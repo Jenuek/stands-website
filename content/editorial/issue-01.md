@@ -7,26 +7,71 @@ cover: /img/editorial/issue-01-cover.jpg
 cover_focus: 50% 46%
 en:
   title: Where Is a Work Completed?
-  summary: "A theme that runs straight from the brand name and story: a first
-    issue that doubles as an introduction to STANDS."
-  body: >-
-    A sculpture fresh from the studio is not yet finished. The floor it rests
-    on, the light it stands under, the eye level at which it meets its viewer:
-    these turn the same work into something else entirely.
+  summary: '"Art is complete where it stands." On the quiet change that turns an indifferent space into a place of its own once a sculpture is set in it.'
+  body: |-
+    A sculpture takes shape in the isolated hours of the studio, but its real life is completed only when it meets a particular place in the world.
 
+    Traditional sculpture always asked for a safe place: a solid platform of marble or wood, the pedestal. Raised on it, the sculpture kept its distance from everyday ground. Modern and contemporary art stepped boldly down from the pedestal and set foot directly on the floor we walk and breathe on every day.
 
-    The actual article goes here. Each issue holds on to a single question and
-    brings together the voices of artists, architects and collectors.
+    Now that sculpture has left the pedestal, the architecture and land around a work, even an entire plaza, become one large pedestal. The same sculpture gives an entirely different experience depending on the floor it stands on and the angle at which afternoon light passes over it. In a white museum it becomes an object of quiet contemplation; in the high-ceilinged lobby of a commercial building it becomes a heavy weight that steadies the whole space; in an open plaza it becomes a meeting place where people's days cross. The form of the work stays the same, while the space shapes a new meaning for it.
 
+    ![Marcel Duchamp, Fountain, and Donald Judd, 100 Works in Mill Aluminum](/img/gallery-2.jpg)
 
-    > Where does art stand?
+    **A fate changed by place: art that became space**
 
+    In the spring of 1917, a ready-made urinal signed "R. Mutt 1917" arrived at an exhibition in New York. It was Marcel Duchamp's *Fountain*.¹ The reason this ordinary manufactured object changed twentieth-century art is simple: it was taken out of an everyday washroom and placed in the unfamiliar setting and frame of vision called an exhibition. The work itself stayed hidden behind a partition for the whole show, and the *Fountain* we remember is a single photograph taken by Alfred Stieglitz under carefully set light. Nothing about the object had changed; the context, where it was placed and how it was looked at, gave birth to the art.
 
-    ## Next issue
+    If Duchamp showed the power of place, the masters who followed drew entire physical spaces into their work. Donald Judd rejected the habit of hanging works on museum walls for a while and taking them down again, and withdrew to Marfa, a desert town in Texas.² He bought abandoned artillery sheds and completed buildings made for his own work alone. The desert light, the proportions of the buildings and the 100 aluminium boxes aligned inside them fit together without a millimetre of error.
 
+    ![Isamu Noguchi, California Scenario, and Christo and Jeanne-Claude, The Pont Neuf Wrapped](/img/editorial/issue-01-noguchi-christo.jpg)
 
-    Why does lobby sculpture end up as decoration? On why a space and its work
-    should be designed together from the start.
+    This persistence reached beyond the museum into the city. Isamu Noguchi made an entire plaza of floors and steps, water and stone into one great sculpture,³ and Christo and Jeanne-Claude wrapped the Pont Neuf in Paris in vast lengths of fabric, turning a view people passed every day without a thought into an experience of wonder.⁴ For them, place was not a passive background for the work but the final material that completes it.
+
+    ![Richard Serra, Tilted Arc](/img/gallery-3-1.jpg)
+
+    **When a work loses its place, it loses its life**
+
+    There are also great works that lost their place and, sadly, their life with it. In 1981 Richard Serra installed *Tilted Arc*, a massive steel wall some 37 metres long, in a plaza in New York.⁵ It was a precise plan to remake the paths and sightlines of the people who crossed the plaza. After a long dispute over blocking the way, its removal was decided, and Serra firmly refused a compromise to move it to another park.
+
+    > *"To remove the work is to destroy the work."* — Richard Serra
+
+    A sculpture forcibly torn from its original place loses its life at once and becomes a cold mass of metal, because the form of a work and the ground it stands on were never two separate bodies.
+
+    **The power that makes an indifferent space a place**
+
+    Sometimes a single work with an overwhelming presence turns over the air of an empty space and makes it an irreplaceable place.
+
+    ![Eduardo Chillida, Peine del Viento, and Peter Zumthor, Therme Vals](/img/editorial/issue-01-chillida-zumthor.jpg)
+
+    The philosopher Martin Heidegger pointed to this moment through the image of a bridge built across a river.⁶ A space that had simply flowed by, indifferent, wakes into a place of its own the moment a structure drops anchor there and gathers the surrounding landscape and its currents around it. As Eduardo Chillida bent huge pieces of steel to embrace the open air, and Peter Zumthor cut a path of light and silence between the heavy stone walls of Therme Vals, the void for them was not simply an empty spot but an invisible material that completes the work.⁷ To place a work in a space is to sculpt, along with it, the weight of emptiness and silence that a great mass creates as it pushes back the air around it.
+
+    The contemporary artist Lee Soo-kyung's *You Were There* shows this power of place most beautifully.⁸ Depending on the situation, she brings real boulders weighing several tonnes into a space, or, where a site has tight limits, builds the great volume in lighter materials such as FRP. What matters is the 24-karat gold leaf laid closely over it.
+
+    The moment a stone that might lie anywhere, unnoticed, is dressed in a brilliant skin and set in the middle of a space, the most common fragment of the earth leaves the everyday landscape and gives off a mysterious aura. As the faintly trembling gold surface reflects the light and texture of the air around it, a space that had stood still wakes into a place of its own and begins a mysterious vibration.
+
+    ![Lee Soo-kyung, You Were There](/img/gallery-4.jpg)
+
+    **Where art stands: the care that links people's time**
+
+    To stand a work in a space is not to press down on the ground one way. It is to tune, tautly and gracefully, the relationship between the weight of the work and the ground that quietly bears it. It is to let the work stand confidently as the subject of its space, and at the same time to become another stand that breathes with the unseen ground and holds up the landscape.
+
+    Once the aesthetic explanations and structural calculations are set aside, what we meet at the end of this process is a deeply kind and thoughtful attitude.
+
+    It is not about filling an empty spot with an expensive, famous sculpture. It is the care of quietly bringing the one irreplaceable presence best suited to that place and that time. A public work, once in place, cannot easily be moved, so beyond filling a physical space, it keeps company with the time of the many people who will pass through it.
+
+    Because a work must endure years of wind and rain and hold the breath of people generously, we can never stop asking the compelling question of where a work should stand.
+
+    **Art is complete where it stands.**  
+    **WHERE ART STANDS.**
+
+    ¹ Duchamp, Marcel. *Fountain*. 1917 (replica 1964). Tate Collection, London. Reference No. T07573.  
+    ² Judd, Donald. *100 Works in Mill Aluminum*. 1982-1986. Permanent installation, The Chinati Foundation, Marfa, Texas.  
+    ³ Noguchi, Isamu. *Public Sculptures and Environment Designs*. The Isamu Noguchi Foundation and Garden Museum Archive.  
+    ⁴ Christo and Jeanne-Claude. *The Pont Neuf Wrapped*. 1975–1985. Paris. Artist's Official Project Archive.  
+    ⁵ Serra, Richard. *Tilted Arc*. 1981 (dismantled 1989). Foley Federal Plaza, New York. General Services Administration (GSA) Public Buildings Service archive.  
+    ⁶ Heidegger, Martin. "Building Dwelling Thinking". *Poetry, Language, Thought* (1971).  
+    ⁷ Chillida, Eduardo. *Permanent Collection*. Chillida Leku Museum, Hernani, Spain. / Zumthor, Peter. *Therme Vals* (1996), Graubünden, Switzerland.  
+    ⁸ Lee, Soo-kyung. *You Were There*. 2025. Artist's Official Portfolio Archive.
 sample: false
 hidden: false
 ---

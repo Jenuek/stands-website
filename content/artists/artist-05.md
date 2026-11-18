@@ -10,14 +10,17 @@ hero_caption: ''
 quote: 작가의 한 문장이 들어갈 자리입니다.
 works:
 - title: 작품명
+  title_en: Title of work
   year: '[연도]'
   material: '[재료]'
   size: '[크기]'
 - title: 작품명
+  title_en: Title of work
   year: '[연도]'
   material: '[재료]'
   size: '[크기]'
 - title: 작품명
+  title_en: Title of work
   year: '[연도]'
   material: '[재료]'
   size: '[크기]'

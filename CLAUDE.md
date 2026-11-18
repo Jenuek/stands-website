@@ -93,6 +93,7 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 - [ ] Contact form only shows a notice. Wire real delivery (e.g. Formspree) to the company inbox.
 - [ ] Fill company info, phone and address. Finalise the privacy policy (KO/EN).
 - [ ] Hide `sample: true` entries. Add real domestic artists and 3–5 마롱컴퍼니 Partner Works. Check whether FRIENDSWITHYOU (overseas) can be listed.
+- English site check (2026-11-18): no Korean text left on /en/ pages; Korean placeholders like [입력] render as [To be added] there (`page()` in build.py).
 - [ ] Confirm English artist names (Kwon Chi-gyu, Kim Byoungho, Kim Woojin, Lee Sungok) and "Malong Company".
 - [ ] Editorial issues 02/03 are listed as upcoming; their summaries are still planning memos (not shown while upcoming). Write them before switching `upcoming` off.
 - [ ] Custom domain, then transfer the repo to the company org. Re-install the Pages CMS app on the org and update `STANDS_URL`.

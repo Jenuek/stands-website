@@ -319,6 +319,8 @@ def footer():
 
 def page(name, title, desc, cur, body, extra_js='', og=None):
     doc = head(title, desc, name, og) + header(name, cur) + '<main id="main">\n' + body + '\n</main>\n' + footer() + extra_js + '</body>\n</html>\n'
+    if EN():  # Korean placeholders such as [입력] or [대표 전화 입력] read as [To be added] on the English site
+        doc = re.sub(r'\[[^\]<>]*[가-힣][^\]<>]*\]', '[To be added]', doc)
     open(os.path.join(OUT, name), 'w', encoding='utf-8').write(doc)
 
 # ---------------------------------------------------------------------------

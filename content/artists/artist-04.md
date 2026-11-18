@@ -23,6 +23,7 @@ works:
   year: '2025'
   material: 스테인리스 스틸
   size: 가변 크기
+  size_en: 'Variable size'
   group: 매다는 설치
   title_en: Sound of Nature
   material_en: Stainless steel
@@ -32,6 +33,7 @@ works:
   year: '2024'
   material: 스테인리스 스틸
   size: 가변 크기
+  size_en: 'Variable size'
   group: 매다는 설치
   title_en: Sound of Nature
   material_en: Stainless steel
@@ -49,6 +51,7 @@ works:
   year: '2018'
   material: 스테인리스 스틸
   size: 가변 크기
+  size_en: 'Variable size'
   group: 매다는 설치
   title_en: Sound of Nature
   material_en: Stainless steel
@@ -92,6 +95,7 @@ works:
   year: '2010'
   material: 혼합 재료, 스테인리스 스틸
   size: 가변 크기
+  size_en: 'Variable size'
   group: 조각
   title_en: Sound of Nature (kinetic, moved by the wind)
   material_en: Mixed media, stainless steel
