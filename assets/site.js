@@ -7,6 +7,66 @@
     document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!menu.hidden) close.click(); });
   }
 
+  // home statement photo: the reveal follows the scroll position (it rises as you scroll down and
+  // lowers again as you scroll back), and the image drifts a little slower than the page
+  // (also used for the About photo)
+  const revs=[...document.querySelectorAll('.statement-img,.about-img')];
+  if(revs.length&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.documentElement.classList.add('js');
+    let raf=0;
+    const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+    const update=()=>{ raf=0; const vh=innerHeight;
+      revs.forEach(el=>{ const r=el.getBoundingClientRect(), im=el.querySelector('img');
+        // 0 when the top of the photo reaches the bottom of the screen, 1 when 60% of the screen further.
+        const p=clamp((vh-r.top)/(vh*.6),0,1), e=1-Math.pow(1-p,2);
+        el.style.setProperty('--reveal',((1-e)*100).toFixed(2)+'%');
+        const k=clamp(((r.top+r.height/2)-vh/2)/(vh/2+r.height/2),-1,1);
+        im.style.setProperty('--drift',(k*r.height*.025).toFixed(1)+'px'); }); };
+    addEventListener('scroll',()=>{ if(!raf) raf=requestAnimationFrame(update); },{passive:true});
+    addEventListener('resize',update); update();
+  }
+
+  // header logo: the third line keeps changing. STANDS, then places from the hero and now and then a verb,
+  // each wiped out right to left and revealed left to right like the hero underbar; the bar follows the word.
+  const lw=document.querySelector('.brand svg');
+  if(lw&&lw.querySelector('.lw-line')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const clip=lw.querySelector('.lw-clip'), base=lw.querySelector('.lw-base'), word=lw.querySelector('.lw-word'), bar=lw.querySelector('.lw-bar');
+    const X0=30, FULL=340, BAR0=+bar.getAttribute('width'), MAXW=322;
+    const SEQ=['STANDS','GALLERY','PLAZA','BELONGS','STANDS','GARDEN','COAST','BREATHES','STANDS','MUSEUM','FOREST','REMAINS',
+               'STANDS','ATRIUM','PARK','LIVES','STANDS','LOFT','TERRACE','MEETS'];
+    const HOLD_STANDS=2600, HOLD=1300, OUT=300, IN=420, GAP=80;
+    const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+    let i=0, timer=0, raf=0, barW=BAR0;
+    const tween=(ms,fn)=>new Promise(res=>{const t0=performance.now();const step=now=>{const k=Math.min(1,(now-t0)/ms);fn(ease(k));if(k<1) raf=requestAnimationFrame(step); else res();};raf=requestAnimationFrame(step);});
+    const setWord=w=>{ if(w==='STANDS'){ base.style.display=''; word.style.display='none'; return BAR0; }
+      base.style.display='none'; word.style.display=''; word.textContent=w; word.removeAttribute('textLength'); word.removeAttribute('lengthAdjust');
+      let wd=word.getComputedTextLength(); if(wd>MAXW){ word.setAttribute('textLength',MAXW); word.setAttribute('lengthAdjust','spacingAndGlyphs'); wd=MAXW; }
+      return Math.max(60,wd-4); };
+    const next=async()=>{ if(document.hidden){ timer=setTimeout(next,600); return; }
+      // wipe out, right to left
+      await tween(OUT,k=>{ clip.setAttribute('x',X0); clip.setAttribute('width',FULL*(1-k)); });
+      await new Promise(r=>setTimeout(r,GAP));
+      i=(i+1)%SEQ.length; const w=SEQ[i], from=barW, to=setWord(w);
+      // reveal, left to right; the bar grows or shrinks to the new word
+      await tween(IN,k=>{ clip.setAttribute('x',X0); clip.setAttribute('width',FULL*k); bar.setAttribute('width',(from+(to-from)*k).toFixed(2)); });
+      barW=to; timer=setTimeout(next,w==='STANDS'?HOLD_STANDS:HOLD); };
+    (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{ timer=setTimeout(next,HOLD_STANDS); });
+  }
+
+  // project detail photos: prev / next buttons appear only when the strip runs past the screen
+  document.querySelectorAll('.gallery-strip').forEach(st=>{
+    const nav=document.createElement('div'); nav.className='strip-nav'; nav.hidden=true;
+    const en=document.documentElement.lang==='en';
+    nav.innerHTML=`<button type="button" data-d="-1" aria-label="${en?'Previous photos':'이전 사진'}">←</button><button type="button" data-d="1" aria-label="${en?'Next photos':'다음 사진'}">→</button>`;
+    st.parentNode.insertBefore(nav,st);
+    const sync=()=>{ const over=st.scrollWidth>st.clientWidth+2; nav.hidden=!over; if(!over) return;
+      nav.children[0].disabled=st.scrollLeft<=2; nav.children[1].disabled=st.scrollLeft+st.clientWidth>=st.scrollWidth-2; };
+    nav.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return;
+      const step=(st.firstElementChild?st.firstElementChild.getBoundingClientRect().width:st.clientWidth)+parseFloat(getComputedStyle(st).columnGap||0);
+      st.scrollBy({left:+b.dataset.d*step,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}); });
+    st.addEventListener('scroll',()=>requestAnimationFrame(sync),{passive:true}); addEventListener('resize',sync); sync();
+  });
+
   // project filters
   const chips=document.querySelectorAll('[data-filter]');
   chips.forEach(ch=>ch.addEventListener('click',()=>{

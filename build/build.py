@@ -27,9 +27,16 @@ def logo_svg(cls='', label='WHERE ART STANDS', frame_attrs='', bar_attrs='', bar
     bid = ' id="lbar"' if ids else ''
     w = bw if bar_w is None else bar_w
     if mono:  # header: drawn with mix-blend-mode difference, so one colour, no fill
+        # The third line (STANDS, the last 6 glyphs) sits in its own clipped group, so site.js can wipe it out and in
+        # and swap in other words set in Archivo 800 at 75% width (sized to match the logo glyphs: 80 units, -2.7 tracking).
+        ps = re.findall(r'<path[^>]*/>', BOX_PATHS)
         return (f'<svg class="{cls}" viewBox="0 0 400 400" role="img" aria-label="{label}">'
+                f'<defs><clipPath id="lw-clip"><rect class="lw-clip" x="30" y="240" width="340" height="80"/></clipPath></defs>'
                 f'<rect x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" fill="none" stroke="currentColor" stroke-width="{t*1.6:.2f}"/>'
-                f'<g fill="currentColor">{BOX_PATHS}</g><rect x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh*1.3:.2f}" fill="currentColor"/></svg>')
+                f'<g fill="currentColor">{"".join(ps[:-6])}</g>'
+                f'<g class="lw-line" clip-path="url(#lw-clip)" fill="currentColor"><g class="lw-base">{"".join(ps[-6:])}</g>'
+                f'<text class="lw-word" x="35.8" y="306.5" aria-hidden="true" style="display:none;font-family:var(--display);font-weight:800;font-stretch:75%;font-size:80px;letter-spacing:-2.7px"></text></g>'
+                f'<rect class="lw-bar" x="{bx:.2f}" y="{by:.2f}" width="{bw:.2f}" height="{bh*1.3:.2f}" fill="currentColor"/></svg>')
     return (f'<svg class="{cls}" viewBox="0 0 400 400" role="img" aria-label="{label}"><defs>{df}{db}</defs>'
             f'<rect{fid} x="{t/2:.2f}" y="{t/2:.2f}" width="{400-t:.2f}" height="{400-t:.2f}" style="fill:var(--paper){";fill-opacity:.72" if ids else ""}" stroke="url(#{gf})" stroke-width="{t:.2f}"{frame_attrs}/>'
             f'<g fill="currentColor">{BOX_PATHS}</g>'
@@ -164,7 +171,7 @@ CONTENT = os.path.join(ROOT, 'content')
 OUT_ROOT = os.environ.get('STANDS_OUT', os.path.join(ROOT, '_site'))
 OUT = OUT_ROOT
 VER = os.environ.get('STANDS_VER', '20261028')
-BASE_URL = os.environ.get('STANDS_URL', 'https://jenuek.github.io/stands-website/')
+BASE_URL = os.environ.get('STANDS_URL', 'https://stands.art/')
 E = html.escape
 
 def T(v):
@@ -226,6 +233,7 @@ PROJECTS = collection('projects', 'project', lambda d: (num(d.get('order')), d.g
 ARTISTS = collection('artists', 'artist', lambda d: (num(d.get('order')), d.get('name', '')))
 ARTICLES = collection('editorial', 'article', lambda d: str(d.get('date', '')), )
 ARTICLES.reverse()  # newest first
+PUBLISHED = [a for a in ARTICLES if not a.get('upcoming')]  # upcoming issues are listed but get no page
 BY_PATH = {d['_path']: d for d in PROJECTS + ARTISTS + ARTICLES}
 BY_STEM = {}
 for _d in PROJECTS + ARTISTS + ARTICLES:
@@ -311,6 +319,8 @@ def footer():
 
 def page(name, title, desc, cur, body, extra_js='', og=None):
     doc = head(title, desc, name, og) + header(name, cur) + '<main id="main">\n' + body + '\n</main>\n' + footer() + extra_js + '</body>\n</html>\n'
+    if EN():  # Korean placeholders such as [입력] or [대표 전화 입력] read as [To be added] on the English site
+        doc = re.sub(r'\[[^\]<>]*[가-힣][^\]<>]*\]', '[To be added]', doc)
     open(os.path.join(OUT, name), 'w', encoding='utf-8').write(doc)
 
 # ---------------------------------------------------------------------------
@@ -333,9 +343,16 @@ def artist_card(a):
     return (f'<a class="artist" href="{a["_url"]}"><div class="plate">{plate}</div>'
             f'<span class="meta">{E(L(a, "medium"))}</span><h3>{E(L(a, "name"))}{sample(a)}</h3></a>')
 
+def latest(a):
+    """LATEST tag on the newest published issue (moves on by itself when the next one is published)."""
+    return '<span class="latest">Latest</span>' if PUBLISHED and a is PUBLISHED[0] else ''
+
 def article_row(a):
+    if a.get('upcoming'):  # listed as a teaser: not a link, no page built yet
+        return (f'<div class="row upcoming" aria-disabled="true"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
+                f'<h3>{E(L(a, "title"))}</h3><span class="meta soon">{U("공개 예정", "Coming soon")}</span></div>')
     return (f'<a href="{a["_url"]}"><span class="meta">Issue {E(str(a.get("issue", "")))}</span>'
-            f'<h3>{E(L(a, "title"))}{sample(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
+            f'<h3>{E(L(a, "title"))}{sample(a)}{latest(a)}</h3><span class="meta">{E(str(a.get("date", "")))}</span></a>')
 
 # ---------------------------------------------------------------------------
 # pages
@@ -344,24 +361,32 @@ def build_lang():
     # home
     fp = pick(H.get('featured_projects')) or PROJECTS[:3]
     fa = pick(H.get('featured_artists')) or ARTISTS[:4]
-    fe = (pick(H.get('featured_article')) or ARTICLES[:1])
+    fe = [a for a in (pick(H.get('featured_article')) or PUBLISHED[:1]) if not a.get('upcoming')] or PUBLISHED[:1]
     services = H.get('services', []) or []
-    svc = ''.join(f'<div class="svc"><span class="k">{E(LI(s, "label"))}</span><h3>{E(LI(s, "title"))}</h3><p>{T(LI(s, "text"))}</p><span class="plinth"></span></div>'
-                  for s in services)
+    # line illustrations from build/illust.js (img/illust/service-01..03.svg), one per card in order
+    def svc_ill(i):
+        fn = f'img/illust/service-{i + 1:02d}.svg'
+        return f'<img class="ill" src="{P}{fn}" alt="" width="240" height="240" loading="lazy">' if os.path.exists(os.path.join(ROOT, fn)) else ''
+    svc = ''.join(f'<div class="svc">{svc_ill(i)}<span class="k">{E(LI(s, "label"))}</span><h3>{E(LI(s, "title"))}</h3><p>{T(LI(s, "text"))}</p><span class="plinth"></span></div>'
+                  for i, s in enumerate(services))
     ncls = ' three' if len(services) == 3 else ''
     ed = ''
     if fe:
         a = fe[0]
         cover = img(a.get('cover'))
+        _cf = str(a.get('cover_focus') or '').strip()
+        cfocus = f' style="object-position:{E(_cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', _cf) else ''
         ed = f'''<section class="editorial-band" aria-labelledby="ed-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="ed-h">Where art<br>stands?</h2><a class="more accent-it" href="editorial.html">Editorial</a></div>
     <a class="ed-feature" href="{a['_url']}">
-      <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''}</div>
-      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span><h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
+      <div class="ph">{f'<img src="{E(cover)}" alt="" loading="lazy"{cfocus}>' if cover else ''}</div>
+      <div><span class="issue">ISSUE {E(str(a.get('issue', '')))}</span>{latest(a)}<h3>{E(L(a, 'title'))}</h3><p>{T(L(a, 'summary'))}</p><span class="more">{U('읽기', 'Read')}</span></div>
     </a>
   </div>
 </section>'''
+    st_src = img(H.get('statement_image'))
+    st_img = f'<figure class="statement-img"><img src="{E(st_src)}" alt="" width="1200" height="1500" loading="lazy"></figure>' if st_src else ''
     home = hero() + f'''
 <section class="statement">
   <div class="wrap">
@@ -372,15 +397,16 @@ def build_lang():
         <p>{T(L(H, 'story_1'))}</p>
         <p class="slogan">WHERE ART STANDS</p>
         <p>{T(L(H, 'story_2'))}</p>
+        {'<p class="story-more"><a class="more" href="about.html">About STANDS</a></p>' if st_img else ''}
       </div>
-      <p><a class="more" href="about.html">About STANDS</a></p>
+      {f'<div class="statement-side">{st_img}</div>' if st_img else '<p><a class="more" href="about.html">About STANDS</a></p>'}
     </div>
   </div>
 </section>
 
 <section class="services" aria-labelledby="svc-h">
   <div class="wrap">
-    <div class="sec-head"><h2 id="svc-h">What we do</h2></div>
+    <div class="sec-head"><h2 id="svc-h">What we do</h2><a class="more" href="about.html#scope">{U('업무 범위', 'Scope')}</a></div>
     <div class="svc-grid{ncls}">{svc}</div>
   </div>
 </section>
@@ -415,21 +441,51 @@ def build_lang():
 
     # about
     paras = ''.join(f'<p>{T(t)}</p>' for t in (L(AB, 'paragraphs', []) or []))
-    kv = ''.join(f'<dt>{E(LI(r, "label"))}</dt><dd>{T(LI(r, "text"))}</dd>' for r in (AB.get('what_we_do', []) or []))
+    # What we do cards: big number, label, title and the list of services.
+    # Older entries with a single `text` ("title - a, b, c") are still read.
+    def wwd_card(r, last):
+        lab = str(LI(r, 'label') or '').strip()
+        m = re.match(r'^(\d+)\.?\s*(.*)$', lab)
+        num, name = (m.group(1), m.group(2)) if m else ('', lab)
+        title, items = LI(r, 'title'), LI(r, 'items', []) or []
+        if not title and LI(r, 'text'):
+            parts = re.split(r'\s+[-–—]\s+', str(LI(r, 'text')).strip(), maxsplit=1)
+            title, items = parts[0], (re.split(r'\s*[,;]\s*', parts[1]) if len(parts) > 1 else [])
+        lis = ''.join(f'<li>{E(str(i).strip())}</li>' for i in items if str(i).strip())
+        return (f'<div class="wwd-card{" partner" if last and "PARTNER" in name.upper() else ""}">'
+                f'<span class="n">{E(num)}</span><span class="k">{E(name)}</span><h3>{E(str(title).strip())}</h3>'
+                f'{f"<ul>{lis}</ul>" if lis else ""}</div>')
+    wwd = AB.get('what_we_do', []) or []
+    kv = ''.join(wwd_card(r, i == len(wwd) - 1) for i, r in enumerate(wwd))
+    # process pictograms from build/process.js (img/illust/process-01..06.svg)
+    PROCESS = [('01', '공간 분석', 'Site study'), ('02', '작품 제안', 'Proposal'), ('03', '심의', 'Review'),
+               ('04', '제작', 'Fabrication'), ('05', '운송 · 설치', 'Transport · installation'), ('06', '완성', 'In place')]
+    steps = ''.join(f'<li><img src="{P}img/illust/process-{n}.svg" alt="" width="240" height="232" loading="lazy">'
+                    f'<span class="k">{n}</span><span class="t">{U(ko, en)}</span></li>'
+                    for n, ko, en in PROCESS if os.path.exists(os.path.join(ROOT, f'img/illust/process-{n}.svg')))
+    process_band = f'''<section class="process" aria-labelledby="pr-h" style="padding-top:clamp(56px,8vw,110px)">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="pr-h">Process</h2></div>
+    <ol class="process-steps">{steps}</ol>
+  </div>
+</section>''' if steps else ''
+    ab_src = img(AB.get('intro_image'))
+    ab_img = f'<figure class="about-img"><img src="{E(ab_src)}" alt="" width="660" height="755" loading="lazy"></figure>' if ab_src else ''
     about = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">About</span><h1 class="long">Art is complete<br>where it <span class="ul">stands</span>.</h1></div></div>
 <section>
-  <div class="wrap two-col">
-    <span class="eyebrow">STANDS</span>
+  <div class="wrap two-col{' has-img' if ab_img else ''}">
+    <div class="about-side"><span class="eyebrow">STANDS</span>{ab_img}</div>
     <div class="prose about-copy">
       {paras}
       <p class="close">{E(L(AB, 'closing'))}</p>
     </div>
   </div>
 </section>
-<section class="services" style="padding-top:clamp(56px,8vw,110px)">
+{process_band}
+<section class="services" id="scope" aria-labelledby="scope-h" style="padding-top:clamp(56px,8vw,110px)">
   <div class="wrap">
-    <div class="sec-head"><h2>What we do</h2></div>
-    <dl class="kv">{kv}</dl>
+    <div class="sec-head"><h2 id="scope-h">Scope</h2></div>
+    <div class="wwd-grid">{kv}</div>
   </div>
 </section>
 <section class="cta"><div class="wrap"><h2>{T(L(AB, 'cta_title'))}</h2><a class="btn" href="contact.html">{E(L(AB, 'cta_button', U('문의하기', 'Get in touch')))}</a></div></section>'''
@@ -444,20 +500,60 @@ def build_lang():
     page('artists.html', 'Artists', U('STANDS 작가.', 'Artists of STANDS.'), 'artists.html', artists)
 
     for a in ARTISTS:
-        works = [p for p in PROJECTS if ref(p.get('artist')) is a]
-        hist = ''.join(f'<a href="{a["_url"]}"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></a>'
+        # sample projects are placeholders, so they are not shown on a real artist's page
+        works = [p for p in PROJECTS if ref(p.get('artist')) is a and not (p.get('sample') and not a.get('sample'))]
+        hist = ''.join(f'<div class="row"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></div>'
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
         name = L(a, 'name')
+        # every block below is optional: an artist with only a name and a summary still gets a tidy page
+        hero_src = img(a.get('hero_image')) or photo
+        cap = L(a, 'hero_caption')
+        hero_html = (f'<figure class="full-ph artist-hero"><img src="{E(hero_src)}" alt="{E(cap or name)}">'
+                     f'{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>') if hero_src else ''
+        quote = L(a, 'quote')
+        quote_html = (f'<section class="artist-quote"><div class="wrap"><blockquote><p>{E(quote)}</p>'
+                      f'<cite>— {E(name)}</cite></blockquote></div></section>') if quote else ''
+        # works: optional `group` starts a sub-heading when it changes (e.g. hanging / wall / proposals);
+        # `contain` shows the whole photo (wide panels); a work without a photo keeps an empty frame as a placeholder
+        wlist = [w for w in (a.get('works') or []) if w.get('image') or w.get('title')]
+        works_html, cur = '', None
+        for w in wlist:
+            g = LI(w, 'group')
+            if g != cur:
+                works_html += f'<h3 class="works-group">{E(g)}</h3>' if g else ''
+                cur = g
+            pic = (f'<img src="{E(img(w["image"]))}" alt="{E(LI(w, "title"))}" loading="lazy">' if w.get('image') else '')
+            meta = " · ".join(x for x in (str(w.get("year") or ""), LI(w, "material"), LI(w, "size")) if x)
+            works_html += (f'<figure class="work{" contain" if w.get("contain") else ""}{" empty" if not w.get("image") else ""}"><div class="ph">{pic}</div>'
+                           f'<figcaption><span class="t">{E(LI(w, "title"))}</span><span class="m">{E(meta)}</span></figcaption></figure>')
+        works_sec = (f'<section class="artist-works"><div class="wrap"><div class="sec-head"><h2>Selected Works</h2>'
+                     f'<a class="more" href="contact.html">{U("작품 문의", "Inquire about works")}</a></div><div class="works-grid">{works_html}</div></div></section>') if works_html else ''
+        note, fit = L(a, 'note'), [x for x in (L(a, 'fit', []) or []) if x]
+        note_sec = (f'<section class="artist-note"><div class="wrap two-col"><span class="eyebrow">STANDS Note</span><div>'
+                    f'{f"<p class=\"note\">{T(note)}</p>" if note else ""}'
+                    f'{("<div class=\"fit\"><span class=\"k\">" + U("어울리는 자리", "Where it stands") + "</span><ul>" + "".join(f"<li>{E(x)}</li>" for x in fit) + "</ul></div>") if fit else ""}'
+                    f'</div></div></section>') if (note or fit) else ''
+        inst = [i for i in (a.get('installs') or []) if i.get('image')]
+        inst_html = ''.join(f'<figure><div class="ph"><img src="{E(img(i["image"]))}" alt="{E(LI(i, "place"))}" loading="lazy"></div>'
+                            f'<figcaption><span class="t">{E(LI(i, "place"))}</span><span class="m">{E(str(i.get("year") or ""))}</span></figcaption></figure>' for i in inst)
+        inst_sec = (f'<section class="artist-installs"><div class="wrap"><div class="sec-head"><h2>Installed</h2></div>'
+                    f'<div class="installs">{inst_html}</div></div></section>') if inst_html else ''
+        facts = [(k, v) for k, v in (('Born', str(L(a, 'born') or '')), ('Based', L(a, 'based')), ('Media', L(a, 'medium'))) if v and not str(v).startswith('[')]
+        kv = ''.join(f'<dt>{k}</dt><dd>{E(v)}</dd>' for k, v in facts)
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artist · {E(L(a, 'medium'))}</span><h1>{E(name)}</h1>
 <p class="lead">{T(L(a, 'summary'))}{sample(a)}</p></div></div>
-{f'<div class="full-ph"><img src="{E(photo)}" alt="{E(name)}"></div>' if photo else ''}
-<section><div class="wrap two-col">
-  <dl class="kv"><dt>Born</dt><dd>{E(str(L(a, 'born')))}</dd><dt>Based</dt><dd>{E(L(a, 'based'))}</dd><dt>Media</dt><dd>{E(L(a, 'medium'))}</dd><dt>Contact</dt><dd><a class="more" href="contact.html">{U('작품 문의', 'Inquire about works')}</a></dd></dl>
+{hero_html}
+{quote_html}
+{works_sec}
+{note_sec}
+{inst_sec}
+{f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Projects</h2></div><div class="cards">{"".join(project_card(p) for p in works)}</div></div></section>' if works else ''}
+<section class="artist-cv"><div class="wrap two-col">
+  <div><span class="eyebrow">Profile</span><dl class="kv">{kv}<dt>Contact</dt><dd><a class="more" href="contact.html">{U('작품 문의', 'Inquire about works')}</a></dd></dl></div>
   <div class="prose">{rich(BODY(a))}</div>
 </div></section>
-{f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Projects</h2></div><div class="cards">{"".join(project_card(p) for p in works)}</div></div></section>' if works else ''}
-{f'<section style="padding-top:0"><div class="wrap two-col"><span class="eyebrow">Exhibitions</span><div class="list">{hist}</div></div></section>' if hist else ''}'''
+{f'<section style="padding-top:0"><div class="wrap two-col"><span class="eyebrow">Solo Exhibitions</span><div class="list">{hist}</div></div></section>' if hist else ''}'''
         page(a['_url'], name or 'Artist', L(a, 'summary') or U('STANDS 작가.', 'Artist of STANDS.'), 'artists.html', body)
 
     # projects
@@ -474,7 +570,7 @@ def build_lang():
         art = ref(p.get('artist'))
         art_dd = f'<a href="{art["_url"]}">{E(L(art, "name"))}</a>' if art else E(str(p.get('artist') or ''))
         rows = [('Location', E(L(p, 'location'))), ('Year', E(str(p.get('year', '')))), ('Artist', art_dd),
-                ('Size', E(L(p, 'size'))), ('Client', E(L(p, 'client'))), ('Scope', E(L(p, 'scope')))]
+                ('Size', E(L(p, 'size'))), ('Type', E(L(p, 'place_type'))), ('Scope', E(L(p, 'scope')))]
         kv = ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows if v)
         cover = img(p.get('cover'))
         title = L(p, 'title')
@@ -487,7 +583,7 @@ def build_lang():
   <dl class="kv">{kv}</dl>
   <div class="prose">{rich(BODY(p))}</div>
 </div></section>
-{f'<section style="padding-top:0"><div class="wrap"><div class="cards gallery">{gal}</div></div></section>' if gal else ''}
+{f'<section class="proj-gallery" style="padding-top:0"><div class="wrap"><div class="gallery-strip" tabindex="0" aria-label="{U("추가 사진", "More photos")}">{gal}</div></div></section>' if gal else ''}
 {f'<section style="padding-top:0"><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
         page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body, og=cover or None)
 
@@ -497,13 +593,16 @@ def build_lang():
 <section><div class="wrap"><div class="list">{''.join(article_row(a) for a in ARTICLES)}</div></div></section>'''
     page('editorial.html', 'Editorial', U('WHERE ART STANDS? — STANDS 에디토리얼.', 'WHERE ART STANDS? — the STANDS editorial.'), 'editorial.html', editorial)
 
-    for a in ARTICLES:
+    for a in PUBLISHED:
         cover = img(a.get('cover'))
+        # optional cover_focus ("50% 46%"): which part of the photo stays in frame in the wide crops
+        cf = str(a.get('cover_focus') or '').strip()
+        focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
         title = L(a, 'title')
         body = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Issue {E(str(a.get('issue', '')))} · Where art stands?</span>
 <h1 style="font-family:var(--body);font-weight:700;text-transform:none;font-size:clamp(36px,6vw,84px);line-height:1.15;letter-spacing:-.03em">{E(title)}</h1>
 <p class="lead">{T(L(a, 'summary'))}</p></div></div>
-{f'<div class="full-ph"><img src="{E(cover)}" alt=""></div>' if cover else ''}
+{f'<div class="full-ph ed-cover"><img src="{E(cover)}" alt=""{focus}><span class="ed-cover-tag">Issue {E(str(a.get("issue", "")))} · Where art stands</span></div>' if cover else ''}
 <section><div class="wrap two-col"><span class="eyebrow">{E(str(a.get('date', '')))}</span>
 <div class="prose">{rich(BODY(a))}</div></div></section>'''
         page(a['_url'], title or 'Editorial', L(a, 'summary') or U('STANDS 에디토리얼.', 'The STANDS editorial.'), 'editorial.html', body, og=cover or None)
@@ -548,7 +647,7 @@ def build_lang():
     # old single example pages -> redirect to the first real entry
     for old, target in (('project.html', PROJECTS[0]['_url'] if PROJECTS else 'projects.html'),
                         ('artist.html', ARTISTS[0]['_url'] if ARTISTS else 'artists.html'),
-                        ('article.html', ARTICLES[0]['_url'] if ARTICLES else 'editorial.html')):
+                        ('article.html', PUBLISHED[0]['_url'] if PUBLISHED else 'editorial.html')):
         open(os.path.join(OUT, old), 'w', encoding='utf-8').write(
             f'<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={target}"><link rel="canonical" href="{target}"><a href="{target}">{U("이동", "Continue")}</a>\n')
 

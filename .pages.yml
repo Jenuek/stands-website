@@ -21,6 +21,7 @@ content:
           - { name: headline, label: 메인 제목 (뒤에 STANDS가 붙습니다), type: string, description: "예: 예술이 필요한 곳에," }
           - { name: story_1, label: 소개 첫 문단, type: text }
           - { name: story_2, label: 소개 둘째 문단 (WHERE ART STANDS 아래), type: text }
+          - { name: statement_image, label: 소개글 오른쪽 사진 (세로 4:5, 가로 1200px 이상), type: image }
           - name: services
             label: What we do 항목
             type: object
@@ -60,14 +61,17 @@ content:
         fields:
           - { name: paragraphs, label: 회사 소개 문단, type: text, list: true }
           - { name: closing, label: 마지막 강조 문장, type: string }
+          - { name: intro_image, label: 소개글 옆 사진 (세로 4:5), type: image }
           - name: what_we_do
-            label: What we do 목록
+            label: Scope 목록 (About)
             type: object
             list: true
             fields:
-              - { name: label, label: 라벨, type: string }
-              - { name: text, label: 내용, type: string }
-              - { name: text_en, label: 내용 (영문), type: string }
+              - { name: label, label: "라벨 (예: 01. ART DEALING)", type: string }
+              - { name: title, label: 제목, type: string }
+              - { name: items, label: 세부 항목, type: string, list: true }
+              - { name: title_en, label: 제목 (영문), type: string }
+              - { name: items_en, label: 세부 항목 (영문), type: string, list: true }
           - { name: cta_title, label: 하단 문의 영역 문장, type: string }
           - { name: cta_button, label: 하단 문의 버튼, type: string }
           - name: en
@@ -155,7 +159,7 @@ content:
         label: 작가
         type: reference
         options: { collection: artists, search: name, value: "{path}", label: "{name}" }
-      - { name: client, label: 클라이언트, type: string }
+      - { name: place_type, label: "공간 유형 (Type, 예: 상업시설)", type: string }
       - { name: scope, label: 업무 범위, type: string, description: "예: 기획 · 제작 · 설치" }
       - { name: cover, label: 대표 사진, type: image }
       - { name: gallery, label: 추가 사진, type: image, options: { multiple: { max: 12 } } }
@@ -169,7 +173,7 @@ content:
           - { name: title, label: 프로젝트명 (영문), type: string }
           - { name: location, label: 위치 (영문), type: string, description: "예: Jung-gu, Seoul" }
           - { name: size, label: 규모 (영문), type: string, description: "숫자만이면 비워두세요. 예: 12 works" }
-          - { name: client, label: 클라이언트 (영문), type: string }
+          - { name: place_type, label: "공간 유형 (영문, 예: Commercial)", type: string }
           - { name: scope, label: 업무 범위 (영문), type: string, description: "예: Planning · Fabrication · Installation" }
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
@@ -195,7 +199,36 @@ content:
       - { name: based, label: 활동 지역, type: string }
       - { name: photo, label: 대표 이미지 (비우면 기본 도형), type: image }
       - { name: summary, label: 소개 (한두 문장), type: text }
-      - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
+      - { name: body, label: "본문 (학력·경력·수상·소장)", type: rich-text, options: { format: markdown } }
+      - { name: hero_image, label: 대표작 사진 (페이지 상단 크게), type: image }
+      - { name: hero_caption, label: "대표작 캡션 (예: 작품명, 연도)", type: string }
+      - { name: quote, label: 작가의 한 문장, type: text }
+      - name: works
+        label: 작품 (Selected Works)
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 사진, type: image }
+          - { name: title, label: 작품명, type: string }
+          - { name: year, label: 연도, type: string }
+          - { name: material, label: 재료, type: string }
+          - { name: size, label: 크기, type: string }
+          - { name: group, label: "묶음 (예: 매다는 작품, 벽면 작품)", type: string, description: 바로 앞 작품과 다르면 새 소제목이 생깁니다 }
+          - { name: contain, label: 사진 전체 보이기 (가로로 긴 작품), type: boolean }
+          - { name: title_en, label: 작품명 (영문), type: string }
+          - { name: material_en, label: 재료 (영문), type: string }
+          - { name: group_en, label: 묶음 (영문), type: string }
+      - { name: note, label: STANDS가 보는 이 작가, type: text }
+      - { name: fit, label: 어울리는 자리, type: string, list: true }
+      - name: installs
+        label: 설치 사례 (Installed)
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 사진, type: image }
+          - { name: place, label: 장소, type: string }
+          - { name: year, label: 연도, type: string }
+          - { name: place_en, label: 장소 (영문), type: string }
       - name: history
         label: 전시 · 프로젝트 이력
         type: object
@@ -217,6 +250,10 @@ content:
           - { name: based, label: 활동 지역 (영문), type: string }
           - { name: summary, label: 소개 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
+          - { name: hero_caption, label: 대표작 캡션 (영문), type: string }
+          - { name: quote, label: 작가의 한 문장 (영문), type: text }
+          - { name: note, label: STANDS가 보는 이 작가 (영문), type: text }
+          - { name: fit, label: 어울리는 자리 (영문), type: string, list: true }
       - { name: order, label: 정렬 순서 (작을수록 앞), type: number }
       - { name: sample, label: "'예시' 표시", type: boolean, description: 실제 작가면 끄세요 }
       - { name: hidden, label: 비공개, type: boolean, description: 켜면 사이트에 나오지 않습니다 }
@@ -238,6 +275,7 @@ content:
       - { name: date, label: 발행일, type: date }
       - { name: summary, label: 요약 (목록과 홈에 표시), type: text }
       - { name: cover, label: 대표 이미지, type: image }
+      - { name: cover_focus, label: "대표 이미지 초점 (예: 50% 46%)", type: string, description: "가로로 잘릴 때 보일 부분. 가로% 세로%. 비우면 가운데" }
       - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
       - name: en
         label: 영문 (English)
@@ -248,4 +286,5 @@ content:
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
       - { name: sample, label: "'예시' 표시", type: boolean }
+      - { name: upcoming, label: 공개 예정, type: boolean, description: 켜면 목록에 제목만 '공개 예정'으로 나오고 글은 열리지 않습니다 }
       - { name: hidden, label: 비공개, type: boolean, description: 켜면 사이트에 나오지 않습니다 }
