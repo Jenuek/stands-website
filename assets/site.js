@@ -127,3 +127,10 @@
   if(form) form.addEventListener('submit',()=>send('contact_form_submit',{page_path:location.pathname}));
   window.__standsSend=send;
 })();
+
+/* images: block the right-click menu and dragging on images only (text, links and the rest of the page keep theirs) */
+(function(){
+  function onImg(e){ var t = e.target; return t && t.tagName === 'IMG'; }
+  document.addEventListener('contextmenu', function(e){ if (onImg(e)) e.preventDefault(); });
+  document.addEventListener('dragstart', function(e){ if (onImg(e)) e.preventDefault(); });
+})();

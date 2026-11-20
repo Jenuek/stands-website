@@ -309,7 +309,7 @@ def footer():
       <div><h4>Follow</h4><ul><li>Instagram {E(CT.get('instagram', ''))}</li><li><a href="editorial.html">Editorial</a></li></ul></div>
     </div>
     <div class="legal">
-      <div>{legal}</div>
+      <div>{legal}{f'<br>{E(L(CO, "copyright"))}' if L(CO, 'copyright') else ''}</div>
       <div><a href="privacy.html">{U('개인정보처리방침', 'Privacy Policy')}</a> · © 2026 STANDS</div>
     </div>
   </div>

@@ -29,7 +29,7 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 | `.pages.yml` | Pages CMS field config. Field names must match what `build.py` reads |
 | `build/build.py` | Whole site generator (pages, cards, header/footer, i18n, GA/Clarity snippets) |
 | `build/logo_new.py` | Logo and hero glyph paths taken from the brand guide PDF |
-| `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events |
+| `assets/site.css`, `assets/site.js` | Styles; nav, filters, contact-form stub, GA4 events. Images can't be dragged or long-pressed (CSS) and their right-click menu is blocked (`site.js`); text and links keep theirs. Footer copyright line = `company.copyright` / `en.copyright` in `site.yml` |
 | `assets/hero.js` | Home hero animation (see below) |
 | `build/illust.js`, `img/illust/*.svg` | Line illustrations: `service-01..03` (home What we do cards, by order). Edit the script, run `node build/illust.js`, commit the SVGs; the site build only links them |
 | `build/process.js`, `img/illust/process-01..06.svg` | About "Process" pictograms (geometry only; the work, a vesica, firms up step by step). Step names KO/EN are in `PROCESS` in `build.py`. Edit the script, run `node build/process.js`, commit the SVGs |
