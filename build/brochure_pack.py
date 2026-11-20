@@ -7,10 +7,11 @@ _brochure/STANDS_Company-Profile_<date>.zip with
   fonts/                                     the static fonts the PDF uses (install before opening)
   README.txt
 
-    python build/brochure_pack.py      (after build/brochure_pdf.mjs)
+    python build/brochure_pack.py      (after build/brochure_pdf.mjs; needs pypdf, pikepdf)
 """
 import os, shutil, zipfile, datetime
 from pypdf import PdfReader, PdfWriter
+import brochure_textruns
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, '_brochure')
@@ -29,7 +30,7 @@ README = '''STANDS 회사 소개서 — 일러스트레이터 편집용
      Illustrator 버전에 따라 모든 페이지를 아트보드로 한 번에 불러올 수도 있습니다.
 
 3. 편집 메모
-   - 글자는 줄 단위 텍스트 개체로 들어 있습니다. 문단을 크게 고칠 때는 한 줄씩 지우고 영역 텍스트로 다시 흘리는 편이 빠릅니다.
+   - 글자는 한 줄이 하나의 텍스트 개체로 들어 있습니다. 문단을 크게 고칠 때는 한 줄씩 지우고 영역 텍스트로 다시 흘리는 편이 빠릅니다.
    - 사진은 클리핑 마스크 안에 들어 있습니다. 마스크 안 사진을 바꾸거나 위치를 옮기면 됩니다.
    - 로고와 선 일러스트는 벡터입니다.
    - 판형: A4 가로 297 × 210mm, 재단 여백 없음. 인쇄소에 맡길 때는 재단 여백(보통 3mm)을 따로 확인하세요.
@@ -45,6 +46,7 @@ def main():
         pdf = os.path.join(SRC, f'brochure-{lang}.pdf')
         if not os.path.exists(pdf):
             continue
+        brochure_textruns.fix(pdf)   # one text object per line in Illustrator, not one per letter
         L = lang.upper()
         shutil.copy(pdf, os.path.join(DST, f'STANDS_Company-Profile_{L}.pdf'))
         pdir = os.path.join(DST, f'pages-{L}')
