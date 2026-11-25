@@ -20,6 +20,7 @@ artist_names:
 place_type: 생활숙박·판매·근린생활시설
 scope: 심의 · 제작 · 설치
 cover: /img/projects/lagoon-interrace/main.jpg
+cover_focus: 50% 30%
 cover_caption: 1층 수경공간, 설치 후 2025
 summary: 시화호 수변의 49층 복합단지. 1층 외부공간과 4층 조경에 미술작품 13점을 계획하고, 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
