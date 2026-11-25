@@ -18,6 +18,19 @@ cover: /img/projects/horizontal-gardens/night-wide.jpg
 cover_tall: /img/projects/horizontal-gardens/night-portrait.jpg
 cover_focus: 50% 55%
 cover_caption: 야간 전경, 2024
+stats:
+- value: '16'
+  unit: F
+  label: 지상 층수, 지하 6층
+  label_en: Floors above ground, 6 below
+- value: 34,215
+  unit: ㎡
+  label: 연면적
+  label_en: Gross floor area
+- value: '12'
+  unit: m
+  label: 작품 길이
+  label_en: Length of the work
 summary: 고덕비즈밸리 업무시설 앞 외부 광장에 김병호 작가의 「233개의 수평정원」을 설치했다. 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
   building: 동명기술공단 신사옥 (디엠스퀘어)

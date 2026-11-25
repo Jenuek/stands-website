@@ -205,6 +205,16 @@ content:
           - { name: image, label: 이미지, type: image }
           - { name: caption, label: 캡션, type: string }
           - { name: caption_en, label: 캡션 (영문), type: string }
+      - name: stats
+        label: "핵심 수치 (홈 Selected Projects, 3개 권장)"
+        type: object
+        list: true
+        fields:
+          - { name: value, label: "숫자 (예: 34,215)", type: string }
+          - { name: unit, label: "단위 (예: ㎡, F, m, 점)", type: string }
+          - { name: unit_en, label: 단위 (영문), type: string }
+          - { name: label, label: 설명, type: string }
+          - { name: label_en, label: 설명 (영문), type: string }
       - { name: curation_intro, label: 큐레이션 근거 도입 문장, type: text }
       - name: curation
         label: 큐레이션 근거
