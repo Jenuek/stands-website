@@ -11,6 +11,9 @@ size: 미술작품 13점
 artists:
 - content/artists/artist-01.md
 - content/artists/artist-04.md
+artist_names:
+- 김태호
+- 김도훈
 place_type: 생활숙박·판매·근린생활시설
 scope: 심의 · 제작 · 설치
 cover: /img/projects/lagoon-interrace/main.jpg
@@ -24,7 +27,7 @@ facts:
   scale: 지하 2층 ~ 지상 49층, 9개 동, 최고 높이 171.3m
   area: 대지 51,387.80㎡ · 연면적 518,062.03㎡ · 용적률 796.96% · 조경면적 6,160.97㎡ (11.99%)
   year: '2025'
-  works: 미술작품 13점 (이 사례에서는 이성옥 「자연의 소리 SC25 · SG25」, 권치규 「Resilience-Promise」 「서정적 풍경 – 미루나무와 느티나무」)
+  works: 미술작품 13점 (이 사례에서는 이성옥 「자연의 소리 SC25 · SG25」, 권치규 「Resilience-Promise」 「서정적 풍경 – 미루나무와 느티나무」, 김태호 「Forest of Dreams」, 김도훈 「Crystal gate」)
   scope: 심의 · 제작 · 설치
   budget: 미술작품 13점 총 45.16억 원 (심의 계획 기준)
 site: |-
@@ -117,6 +120,15 @@ results:
 - image: /img/projects/lagoon-interrace/result-05.jpg
   caption: 근접, 2025
   caption_en: Detail, 2025
+- image: /img/projects/lagoon-interrace/crystal-gate.jpg
+  caption: 김도훈 「Crystal gate」
+  caption_en: Kim Dohoon, Crystal gate
+- image: /img/projects/lagoon-interrace/crystal-gate-wide.jpg
+  caption: 김도훈 「Crystal gate」, 중정 전경
+  caption_en: Kim Dohoon, Crystal gate, courtyard view
+- image: /img/projects/lagoon-interrace/forest-of-dreams.jpg
+  caption: 김태호 「Forest of Dreams」
+  caption_en: Kim Taeho, Forest of Dreams
 process:
 - title: 건축·조경 조건 분석
   title_en: Analysis of architectural and landscape conditions
@@ -138,6 +150,9 @@ process:
   title_en: Maintenance plan and handover
 en:
   title: Hillstate Sihwaho Lagoon Interrace
+  artist_names:
+  - Kim Taeho
+  - Kim Dohoon
   location: Sihwa MTV, Ansan, Gyeonggi
   size: 13 works
   place_type: Lodging, retail and neighbourhood facilities
@@ -151,7 +166,7 @@ en:
     use: Serviced residences, retail, education and research, neighbourhood facilities
     scale: 2 basement levels, up to 49 floors, 9 buildings, 171.3 m at the highest point
     area: Site 51,387.80㎡ · Gross floor area 518,062.03㎡ · Floor area ratio 796.96% · Landscape 6,160.97㎡ (11.99%)
-    works: 13 works (this case covers Lee Sungok's Sound of Nature SC25 · SG25 and Kwon Chi-gyu's Resilience-Promise and Lyrical Landscape – Poplar and Zelkova)
+    works: 13 works (this case covers Lee Sungok's Sound of Nature SC25 · SG25, Kwon Chi-gyu's Resilience-Promise and Lyrical Landscape – Poplar and Zelkova, Kim Taeho's Forest of Dreams and Kim Dohoon's Crystal gate)
     scope: Review · Fabrication · Installation
     budget: KRW 4.516 billion in total for 13 works (as planned at review)
   site: |-

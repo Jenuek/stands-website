@@ -173,6 +173,7 @@ content:
         label: 작가 (여러 명, 심층 사례)
         type: reference
         options: { collection: artists, search: name, value: "{path}", label: "{name}", multiple: true }
+      - { name: artist_names, label: "작가 (페이지 없는 작가 이름)", type: string, list: true }
       - name: facts
         label: "개요 표 (심층 사례)"
         type: object
@@ -250,6 +251,7 @@ content:
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
           - { name: cover_caption, label: 대표 사진 캡션 (영문), type: string }
+          - { name: artist_names, label: "작가 이름 (영문)", type: string, list: true }
           - name: facts
             label: 개요 표 (영문)
             type: object

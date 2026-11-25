@@ -367,7 +367,9 @@ def case_page(i, p):
     title = L(p, 'title')
     cover = img(p.get('cover'))
     arts = p_artists(p)
-    arts_html = ', '.join(f'<a href="{a["_url"]}">{E(L(a, "name"))}</a>' for a in arts) or E(str(p.get('artist') or ''))
+    # linked artists first, then artists without a page (`artist_names`)
+    names = [f'<a href="{a["_url"]}">{E(L(a, "name"))}</a>' for a in arts] + [E(str(n)) for n in (L(p, 'artist_names') or []) if n]
+    arts_html = ', '.join(names) or E(str(p.get('artist') or ''))
     head_meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
 
     def sec(n, label_ko, label_en, inner):
