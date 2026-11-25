@@ -87,15 +87,20 @@
     var d = data.filter(function (x) { return x.id === id; })[0];
     if (!d) return;
     if (popup) popup.remove();
-    popup = new maplibregl.Popup({ offset: 14, maxWidth: '300px', closeButton: true }).setLngLat([d.lng, d.lat]).setHTML(card(d)).addTo(map);
+    popup = new maplibregl.Popup({ offset: 14, maxWidth: '300px', closeButton: true, focusAfterOpen: false }).setLngLat([d.lng, d.lat]).setHTML(card(d)).addTo(map);
     // keep the pin in the upper part of the map so the card below it fits
     map[reduce ? 'jumpTo' : (fly ? 'flyTo' : 'easeTo')]({ center: [d.lng, d.lat], zoom: fly ? Math.max(map.getZoom(), 14) : map.getZoom(), offset: [0, -Math.min(170, el.clientHeight * 0.3)] });
-    // on phones the list sits under the map: bring the map back into view
-    if (fly && el.getBoundingClientRect().top < 0) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    // the page itself never jumps; only on phones, where the list sits under the map and the map is out of view, scroll back up to it
+    var r = el.getBoundingClientRect();
+    if (fly && list.getBoundingClientRect().top >= r.bottom - 1 && r.top < -40) window.scrollBy({ top: r.top - 16, behavior: reduce ? 'auto' : 'smooth' });
     [].forEach.call(list.children, function (li) {
       var on = li.dataset.id === id;
       li.classList.toggle('on', on);
-      if (on && !fly) li.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+      // scroll inside the list only (scrollIntoView would move the whole page too)
+      if (on && !fly) {
+        var top = li.offsetTop - list.offsetTop, bot = top + li.offsetHeight;
+        if (top < list.scrollTop || bot > list.scrollTop + list.clientHeight) list.scrollTo({ top: top - 8, behavior: reduce ? 'auto' : 'smooth' });
+      }
     });
     track('map_pin_click', { project: id });
   }
