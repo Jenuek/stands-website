@@ -1,4 +1,8 @@
 ---
+work: 나빌레라
+lat: 37.1905
+lng: 127.142
+map_only: true
 title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
@@ -17,6 +21,8 @@ gallery:
 - /img/projects/nabillera/detail-03.jpg
 summary: 양세훈 작가의 「나빌레라」. 동탄 아파트 단지의 정원에 물결 위로 내려앉은 나비 같은 형상이 선다.
 en:
+  work: Nabillera
+  artist: Yang Sehoon
   title: Sculpture for an Apartment Complex
   location: Dongtan, Hwaseong
   place_type: Residential

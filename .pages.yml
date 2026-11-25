@@ -167,6 +167,10 @@ content:
       - { name: gallery, label: 추가 사진, type: image, options: { multiple: { max: 12 } } }
       - { name: summary, label: 요약 (한두 문장), type: text }
       - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
+      - { name: map_only, label: 지도에만 표시, type: boolean, description: 켜면 상세 페이지 없이 Projects 지도에 핀과 요약 카드로만 나옵니다 }
+      - { name: work, label: "작품명 (지도 카드)", type: string }
+      - { name: lat, label: "위도 (지도, 예: 37.5668)", type: number }
+      - { name: lng, label: "경도 (지도, 예: 127.16)", type: number }
       - { name: case_study, label: 심층 사례, type: boolean, description: 켜면 Projects 페이지 위쪽 Case Studies에 나오고 아래 사례 항목으로 상세 페이지를 만듭니다 }
       - { name: cover_caption, label: 대표 사진 캡션, type: string }
       - name: artists
@@ -251,6 +255,8 @@ content:
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
           - { name: cover_caption, label: 대표 사진 캡션 (영문), type: string }
+          - { name: work, label: "작품명 (영문, 지도 카드)", type: string }
+          - { name: artist, label: "작가 이름 (영문, 작가 페이지가 없을 때)", type: string }
           - { name: artist_names, label: "작가 이름 (영문)", type: string, list: true }
           - name: facts
             label: 개요 표 (영문)

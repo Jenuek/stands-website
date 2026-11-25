@@ -1,4 +1,7 @@
 ---
+work: 미술작품 13점
+lat: 37.304
+lng: 126.734
 title: 힐스테이트 시화호 라군 인테라스
 sample: false
 hidden: false
@@ -149,6 +152,7 @@ process:
 - title: 유지관리 계획·인계 체계
   title_en: Maintenance plan and handover
 en:
+  work: 13 works
   title: Hillstate Sihwaho Lagoon Interrace
   artist_names:
   - Kim Taeho
