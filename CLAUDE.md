@@ -22,6 +22,7 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 
 | Path | What |
 | --- | --- |
+| Home order | Hero → statement → **Selected Projects** (only case studies from `featured_projects`; each a wide row, photo beside 3 key figures from the case's `stats[]` (value, unit, label, `_en`), sides alternating; `home_case()`) with a **map teaser** band below (site count and a dot map drawn at build time from the projects' `lat` / `lng` with reference cities, `map_teaser()`, links to `projects.html#map`) → What we do → Artists (tall 3:5 cards) → Editorial → Contact |
 | `content/site.yml` | Home, About, list-page leads, contact, company info, home highlights (`featured_*`). `about.what_we_do[]` (About "Scope" section) = `label` ("01. ART DEALING"), `title`, `items[]`, `title_en`, `items_en[]`, shown as number cards (old single `text` "title - a, b" is still parsed) |
 | `content/projects/*.md`, `artists/*.md`, `editorial/*.md` | One entry per file, YAML front matter + markdown body. Editorial `upcoming: true` lists the issue as "공개 예정 / Coming soon" (not a link, no page built); the newest published issue gets a LATEST tag automatically (list and home feature); `cover_focus` sets the crop of the cover |
 | Artists list (`artist_spread()` in `build.py`) | Laid out like the company profile (2026-11): two per row (one on phones), each a tall detail crop (`photo`, 9:22) beside ARTIST 0n, name, medium · based, a thick rule, the artist's sentence (`quote`, from the profile), and the `summary` at the foot; on hover the photo fades to the work in place (`hero_image`). Home cards show the sentence over the photo on hover. A quote still holding placeholder text ("…자리입니다") is not shown |
@@ -96,7 +97,7 @@ python -m http.server 8000 -d _site   # http://localhost:8000
 
 - [ ] Contact form only shows a notice. Wire real delivery (e.g. Formspree) to the company inbox.
 - [ ] Fill company info, phone and address. Finalise the privacy policy (KO/EN).
-- [x] Sample projects and sample artists removed (2026-11-18). Projects now: 2 case studies (DMEC, Lagoon Interrace, which absorbed the Ansan works Forest of Dreams and Crystal gate) and 3 map-only entries (Polar Bear Family, Our Portrait, Nabillera), all Scope 심의 · 제작 · 설치. Home features DMEC, Lagoon Interrace, Polar Bear Family.
+- [x] Sample projects and sample artists removed (2026-11-18). Projects now: 2 case studies (DMEC, Lagoon Interrace, which absorbed the Ansan works Forest of Dreams and Crystal gate) and 3 map-only entries (Polar Bear Family, Our Portrait, Nabillera), all Scope 심의 · 제작 · 설치. Home features the two case studies (DMEC, Lagoon Interrace).
 - [ ] Check whether FRIENDSWITHYOU (overseas) can be listed. Fill missing year/size on projects.
 - English site check (2026-11-18): no Korean text left on /en/ pages; Korean placeholders like [입력] render as [To be added] there (`page()` in build.py).
 - [ ] Confirm English artist names (Kwon Chi-gyu, Kim Byoungho, Kim Woojin, Lee Sungok) and "Malong Company".

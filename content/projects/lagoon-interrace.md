@@ -22,6 +22,20 @@ scope: 심의 · 제작 · 설치
 cover: /img/projects/lagoon-interrace/main.jpg
 cover_focus: 50% 30%
 cover_caption: 1층 수경공간, 설치 후 2025
+stats:
+- value: '49'
+  unit: F
+  label: 최고 49층, 9개 동
+  label_en: Up to 49 floors, 9 buildings
+- value: 518,062
+  unit: ㎡
+  label: 연면적
+  label_en: Gross floor area
+- value: '13'
+  unit: 점
+  unit_en: works
+  label: 미술작품 수
+  label_en: Artworks
 summary: 시화호 수변의 49층 복합단지. 1층 외부공간과 4층 조경에 미술작품 13점을 계획하고, 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
   building: 힐스테이트 시화호 라군 인테라스
