@@ -71,7 +71,6 @@
       map.on('mouseenter', id, function () { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', id, function () { map.getCanvas().style.cursor = ''; });
     });
-    map.on('moveend', renderList);
     renderList();
   });
 
@@ -93,13 +92,17 @@
     map[reduce ? 'jumpTo' : (fly ? 'flyTo' : 'easeTo')]({ center: [d.lng, d.lat], zoom: fly ? Math.max(map.getZoom(), 14) : map.getZoom(), offset: [0, -Math.min(170, el.clientHeight * 0.3)] });
     // on phones the list sits under the map: bring the map back into view
     if (fly && el.getBoundingClientRect().top < 0) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    [].forEach.call(list.children, function (li) { li.classList.toggle('on', li.dataset.id === id); });
+    [].forEach.call(list.children, function (li) {
+      var on = li.dataset.id === id;
+      li.classList.toggle('on', on);
+      if (on && !fly) li.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    });
     track('map_pin_click', { project: id });
   }
 
   function renderList() {
-    var b = map.getBounds();
-    var items = shown().filter(function (d) { return b.contains([d.lng, d.lat]); });
+    // the whole (filtered) list stays put; moving or zooming the map never hides entries
+    var items = shown();
     items.sort(function (a, c) { return (c.case - a.case) || (c.year > a.year ? 1 : -1); });
     list.innerHTML = items.map(function (d) {
       return '<li data-id="' + esc(d.id) + '"><button type="button">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy">' : '<span class="ph"></span>') +
