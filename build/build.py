@@ -335,6 +335,94 @@ def project_card(p):
     return (f'<a class="card" href="{p["_url"]}" data-type="{E(typ)}"><div class="ph">{ph}</div>'
             f'<span class="meta">{E(meta)}</span><h3>{E(L(p, "title"))}{sample(p)}</h3></a>')
 
+def p_artists(p):
+    """A project names one artist (`artist`) or several (`artists`, case studies)."""
+    refs = list(p.get('artists') or []) or ([p.get('artist')] if p.get('artist') else [])
+    return [ref(r) for r in refs if ref(r)]
+
+# case study facts table: fixed keys and order, shared with the planned art map
+FACTS = [('building', '건축물', 'Building'), ('location', '위치', 'Location'), ('owner', '건축주', 'Client'),
+         ('use', '용도', 'Use'), ('scale', '규모', 'Scale'), ('area', '면적', 'Area'), ('year', '연도', 'Year'),
+         ('works', '미술작품', 'Artworks'), ('size', '규격', 'Dimensions'), ('material', '재료', 'Materials'),
+         ('scope', '수행 범위', 'Scope'), ('budget', '총 예산', 'Total budget')]
+
+def fact(p, k):
+    ko = p.get('facts') or {}
+    en = (p.get('en') or {}).get('facts') or {}
+    v = en.get(k) if EN() and _filled(en.get(k)) else ko.get(k)
+    return str(v).strip() if _filled(v) else ''
+
+def case_feature(p):
+    """Large card for a case study on the Projects page."""
+    cover = img(p.get('cover'))
+    meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
+    ph = f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''
+    return (f'<a class="case-feature" href="{p["_url"]}"><div class="ph">{ph}</div>'
+            f'<div class="txt"><span class="case-label">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span>'
+            f'<h3>{E(L(p, "title"))}</h3><span class="meta">{E(meta)}</span><p>{T(L(p, "summary"))}</p>'
+            f'<span class="more">{U("사례 보기", "View case")}</span></div></a>')
+
+def case_page(i, p):
+    """Case study: fixed sections in a fixed order, each hidden when empty."""
+    title = L(p, 'title')
+    cover = img(p.get('cover'))
+    arts = p_artists(p)
+    # linked artists first, then artists without a page (`artist_names`)
+    names = [f'<a href="{a["_url"]}">{E(L(a, "name"))}</a>' for a in arts] + [E(str(n)) for n in (L(p, 'artist_names') or []) if n]
+    arts_html = ', '.join(names) or E(str(p.get('artist') or ''))
+    head_meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
+
+    def sec(n, label_ko, label_en, inner):
+        return (f'<section class="case-sec"><div class="wrap two-col"><span class="eyebrow">{n:02d} · {U(label_ko, label_en)}</span>'
+                f'<div>{inner}</div></div></section>') if inner else ''
+
+    facts = ''.join(f'<dt>{U(ko, en)}</dt><dd>{E(fact(p, k))}</dd>' for k, ko, en in FACTS if fact(p, k))
+    facts_html = f'<dl class="kv case-facts">{facts}</dl>' if facts else ''
+
+    site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
+                        for x in (p.get('site_images') or []) if x.get('image'))
+    site_html = (f'<div class="prose">{rich(L(p, "site"))}</div>' if L(p, 'site') else '') + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '')
+
+    rows = ''.join(f'<div class="case-row"><span class="meta">{E(LI(c, "condition"))}</span><h3>{E(LI(c, "work"))}</h3><p>{E(LI(c, "response"))}</p></div>'
+                   for c in (p.get('curation') or []))
+    intro = L(p, 'curation_intro')
+    body = BODY(p)
+    cur_html = ((f'<p class="case-intro">{T(intro)}</p>' if intro else '') + (f'<div class="case-rows">{rows}</div>' if rows else '')
+                + (f'<div class="prose case-note">{rich(body)}</div>' if body and str(body).strip() else ''))
+
+    spec_rows = ''.join(f'<tr><th scope="row">{E(LI(x, "work"))}</th><td>{E(LI(x, "size"))}</td><td>{E(LI(x, "material"))}</td></tr>'
+                        for x in (p.get('specs') or []))
+    spec_html = ((f'<div class="case-table"><table><thead><tr><th scope="col">{U("작품", "Work")}</th><th scope="col">{U("규격 (mm)", "Dimensions (mm)")}</th>'
+                  f'<th scope="col">{U("재료", "Materials")}</th></tr></thead><tbody>{spec_rows}</tbody></table></div>') if spec_rows else '') + \
+                (f'<p class="case-intro">{T(L(p, "specs_note"))}</p>' if L(p, 'specs_note') else '')
+
+    res = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
+                  for x in (p.get('results') or []) if x.get('image'))
+    res_html = f'<div class="case-figs results">{res}</div>' if res else ''
+
+    steps = ''.join(f'<li><span class="meta">{k:02d}</span><span>{E(LI(x, "title"))}</span></li>' for k, x in enumerate(p.get('process') or [], 1))
+    proc_html = f'<ol class="case-steps">{steps}</ol>' if steps else ''
+
+    blocks = [('개요', 'Overview', facts_html), ('사이트 분석', 'Site analysis', site_html), ('큐레이션 근거', 'Curation', cur_html),
+              ('작품 사양', 'Specifications', spec_html), ('결과', 'Result', res_html), ('프로세스 · 수행 범위', 'Process · Scope', proc_html)]
+    secs, n = '', 0
+    for ko, en, inner in blocks:
+        if inner:
+            n += 1
+            secs += sec(n, ko, en, inner)
+    cap = L(p, 'cover_caption')
+    credit = L(p, 'credit')
+    others = [q for q in PROJECTS if q is not p]
+    nxt = [others[(i + k) % len(others)] for k in range(min(3, len(others)))] if others else []
+    body_html = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span><h1 class="long">{E(title)}</h1>
+<p class="case-head-meta"><span>{arts_html}</span><span class="meta">{E(head_meta)}</span></p>
+<p class="lead">{T(L(p, 'summary'))}</p></div></div>
+{f'<figure class="full-ph case-cover"><img src="{E(cover)}" alt="{E(title)}">{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>' if cover else ''}
+{secs}
+{f'<div class="wrap case-credit">{E(credit)}</div>' if credit else ''}
+{f'<section><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
+    page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body_html, og=cover or None)
+
 def artist_card(a):
     i = ARTISTS.index(a)
     photo = img(a.get('photo'))
@@ -501,7 +589,7 @@ def build_lang():
 
     for a in ARTISTS:
         # sample projects are placeholders, so they are not shown on a real artist's page
-        works = [p for p in PROJECTS if ref(p.get('artist')) is a and not (p.get('sample') and not a.get('sample'))]
+        works = [p for p in PROJECTS if any(x is a for x in p_artists(p)) and not (p.get('sample') and not a.get('sample'))]
         hist = ''.join(f'<div class="row"><span class="meta">{E(str(h.get("year", "")))}</span><h3>{E(LI(h, "title"))}</h3><span class="meta">{E(LI(h, "place"))}</span></div>'
                        for h in (a.get('history') or []))
         photo = img(a.get('photo'))
@@ -560,13 +648,20 @@ def build_lang():
     used = [k for k in TYPES if any(p.get('type') == k for p in PROJECTS)]
     chips = f'<button class="chip" type="button" data-filter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
         f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{type_name(k)}</button>' for k in used)
+    CASES = [p for p in PROJECTS if p.get('case_study')]
+    case_list = (f'<section class="case-list"><div class="wrap"><div class="sec-head"><h2>Case Studies</h2></div>'
+                 f'{"".join(case_feature(p) for p in CASES)}</div></section>') if CASES else ''
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
 <p class="lead">{T(L(PG, 'projects_lead'))}</p></div></div>
-<section><div class="wrap"><div class="filters" role="group" aria-label="{U('프로젝트 유형', 'Project type')}">{chips}</div>
-<div class="cards">{''.join(project_card(p) for p in PROJECTS)}</div></div></section>'''
+{case_list}
+<section{' style="padding-top:0"' if CASES else ''}><div class="wrap">{f'<div class="sec-head"><h2>{U("All Projects", "All Projects")}</h2></div>' if CASES else ''}<div class="filters" role="group" aria-label="{U('프로젝트 유형', 'Project type')}">{chips}</div>
+<div class="cards">{''.join(project_card(p) for p in PROJECTS if not p.get('case_study'))}</div></div></section>'''
     page('projects.html', 'Projects', U('STANDS 프로젝트.', 'Projects by STANDS.'), 'projects.html', projects)
 
     for i, p in enumerate(PROJECTS):
+        if p.get('case_study'):
+            case_page(i, p)
+            continue
         art = ref(p.get('artist'))
         art_dd = f'<a href="{art["_url"]}">{E(L(art, "name"))}</a>' if art else E(str(p.get('artist') or ''))
         rows = [('Location', E(L(p, 'location'))), ('Year', E(str(p.get('year', '')))), ('Artist', art_dd),
