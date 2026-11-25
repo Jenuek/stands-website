@@ -9,8 +9,8 @@
 
   // home statement photo: the reveal follows the scroll position (it rises as you scroll down and
   // lowers again as you scroll back), and the image drifts a little slower than the page
-  // (also used for the About photo)
-  const revs=[...document.querySelectorAll('.statement-img,.about-img')];
+  // (also used for the About photo and the case studies on Projects)
+  const revs=[...document.querySelectorAll('.statement-img,.about-img,.case-hero .ph')];
   if(revs.length&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
     document.documentElement.classList.add('js');
     let raf=0;

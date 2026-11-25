@@ -173,6 +173,8 @@ content:
       - { name: lng, label: "경도 (지도, 예: 127.16)", type: number }
       - { name: case_study, label: 심층 사례, type: boolean, description: 켜면 Projects 페이지 위쪽 Case Studies에 나오고 아래 사례 항목으로 상세 페이지를 만듭니다 }
       - { name: cover_caption, label: 대표 사진 캡션, type: string }
+      - { name: cover_tall, label: "대표 사진 (휴대폰용 세로, 심층 사례)", type: image }
+      - { name: cover_focus, label: "대표 사진 초점 (예: 50% 30%, 위쪽을 살리려면 두 번째 값을 낮게)", type: string }
       - name: artists
         label: 작가 (여러 명, 심층 사례)
         type: reference

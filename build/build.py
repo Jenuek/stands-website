@@ -400,15 +400,22 @@ def map_section():
             f'<div class="pmap-canvas" id="pmap" role="region" aria-label="{U("프로젝트 지도", "Project map")}"></div></div></div>'
             f'<script type="application/json" id="pmap-data">{data}</script><script type="application/json" id="pmap-i18n">{i18n}</script></section>')
 
-def case_feature(p):
-    """Large card for a case study on the Projects page."""
+def case_feature(p, n, total):
+    """Case study on the Projects page: one full-bleed photo per case, title laid over the bottom."""
     cover = img(p.get('cover'))
+    tall = img(p.get('cover_tall'))  # optional portrait crop for phones
+    cf = str(p.get('cover_focus') or '').strip()
+    focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
     meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
-    ph = f'<img src="{E(cover)}" alt="" loading="lazy">' if cover else ''
-    return (f'<a class="case-feature" href="{p["_url"]}"><div class="ph">{ph}</div>'
-            f'<div class="txt"><span class="case-label">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span>'
-            f'<h3>{E(L(p, "title"))}</h3><span class="meta">{E(meta)}</span><p>{T(L(p, "summary"))}</p>'
-            f'<span class="more">{U("사례 보기", "View case")}</span></div></a>')
+    pic = (f'<picture>{f"<source media={chr(34)}(max-width:700px){chr(34)} srcset={chr(34)}{E(tall)}{chr(34)}>" if tall else ""}'
+           f'<img src="{E(cover)}" alt="{E(L(p, "title"))}"{focus} loading="lazy"></picture>') if cover else ''
+    return (f'<a class="case-hero" href="{p["_url"]}"><div class="ph">{pic}</div>'
+            f'<div class="case-hero-txt"><div class="wrap">'
+            f'<span class="case-hero-no">{n:02d} / {total:02d}</span>'
+            f'<span class="case-label">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span>'
+            f'<h3{" class=" + chr(34) + "long" + chr(34) if len(L(p, "title")) > 10 else ""}>{E(L(p, "title"))}</h3>'
+            f'<div class="case-hero-foot"><span class="meta">{E(meta)}</span><span class="more">{U("사례 보기", "View case")}</span></div>'
+            f'</div></div></a>')
 
 def case_page(i, p):
     """Case study: fixed sections in a fixed order, each hidden when empty."""
@@ -697,8 +704,8 @@ def build_lang():
     chips = f'<button class="chip" type="button" data-filter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
         f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{type_name(k)}</button>' for k in used)
     CASES = [p for p in PROJECTS if p.get('case_study')]
-    case_list = (f'<section class="case-list"><div class="wrap"><div class="sec-head"><h2>Case Studies</h2></div>'
-                 f'{"".join(case_feature(p) for p in CASES)}</div></section>') if CASES else ''
+    case_list = (f'<section class="case-list"><div class="wrap"><div class="sec-head"><h2>Case Studies</h2></div></div>'
+                 f'{"".join(case_feature(p, k, len(CASES)) for k, p in enumerate(CASES, 1))}</section>') if CASES else ''
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
 <p class="lead">{T(L(PG, 'projects_lead'))}</p></div></div>
 {case_list}
