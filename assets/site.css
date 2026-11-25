@@ -305,28 +305,33 @@ section{padding-block:clamp(72px,11vw,150px)}
 .strip-nav button:hover:not(:disabled){background:var(--black);color:var(--paper)}
 /* case studies: Projects page features and the fixed-section case page */
 .case-list{padding-bottom:0}
-/* full-bleed case studies: one photo per case, title over a bottom gradient; reveal and drift follow the scroll (site.js) */
-.case-hero{display:block;position:relative;height:min(86vh,900px);min-height:520px;overflow:hidden;color:var(--paper);background:#111}
-.case-hero+.case-hero{margin-top:6px}
+/* case studies: full-bleed frames side by side (up to 3 per row; the hovered one widens), title over a bottom gradient; reveal and drift follow the scroll (site.js) */
+.page-jump{display:flex;gap:18px;margin-top:28px}
+.page-jump a{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid currentColor;padding-bottom:2px}
+.page-jump a:hover{color:var(--accent)}
+.case-list,.pmap-sec{scroll-margin-top:72px}
+.case-heroes{display:flex;flex-wrap:wrap;gap:6px}
+.case-hero{display:block;position:relative;flex:1 1 calc(100% / var(--n,2) - 6px);height:min(75vh,820px);min-height:480px;overflow:hidden;color:var(--paper);background:#111;transition:flex-grow .7s cubic-bezier(.2,.7,.2,1)}
+@media (hover:hover) and (min-width:861px){.case-heroes:hover .case-hero{flex-grow:.8}.case-heroes .case-hero:hover{flex-grow:1.35}}
 .case-hero .ph{position:absolute;inset:0;overflow:hidden}
 .case-hero picture{display:block;width:100%;height:100%;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
 .case-hero img{width:100%;height:100%;object-fit:cover;transform:translate3d(0,var(--drift,0px),0) scale(1.08)}
 .js .case-hero .ph{clip-path:inset(var(--reveal,100%) 0 0 0)}
 .case-hero:hover picture{transform:scale(1.03)}
 .case-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 26%,rgba(0,0,0,0) 42%,rgba(0,0,0,.78) 100%);pointer-events:none}
-.case-hero-txt{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;padding-bottom:clamp(28px,5vw,64px)}
-.case-hero-txt .wrap{width:100%;position:static}
-.case-hero-no{position:absolute;top:clamp(20px,3vw,36px);right:clamp(16px,4vw,56px);font-family:var(--mono);font-size:12px;letter-spacing:.12em}
+.case-hero-txt{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;padding:0 clamp(20px,3vw,44px) clamp(24px,3.4vw,48px)}
+.case-hero-txt .wrap{width:100%;max-width:none;padding:0;position:static}
+.case-hero-no{position:absolute;top:clamp(18px,2.4vw,30px);right:clamp(18px,2.4vw,30px);font-family:var(--mono);font-size:12px;letter-spacing:.12em}
 .case-hero .case-label{color:rgba(240,240,238,.82)}
-.case-hero h3{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(44px,7.5vw,120px);line-height:.92;letter-spacing:-.01em;margin:14px 0 22px;text-transform:uppercase;max-width:14em}
-.case-hero h3.long{font-size:clamp(34px,5.4vw,84px);line-height:1}
-.case-hero-foot{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(240,240,238,.45);padding-top:16px}
+.case-hero h3{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(34px,4.4vw,72px);line-height:.95;letter-spacing:-.01em;margin:12px 0 18px;text-transform:uppercase;max-width:12em}
+.case-hero h3.long{font-size:clamp(26px,2.9vw,46px);line-height:1.05}
+.case-hero-foot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-top:1px solid rgba(240,240,238,.45);padding-top:14px}
 .case-hero-foot .meta{color:rgba(240,240,238,.86)}
 .case-hero .more{color:var(--paper);opacity:0;transform:translateX(-8px);transition:opacity .4s ease,transform .4s ease}
 .case-hero:hover .more,.case-hero:focus-visible .more{opacity:1;transform:none}
 @media (hover:none){.case-hero .more{opacity:1;transform:none}}
-@media (max-width:700px){.case-hero{height:auto;aspect-ratio:4/5;min-height:0}.case-hero h3{font-size:clamp(36px,11vw,56px)}.case-hero h3.long{font-size:clamp(28px,8vw,40px)}}
-@media (prefers-reduced-motion:reduce){.case-hero picture{transition:none}.case-hero img{transform:none}}
+@media (max-width:860px){.case-hero{flex-basis:100%;height:auto;aspect-ratio:3/4;min-height:0}.case-hero h3{font-size:clamp(34px,9vw,52px)}.case-hero h3.long{font-size:clamp(26px,7vw,38px)}}
+@media (prefers-reduced-motion:reduce){.case-hero picture{transition:none}.case-hero img{transform:none}.case-hero{transition:none}}
 .case-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .case-head-meta{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;margin:22px 0 0;font-size:16px}
 .case-head-meta a{border-bottom:1px solid currentColor}

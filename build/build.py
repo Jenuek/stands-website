@@ -407,8 +407,8 @@ def case_feature(p, n, total):
     cf = str(p.get('cover_focus') or '').strip()
     focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
     meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
-    pic = (f'<picture>{f"<source media={chr(34)}(max-width:700px){chr(34)} srcset={chr(34)}{E(tall)}{chr(34)}>" if tall else ""}'
-           f'<img src="{E(cover)}" alt="{E(L(p, "title"))}"{focus} loading="lazy"></picture>') if cover else ''
+    # cases sit side by side in tall frames, so the portrait photo (when there is one) is used everywhere
+    pic = f'<picture><img src="{E(tall or cover)}" alt="{E(L(p, "title"))}"{"" if tall else focus} loading="lazy"></picture>' if cover else ''
     return (f'<a class="case-hero" href="{p["_url"]}"><div class="ph">{pic}</div>'
             f'<div class="case-hero-txt"><div class="wrap">'
             f'<span class="case-hero-no">{n:02d} / {total:02d}</span>'
@@ -725,10 +725,11 @@ def build_lang():
     chips = f'<button class="chip" type="button" data-filter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
         f'<button class="chip" type="button" data-filter="{k}" aria-pressed="false">{type_name(k)}</button>' for k in used)
     CASES = [p for p in PROJECTS if p.get('case_study')]
-    case_list = (f'<section class="case-list"><div class="wrap"><div class="sec-head"><h2>Case Studies</h2></div></div>'
-                 f'{"".join(case_feature(p, k, len(CASES)) for k, p in enumerate(CASES, 1))}</section>') if CASES else ''
+    case_list = (f'<section class="case-list" id="cases"><div class="wrap"><div class="sec-head"><h2>Case Studies</h2></div></div>'
+                 f'<div class="case-heroes" style="--n:{min(len(CASES), 3)}">{"".join(case_feature(p, k, len(CASES)) for k, p in enumerate(CASES, 1))}</div></section>') if CASES else ''
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
-<p class="lead">{T(L(PG, 'projects_lead'))}</p></div></div>
+<p class="lead">{T(L(PG, 'projects_lead'))}</p>
+<nav class="page-jump" aria-label="{U('이 페이지', 'On this page')}">{'<a href="#cases">Case Studies</a>' if CASES else ''}<a href="#map">Project Map</a></nav></div></div>
 {case_list}
 {map_section()}'''
     map_js = (f'<link rel="stylesheet" href="{P}assets/vendor/maplibre-gl.css?v={VER}">'
