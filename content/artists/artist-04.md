@@ -7,7 +7,7 @@ photo: /img/artists/lee-sungok/thumb.jpg
 summary: 스테인리스 스틸로 잠자리, 나비, 벌 같은 자연의 생물과 빛을 조각한다. 거울처럼 마감한 표면이 주변 공간과 관람객을 작품 안으로 끌어들인다. 개인전 28회, 단체전 550여 회. 한국조각가협회 부이사장.
 hero_image: /img/artists/lee-sungok/harbour-city-2019.jpg
 hero_caption: 자연의 소리(Sound of Nature), 하버시티 아트리움, 홍콩, 2019
-quote: 건물 앞에 그런 조형물을 세워 도시의 모습과 도시인의 모습이 자연의 생물과 함께 어우러지게 하고 싶었다.
+quote: 인간중심의 세계관에서 생태중심의 세계관으로의 전환이 필요하다.
 works:
 - image: /img/artists/lee-sungok/harbour-city-2019-b.jpg
   title: 자연의 소리
@@ -202,7 +202,7 @@ en:
   based: Yongin
   summary: Lee sculpts light and the creatures of nature, dragonflies, butterflies and bees, in stainless steel. Mirror-finished surfaces draw the surrounding space and the viewer into the work. 28 solo exhibitions and some 550 group exhibitions. Vice President of the Korean Sculptors' Association.
   hero_caption: Sound of Nature, Harbour City Atrium, Hong Kong, 2019
-  quote: I wanted to set such sculptures in front of buildings so that the city and its people would blend with the living things of nature.
+  quote: We need to move from a human-centred view of the world to an ecological one.
   note: Lee's sculpture holds light and the surrounding view on its reflective surfaces. Hundreds of dragonflies and butterflies hung from a ceiling turn a high atrium into a forest, and works moved by the wind bring the passing of time into a plaza. She has installed large works in hotels, a cruise terminal, housing complexes and a corporate training institute, and as a member of the Seoul and Gyeonggi art review committees she knows the architectural art process well.
   fit:
   - Atrium ceiling

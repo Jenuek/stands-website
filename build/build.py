@@ -483,8 +483,29 @@ def artist_card(a):
     photo = img(a.get('photo'))
     plate = (f'<img src="{E(photo)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">' if photo
              else f'<svg viewBox="0 0 100 100" aria-hidden="true">{SHAPES[i % 8]}</svg>')
+    q = real_quote(a)
+    plate += f'<span class="plate-q">{E(q)}</span>' if q and photo else ''
     return (f'<a class="artist" href="{a["_url"]}"><div class="plate">{plate}</div>'
             f'<span class="meta">{E(L(a, "medium"))}</span><h3>{E(L(a, "name"))}{sample(a)}</h3></a>')
+
+def real_quote(a):
+    """The artist's own sentence, unless it is still the placeholder text."""
+    q = L(a, 'quote')
+    return '' if not q or '자리입니다' in str(a.get('quote') or '') else q
+
+def artist_spread(a, n):
+    """Artists page entry laid out like the company profile: tall detail crop, number, name, rule, the artist's sentence, short bio at the foot."""
+    photo = img(a.get('photo'))
+    alt = img(a.get('hero_image'))  # the work in place, shown on hover
+    pic = (f'<img class="a" src="{E(photo)}" alt="" loading="lazy">' if photo else '') + \
+          (f'<img class="b" src="{E(alt)}" alt="" loading="lazy">' if alt and alt != photo else '')
+    sub = ' · '.join(x for x in (L(a, 'medium'), L(a, 'based')) if x)
+    q = real_quote(a)
+    return (f'<a class="artist-spread" href="{a["_url"]}"><div class="ph">{pic}</div>'
+            f'<div class="txt"><span class="meta">Artist {n:02d}</span><h2>{E(L(a, "name"))}{sample(a)}</h2>'
+            f'<span class="meta sub">{E(sub)}</span>'
+            f'{f"<p class={chr(34)}q{chr(34)}>{E(q)}</p>" if q else ""}'
+            f'<p class="bio">{T(L(a, "summary"))}</p><span class="more">{U("작가 보기", "View artist")}</span></div></a>')
 
 def latest(a):
     """LATEST tag on the newest published issue (moves on by itself when the next one is published)."""
@@ -639,7 +660,7 @@ def build_lang():
     # artists
     artists = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Artists</span><h1>Artists</h1>
 <p class="lead">{T(L(PG, 'artists_lead'))}</p></div></div>
-<section><div class="wrap"><div class="artist-grid">{''.join(artist_card(a) for a in ARTISTS)}</div></div></section>'''
+<section><div class="wrap"><div class="artist-spreads">{''.join(artist_spread(a, k) for k, a in enumerate(ARTISTS, 1))}</div></div></section>'''
     page('artists.html', 'Artists', U('STANDS 작가.', 'Artists of STANDS.'), 'artists.html', artists)
 
     for a in ARTISTS:

@@ -7,7 +7,7 @@ photo: /img/artists/kim-byoungho/thumb.jpg
 summary: 판화를 전공하고 공학을 공부한 조각가. 손 드로잉 대신 정밀한 설계 도면과 분업화된 제작 시스템으로, 같은 단위가 반복·증식하는 금속 조각을 만든다. 개인전 15회 이상, 국내외 단체전 100회 이상.
 hero_image: /img/artists/kim-byoungho/silent-propagations-236-2022.jpg
 hero_caption: 236 Silent Propagations, 2022
-quote: ''
+quote: 일상의 재료에서 쓰임을 지우고, 다시 배열해 마음을 움직인다.
 works:
 - image: /img/artists/kim-byoungho/silent-propagations-236-2022-b.jpg
   title: 236 Silent Propagations
@@ -171,6 +171,7 @@ order: 2
 sample: false
 hidden: false
 en:
+  quote: He strips everyday materials of their use and arranges them anew to move the heart.
   name: Kim Byoungho
   medium: Aluminium, stainless steel, brass
   born: '1974'
