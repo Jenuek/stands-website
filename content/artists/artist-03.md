@@ -7,7 +7,7 @@ photo: /img/artists/kim-woojin/thumb.jpg
 summary: 스테인리스 스틸 조각에 선명한 색 조각을 이어 붙여 사슴, 말, 새 같은 동물의 형상을 만든다. 개인전 40회 이상, 국내외 아트페어와 단체전 다수. 공동주택, 호텔, 기업 사옥 등 70곳 이상에 작품이 소장되어 있다.
 hero_image: /img/artists/kim-woojin/scene-07.jpg
 hero_caption: 사슴 가족, 공간 연출 시뮬레이션
-quote: ''
+quote: 하나하나의 작은 유닛들이 모여 과거의 꿈을 실현시키고자 한다.
 works:
 - image: /img/artists/kim-woojin/scene-07.jpg
   title: 사슴 가족
@@ -126,6 +126,7 @@ order: 3
 sample: false
 hidden: false
 en:
+  quote: Small units, one by one, come together to realise the dreams of the past.
   name: Kim Woojin
   medium: Stainless steel, urethane paint
   born: ''
