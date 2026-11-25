@@ -134,3 +134,15 @@
   document.addEventListener('contextmenu', function(e){ if (onImg(e)) e.preventDefault(); });
   document.addEventListener('dragstart', function(e){ if (onImg(e)) e.preventDefault(); });
 })();
+
+/* case studies accordion: hovering or focusing a case opens it; the last one opened stays open */
+(function(){
+  var row=document.querySelector('.case-heroes');
+  if(!row) return;
+  var items=[].slice.call(row.querySelectorAll('.case-hero'));
+  function open(el){ items.forEach(function(x){ x.classList.toggle('on', x===el); }); }
+  items.forEach(function(el){
+    el.addEventListener('mouseenter', function(){ open(el); });
+    el.addEventListener('focus', function(){ open(el); });
+  });
+})();

@@ -409,7 +409,8 @@ def case_feature(p, n, total):
     meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
     # cases sit side by side in tall frames, so the portrait photo (when there is one) is used everywhere
     pic = f'<picture><img src="{E(tall or cover)}" alt="{E(L(p, "title"))}"{"" if tall else focus} loading="lazy"></picture>' if cover else ''
-    return (f'<a class="case-hero" href="{p["_url"]}"><div class="ph">{pic}</div>'
+    return (f'<a class="case-hero{" on" if n == 1 else ""}" href="{p["_url"]}"><div class="ph">{pic}</div>'
+            f'<span class="case-hero-spine" aria-hidden="true"><b>{n:02d}</b>{E(L(p, "title"))}</span>'
             f'<div class="case-hero-txt"><div class="wrap">'
             f'<span class="case-hero-no">{n:02d} / {total:02d}</span>'
             f'<span class="case-label">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span>'
