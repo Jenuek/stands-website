@@ -167,6 +167,76 @@ content:
       - { name: gallery, label: 추가 사진, type: image, options: { multiple: { max: 12 } } }
       - { name: summary, label: 요약 (한두 문장), type: text }
       - { name: body, label: 본문, type: rich-text, options: { format: markdown } }
+      - { name: case_study, label: 심층 사례, type: boolean, description: 켜면 Projects 페이지 위쪽 Case Studies에 나오고 아래 사례 항목으로 상세 페이지를 만듭니다 }
+      - { name: cover_caption, label: 대표 사진 캡션, type: string }
+      - name: artists
+        label: 작가 (여러 명, 심층 사례)
+        type: reference
+        options: { collection: artists, search: name, value: "{path}", label: "{name}", multiple: true }
+      - name: facts
+        label: "개요 표 (심층 사례)"
+        type: object
+        fields:
+          - { name: building, label: 건축물, type: string }
+          - { name: location, label: 위치, type: string }
+          - { name: owner, label: 건축주, type: string }
+          - { name: use, label: 용도, type: string }
+          - { name: scale, label: 규모, type: string }
+          - { name: area, label: 면적, type: string }
+          - { name: year, label: 연도, type: string }
+          - { name: works, label: 미술작품, type: string }
+          - { name: size, label: 규격, type: string }
+          - { name: material, label: 재료, type: string }
+          - { name: scope, label: 수행 범위, type: string }
+          - { name: budget, label: 총 예산, type: string }
+      - { name: site, label: 사이트 분석, type: rich-text, options: { format: markdown } }
+      - name: site_images
+        label: 사이트 분석 이미지
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 이미지, type: image }
+          - { name: caption, label: 캡션, type: string }
+          - { name: caption_en, label: 캡션 (영문), type: string }
+      - { name: curation_intro, label: 큐레이션 근거 도입 문장, type: text }
+      - name: curation
+        label: 큐레이션 근거
+        type: object
+        list: true
+        fields:
+          - { name: condition, label: 위치·조건, type: string }
+          - { name: work, label: 작품, type: string }
+          - { name: response, label: 대응, type: text }
+          - { name: condition_en, label: 위치·조건 (영문), type: string }
+          - { name: work_en, label: 작품 (영문), type: string }
+          - { name: response_en, label: 대응 (영문), type: text }
+      - name: specs
+        label: 작품 사양
+        type: object
+        list: true
+        fields:
+          - { name: work, label: 작품, type: string }
+          - { name: size, label: "규격 (mm)", type: string }
+          - { name: material, label: 재료, type: string }
+          - { name: work_en, label: 작품 (영문), type: string }
+          - { name: material_en, label: 재료 (영문), type: string }
+      - { name: specs_note, label: 작품 사양 설명, type: text }
+      - name: results
+        label: 결과 사진
+        type: object
+        list: true
+        fields:
+          - { name: image, label: 사진, type: image }
+          - { name: caption, label: 캡션, type: string }
+          - { name: caption_en, label: 캡션 (영문), type: string }
+      - name: process
+        label: 프로세스 단계
+        type: object
+        list: true
+        fields:
+          - { name: title, label: 단계, type: string }
+          - { name: title_en, label: 단계 (영문), type: string }
+      - { name: credit, label: 사진 출처, type: string }
       - name: en
         label: 영문 (English)
         type: object
@@ -179,6 +249,27 @@ content:
           - { name: scope, label: 업무 범위 (영문), type: string, description: "예: Planning · Fabrication · Installation" }
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
+          - { name: cover_caption, label: 대표 사진 캡션 (영문), type: string }
+          - name: facts
+            label: 개요 표 (영문)
+            type: object
+            fields:
+              - { name: building, label: 건축물, type: string }
+              - { name: location, label: 위치, type: string }
+              - { name: owner, label: 건축주, type: string }
+              - { name: use, label: 용도, type: string }
+              - { name: scale, label: 규모, type: string }
+              - { name: area, label: 면적, type: string }
+              - { name: year, label: 연도, type: string }
+              - { name: works, label: 미술작품, type: string }
+              - { name: size, label: 규격, type: string }
+              - { name: material, label: 재료, type: string }
+              - { name: scope, label: 수행 범위, type: string }
+              - { name: budget, label: 총 예산, type: string }
+          - { name: site, label: 사이트 분석 (영문), type: rich-text, options: { format: markdown } }
+          - { name: curation_intro, label: 큐레이션 근거 도입 문장 (영문), type: text }
+          - { name: specs_note, label: 작품 사양 설명 (영문), type: text }
+          - { name: credit, label: 사진 출처 (영문), type: string }
       - { name: order, label: 정렬 순서 (작을수록 앞), type: number }
       - { name: sample, label: "'예시' 표시", type: boolean, description: 실제 프로젝트면 끄세요 }
       - { name: hidden, label: 비공개, type: boolean, description: 켜면 사이트에 나오지 않습니다 }
