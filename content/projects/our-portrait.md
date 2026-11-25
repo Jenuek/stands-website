@@ -1,4 +1,8 @@
 ---
+work: 우리들의 모습
+lat: 37.3935
+lng: 127.111
+map_only: true
 title: Sculpture for an Apartment Complex
 sample: false
 hidden: false
@@ -18,6 +22,7 @@ gallery:
 - /img/projects/our-portrait/detail-04.jpg
 summary: 김우진 작가의 「우리들의 모습」. 아파트 단지 안 쉼터에 크레파스 그림처럼 선명한 색의 말 가족이 노닌다.
 en:
+  work: Our Portrait
   title: Sculpture for an Apartment Complex
   location: Pangyo, Seongnam
   place_type: Residential

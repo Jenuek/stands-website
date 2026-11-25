@@ -1,4 +1,7 @@
 ---
+work: 233개의 수평정원
+lat: 37.5668
+lng: 127.16
 title: DMEC 신사옥
 sample: false
 hidden: false
@@ -61,6 +64,7 @@ process:
 - title: 설치
   title_en: Installation
 en:
+  work: 233 Horizontal Gardens
   title: DMEC Headquarters
   location: Godeok, Gangdong, Seoul
   place_type: Office

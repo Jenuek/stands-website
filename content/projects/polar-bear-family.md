@@ -1,4 +1,8 @@
 ---
+work: 북극곰 가족
+lat: 37.401
+lng: 127.1085
+map_only: true
 title: Sculpture for an Office Site
 sample: false
 hidden: false
@@ -18,6 +22,8 @@ gallery:
 - /img/projects/polar-bear-family/detail-03.jpg
 summary: 김도훈 작가의 「북극곰 가족」. 업무 지구의 녹지에 놓였다. 스테인리스 스틸 조각을 겹겹이 이어 붙인 표면이 주변의 건물과 하늘, 풀빛을 비춘다.
 en:
+  work: Polar Bear Family
+  artist: Kim Dohoon
   title: Sculpture for an Office Site
   location: Pangyo, Seongnam
   place_type: Office

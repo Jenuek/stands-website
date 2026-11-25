@@ -5,6 +5,7 @@ Reads the editable content in /content (managed with Pages CMS) and writes the s
 GitHub Actions runs this on every push to main and deploys _site to GitHub Pages.
 Design lives here and in /assets; words and pictures live in /content.
 """
+import json
 import os, re, html, shutil, hashlib, sys
 import yaml, markdown
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -230,6 +231,9 @@ SITE = yaml.safe_load(open(os.path.join(CONTENT, 'site.yml'), encoding='utf-8'))
 H, AB, PG, CT, CO = (SITE.get(k, {}) or {} for k in ('home', 'about', 'pages', 'contact', 'company'))
 
 PROJECTS = collection('projects', 'project', lambda d: (num(d.get('order')), d.get('title', '')))
+for _p in PROJECTS:  # map-only entries get no page of their own; their links open the map
+    if _p.get('map_only'):
+        _p['_url'] = 'projects.html#map'
 ARTISTS = collection('artists', 'artist', lambda d: (num(d.get('order')), d.get('name', '')))
 ARTICLES = collection('editorial', 'article', lambda d: str(d.get('date', '')), )
 ARTICLES.reverse()  # newest first
@@ -352,6 +356,50 @@ def fact(p, k):
     v = en.get(k) if EN() and _filled(en.get(k)) else ko.get(k)
     return str(v).strip() if _filled(v) else ''
 
+def map_group(p):
+    """Filter group for the map, from the place type."""
+    t = str(p.get('place_type') or '')
+    if '업무' in t:
+        return 'office', U('업무시설', 'Office')
+    if '공동주택' in t or '주거' in t:
+        return 'residential', U('주거', 'Residential')
+    return 'mixed', U('복합 · 상업', 'Mixed-use')
+
+def map_section():
+    """Projects map (MapLibre): a list beside the map, pins, clusters and a summary card per pin."""
+    pts = []
+    for p in PROJECTS:
+        if p.get('lat') in (None, '') or p.get('lng') in (None, ''):
+            continue
+        arts = p_artists(p)
+        names = [L(a, 'name') for a in arts] + [str(n) for n in (L(p, 'artist_names') or []) if n]
+        if not names and p.get('artist') and not ref(p.get('artist')):
+            names = [L(p, 'artist')]
+        g, gl = map_group(p)
+        pts.append({'id': os.path.splitext(p['_path'].split('/')[-1])[0], 'lat': float(p['lat']), 'lng': float(p['lng']),
+                    'title': L(p, 'title'), 'work': L(p, 'work'), 'artist': ', '.join(names), 'location': L(p, 'location'),
+                    'year': str(p.get('year') or ''), 'type': L(p, 'place_type'), 'scope': L(p, 'scope'),
+                    'group': g, 'groupLabel': gl, 'img': img(p.get('cover')), 'case': bool(p.get('case_study')),
+                    'url': '' if p.get('map_only') else p['_url']})
+    if not pts:
+        return ''
+    groups = []
+    for x in pts:
+        if (x['group'], x['groupLabel']) not in groups:
+            groups.append((x['group'], x['groupLabel']))
+    chips = f'<button class="chip" type="button" data-mfilter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
+        f'<button class="chip" type="button" data-mfilter="{g}" aria-pressed="false">{E(l)}</button>' for g, l in groups)
+    data = json.dumps(pts, ensure_ascii=False).replace('</', '<\\/')
+    i18n = json.dumps({'view': U('사례 보기', 'View case'), 'work': U('작품', 'Work'), 'count': U('{n}건', '{n} projects'), 'case': U('심층 사례', 'Case study'),
+                       'artist': U('작가', 'Artist'), 'year': U('연도', 'Year'), 'type': U('용도', 'Use'), 'scope': U('수행 범위', 'Scope'),
+                       'lang': LANG}, ensure_ascii=False)
+    return (f'<section class="pmap-sec" id="map"><div class="wrap"><div class="sec-head"><h2>Project Map</h2>'
+            f'<span class="meta pmap-total">{U("STANDS가 작품을 세운 자리", "Where STANDS has placed works")} · <b>{len(pts)}</b>{U("건", "")}</span></div>'
+            f'<div class="pmap"><aside class="pmap-side"><div class="filters pmap-filters" role="group" aria-label="{U("공간 유형", "Place type")}">{chips}</div>'
+            f'<p class="meta pmap-visible" aria-live="polite"></p><ol class="pmap-list"></ol></aside>'
+            f'<div class="pmap-canvas" id="pmap" role="region" aria-label="{U("프로젝트 지도", "Project map")}"></div></div></div>'
+            f'<script type="application/json" id="pmap-data">{data}</script><script type="application/json" id="pmap-i18n">{i18n}</script></section>')
+
 def case_feature(p):
     """Large card for a case study on the Projects page."""
     cover = img(p.get('cover'))
@@ -412,7 +460,7 @@ def case_page(i, p):
             secs += sec(n, ko, en, inner)
     cap = L(p, 'cover_caption')
     credit = L(p, 'credit')
-    others = [q for q in PROJECTS if q is not p]
+    others = [q for q in PROJECTS if q is not p and not q.get('map_only')]
     nxt = [others[(i + k) % len(others)] for k in range(min(3, len(others)))] if others else []
     body_html = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">{U("STANDS 프로젝트", "STANDS Project")} · Case Study</span><h1 class="long">{E(title)}</h1>
 <p class="case-head-meta"><span>{arts_html}</span><span class="meta">{E(head_meta)}</span></p>
@@ -654,11 +702,14 @@ def build_lang():
     projects = f'''<div class="page-head"><div class="wrap"><span class="eyebrow">Projects</span><h1>Projects</h1>
 <p class="lead">{T(L(PG, 'projects_lead'))}</p></div></div>
 {case_list}
-<section{' style="padding-top:0"' if CASES else ''}><div class="wrap">{f'<div class="sec-head"><h2>{U("All Projects", "All Projects")}</h2></div>' if CASES else ''}<div class="filters" role="group" aria-label="{U('프로젝트 유형', 'Project type')}">{chips}</div>
-<div class="cards">{''.join(project_card(p) for p in PROJECTS if not p.get('case_study'))}</div></div></section>'''
-    page('projects.html', 'Projects', U('STANDS 프로젝트.', 'Projects by STANDS.'), 'projects.html', projects)
+{map_section()}'''
+    map_js = (f'<link rel="stylesheet" href="{P}assets/vendor/maplibre-gl.css?v={VER}">'
+              f'<script src="{P}assets/vendor/maplibre-gl.js?v={VER}"></script><script src="{P}assets/map.js?v={VER}"></script>')
+    page('projects.html', 'Projects', U('STANDS 프로젝트.', 'Projects by STANDS.'), 'projects.html', projects, extra_js=map_js)
 
     for i, p in enumerate(PROJECTS):
+        if p.get('map_only'):
+            continue
         if p.get('case_study'):
             case_page(i, p)
             continue
