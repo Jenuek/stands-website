@@ -312,7 +312,25 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-list,.pmap-sec{scroll-margin-top:72px}
 .case-heroes{display:flex;flex-wrap:wrap;gap:6px}
 .case-hero{display:block;position:relative;flex:1 1 calc(100% / var(--n,2) - 6px);height:min(75vh,820px);min-height:480px;overflow:hidden;color:var(--paper);background:#111;transition:flex-grow .7s cubic-bezier(.2,.7,.2,1)}
-@media (hover:hover) and (min-width:861px){.case-heroes:hover .case-hero{flex-grow:.8}.case-heroes .case-hero:hover{flex-grow:1.35}}
+/* accordion (desktop): the open case takes most of the width; the others fold into narrow strips with a vertical spine label.
+   Hover or focus opens a case (site.js); the last one opened stays open. */
+@media (min-width:861px){
+  .case-hero{flex:1 1 0;min-width:0;transition:flex-grow .9s cubic-bezier(.65,0,.25,1)}
+  .case-hero.on{flex-grow:2.4}
+  .case-hero::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.42);transition:opacity .7s ease;pointer-events:none}
+  .case-hero.on::before{opacity:0}
+  .case-hero-txt{opacity:0;transition:opacity .45s ease}
+  .case-hero.on .case-hero-txt{opacity:1;transition-delay:.35s}
+  .case-hero-txt .wrap{min-width:min(620px,54vw)}
+  .case-hero-spine{position:absolute;z-index:2;left:clamp(20px,2.4vw,34px);bottom:clamp(24px,3.4vw,48px);writing-mode:vertical-rl;text-orientation:sideways;transform:rotate(180deg);display:flex;align-items:center;gap:16px;font-size:clamp(18px,1.6vw,24px);font-weight:700;letter-spacing:-.01em;color:var(--paper);white-space:nowrap;transition:opacity .45s ease .3s}
+  .case-hero-spine b{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.12em}
+  .case-hero.on .case-hero-spine{opacity:0;transition-delay:0s}
+  .case-hero.on .case-hero-no{opacity:1}
+  .case-hero-no{transition:opacity .45s ease}
+  .case-hero:not(.on) .case-hero-no{opacity:0}
+}
+.case-hero-spine{display:none}
+@media (min-width:861px){.case-hero-spine{display:flex}}
 .case-hero .ph{position:absolute;inset:0;overflow:hidden}
 .case-hero picture{display:block;width:100%;height:100%;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
 .case-hero img{width:100%;height:100%;object-fit:cover;transform:translate3d(0,var(--drift,0px),0) scale(1.08)}
@@ -331,7 +349,7 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-hero:hover .more,.case-hero:focus-visible .more{opacity:1;transform:none}
 @media (hover:none){.case-hero .more{opacity:1;transform:none}}
 @media (max-width:860px){.case-hero{flex-basis:100%;height:auto;aspect-ratio:3/4;min-height:0}.case-hero h3{font-size:clamp(34px,9vw,52px)}.case-hero h3.long{font-size:clamp(26px,7vw,38px)}}
-@media (prefers-reduced-motion:reduce){.case-hero picture{transition:none}.case-hero img{transform:none}.case-hero{transition:none}}
+@media (prefers-reduced-motion:reduce){.case-hero picture{transition:none}.case-hero img{transform:none}.case-hero,.case-hero-txt,.case-hero-spine,.case-hero::before{transition:none!important}}
 .case-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .case-head-meta{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;margin:22px 0 0;font-size:16px}
 .case-head-meta a{border-bottom:1px solid currentColor}
