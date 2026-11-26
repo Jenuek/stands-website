@@ -227,6 +227,22 @@ section{padding-block:clamp(72px,11vw,150px)}
 .hcase .ctx{margin:12px 0 0;font-size:14px;line-height:1.6;color:#3A393E}
 .hcase .foot{margin-top:auto;padding-top:24px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .hcase .fig{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(28px,2.6vw,40px);line-height:1;letter-spacing:-.01em}
+/* hover (pointer devices): a black pillar rises from the bottom behind the text column / the artist card, topped by a thin lavender line
+   like the hero underbar; text turns paper. Only the hovered card stands. */
+@media (hover:hover) and (min-width:561px){
+  .hcase .txt,.artist-grid .artist{position:relative;isolation:isolate}
+  .hcase .txt::before,.artist-grid .artist::before{content:"";position:absolute;inset:-12px;z-index:-1;background:var(--black);border-top:3px solid var(--accent);
+    clip-path:inset(100% 0 0 0);transition:clip-path .55s cubic-bezier(.7,0,.2,1)}
+  .hcase:hover .txt::before,.hcase:focus-visible .txt::before,.artist-grid .artist:hover::before,.artist-grid .artist:focus-visible::before{clip-path:inset(0 0 0 0)}
+  .hcase .txt *,.artist-grid .artist h3,.artist-grid .artist .meta{transition:color .2s ease,border-color .2s ease}
+  /* text turns light only once the pillar has passed it (going down it turns dark again at once) */
+  .hcase:hover .txt *,.artist-grid .artist:hover h3,.artist-grid .artist:hover .meta{transition:color .25s ease .32s,border-color .25s ease .32s}
+  .hcase:hover .txt *,.hcase:focus-visible .txt *,.artist-grid .artist:hover h3,.artist-grid .artist:focus-visible h3{color:var(--paper)}
+  .hcase:hover .meta,.hcase:focus-visible .meta,.artist-grid .artist:hover .meta,.artist-grid .artist:focus-visible .meta{color:#B9B7BE}
+  .hcase:hover h3,.hcase:focus-visible h3{border-bottom-color:var(--paper)}
+  .hcase:hover .more{border-color:var(--sky)}
+}
+@media (prefers-reduced-motion:reduce){.hcase .txt::before,.artist-grid .artist::before,.hcase .txt *,.artist-grid .artist h3,.artist-grid .artist .meta{transition:none}}
 @media (max-width:1000px){.hcases{grid-template-columns:1fr}}
 @media (max-width:560px){.hcase .ph{aspect-ratio:9/16}.hcase h3{font-size:18px}.hcase .ctx{font-size:13px}}
 .map-line{margin:clamp(56px,7vw,104px) 0 0;text-align:right}
