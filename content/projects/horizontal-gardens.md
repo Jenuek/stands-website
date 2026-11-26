@@ -32,8 +32,15 @@ stats:
   unit: m
   label: 작품 길이
   label_en: Length of the work
+site_tags:
+- 업무지구
+site_tags_en:
+- Business district
+facts_source: 강동구청 입주기업 현황, 대한경제 (2023.9) · 2026.11 확인
 summary: 고덕비즈밸리 업무시설 앞 외부 광장에 김병호 작가의 「233개의 수평정원」을 설치했다. 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
+  context: 고덕비즈밸리 (서울고덕강일 공공주택지구 자족용지), 업무·지식기반산업 단지
+  station: 상일동역 (5호선) 직선 약 1.3km
   building: 동명기술공단 신사옥 (디엠스퀘어)
   location: 서울 강동구 고덕비즈밸리 자족2-3BL
   owner: ㈜동명기술공단 종합건축사무소 컨소시엄
@@ -80,6 +87,7 @@ process:
 - title: 설치
   title_en: Installation
 en:
+  facts_source: Gangdong-gu Office company listing, Daehan Economy (Sept 2023) · checked Nov 2026
   key_figure: 34,215㎡
   work: 233 Horizontal Gardens
   title: DMEC Headquarters
@@ -89,6 +97,8 @@ en:
   cover_caption: Night view, 2024
   summary: Kim Byoungho's 233 Horizontal Gardens, installed on the outdoor plaza of an office building in Godeok Biz Valley. STANDS handled the review, fabrication and installation.
   facts:
+    context: Godeok Biz Valley, a district for offices and knowledge-based industry
+    station: Sangil-dong Station (Line 5), about 1.3 km in a straight line
     building: DMEC headquarters (DM Square)
     location: Block 2-3, Godeok Biz Valley, Gangdong-gu, Seoul
     owner: Dongmyeong Engineering consortium

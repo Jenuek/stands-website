@@ -37,8 +37,17 @@ stats:
   unit_en: works
   label: 미술작품 수
   label_en: Artworks
+site_tags:
+- 수변
+- 복합단지
+site_tags_en:
+- Waterfront
+- Mixed-use complex
+facts_source: 건축물 미술작품 심의도서 (2024) · 2026.11 확인
 summary: 시화호 수변의 49층 복합단지. 1층 외부공간과 4층 조경에 미술작품 13점을 계획하고, 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
+  context: 시화 MTV 상업업무용지, 시화호 수변
+  station: 원시역 (서해선) 직선 약 4.7km
   building: 힐스테이트 시화호 라군 인테라스
   location: 경기 안산시 단원구 성곡동 (시화 MTV 상업업무용지 C1-1블록)
   owner: 주식회사 하나자산신탁
@@ -168,6 +177,7 @@ process:
 - title: 유지관리 계획·인계 체계
   title_en: Maintenance plan and handover
 en:
+  facts_source: Architectural artwork review document (2024) · checked Nov 2026
   key_figure: 49F · 9 buildings
   work: 13 works
   title: Hillstate Sihwaho Lagoon Interrace
@@ -181,6 +191,8 @@ en:
   cover_caption: Water feature, ground floor, after installation, 2025
   summary: A 49-storey mixed-use complex on the Sihwa Lake waterfront. STANDS planned 13 works for the ground-floor outdoor spaces and the 4th-floor landscape, and handled the review, fabrication and installation.
   facts:
+    context: Sihwa MTV commercial district, on the Sihwa Lake waterfront
+    station: Wonsi Station (Seohae Line), about 4.7 km in a straight line
     building: Hillstate Sihwaho Lagoon Interrace
     location: Seonggok-dong, Danwon-gu, Ansan, Gyeonggi (Sihwa MTV commercial block C1-1)
     owner: Hana Asset Trust

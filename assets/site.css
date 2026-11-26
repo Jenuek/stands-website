@@ -379,6 +379,7 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-sec{padding-block:clamp(48px,7vw,96px);border-bottom:1px solid var(--line)}
 .case-sec .prose p{margin:0 0 1.1em}
 .case-sec .two-col>*{min-width:0}
+.facts-src{margin:14px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--muted)}
 .case-facts{grid-template-columns:160px minmax(0,1fr)}
 .case-figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,28px);margin-top:36px}
 .case-figs:first-child{margin-top:0}
@@ -422,12 +423,18 @@ section{padding-block:clamp(72px,11vw,150px)}
 @media (max-width:860px){.pmap{grid-template-columns:1fr;grid-template-rows:62vh auto;height:auto}.pmap-side{order:2;border-right:0;border-top:1px solid var(--black)}.pmap-list{max-height:none}}
 .pmap .maplibregl-popup-content{padding:0;border-radius:0;box-shadow:0 6px 24px rgba(0,0,0,.18);font-family:inherit}
 .pmap .maplibregl-popup-close-button{font-size:18px;width:28px;height:28px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.pmap-card img{width:100%;aspect-ratio:2/1;object-fit:cover;display:block}
+.pmap-card img{width:100%;aspect-ratio:3/1;object-fit:cover;display:block}
 .pmap-card-txt{padding:14px 16px 16px}
 .pmap-card h3{margin:4px 0 4px;font-size:17px;font-weight:700;line-height:1.3}
 .pmap-card dl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 10px;margin:12px 0 14px;font-size:13px}
 .pmap-card dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;padding-top:2px}
 .pmap-card dd{margin:0}
+.pmap-work{margin:0 0 10px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px}
+.pmap-work span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;padding-top:2px}
+.pmap-tags{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pmap-tags li{border:1px solid var(--black);border-radius:999px;padding:2px 9px;font-size:11px}
+.pmap-src{margin:0 0 12px;font-family:var(--mono);font-size:10px;line-height:1.5;color:var(--muted)}
+
 @media (max-width:560px){.pmap-card img{aspect-ratio:3/1}.pmap-card-txt{padding:10px 12px 12px}.pmap-card h3{font-size:15px}.pmap-card dl{margin:8px 0 10px;font-size:12px;gap:2px 8px}}
 .strip-nav button:disabled{opacity:.3;cursor:default}
 @media (max-width:900px){.gallery-strip{grid-auto-columns:62%}}
