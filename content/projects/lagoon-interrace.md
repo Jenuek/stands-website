@@ -22,6 +22,7 @@ scope: 심의 · 제작 · 설치
 cover: /img/projects/lagoon-interrace/main.jpg
 cover_focus: 50% 30%
 cover_caption: 1층 수경공간, 설치 후 2025
+key_figure: 49F · 9개 동
 stats:
 - value: '49'
   unit: F
@@ -167,6 +168,7 @@ process:
 - title: 유지관리 계획·인계 체계
   title_en: Maintenance plan and handover
 en:
+  key_figure: 49F · 9 buildings
   work: 13 works
   title: Hillstate Sihwaho Lagoon Interrace
   artist_names:
