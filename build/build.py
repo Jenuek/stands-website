@@ -345,8 +345,9 @@ def p_artists(p):
     return [ref(r) for r in refs if ref(r)]
 
 # case study facts table: fixed keys and order, shared with the planned art map
-FACTS = [('building', '건축물', 'Building'), ('location', '위치', 'Location'), ('owner', '건축주', 'Client'),
-         ('use', '용도', 'Use'), ('scale', '규모', 'Scale'), ('area', '면적', 'Area'), ('year', '연도', 'Year'),
+FACTS = [('building', '건축물', 'Building'), ('location', '위치', 'Location'), ('context', '입지', 'Setting'),
+         ('station', '가까운 역', 'Nearest station'), ('owner', '건축주', 'Client'),
+         ('use', '용도', 'Use'), ('scale', '규모', 'Scale'), ('area', '면적', 'Area'), ('completed', '준공', 'Completed'), ('year', '연도', 'Year'),
          ('works', '미술작품', 'Artworks'), ('size', '규격', 'Dimensions'), ('material', '재료', 'Materials'),
          ('scope', '수행 범위', 'Scope'), ('budget', '총 예산', 'Total budget')]
 
@@ -361,7 +362,7 @@ def map_group(p):
     t = str(p.get('place_type') or '')
     if '업무' in t:
         return 'office', U('업무시설', 'Office')
-    if '공동주택' in t or '주거' in t:
+    if '공동주택' in t or '주거' in t or '오피스텔' in t:
         return 'residential', U('주거', 'Residential')
     return 'mixed', U('복합 · 상업', 'Mixed-use')
 
@@ -380,6 +381,10 @@ def map_section():
                     'title': L(p, 'title'), 'work': L(p, 'work'), 'artist': ', '.join(names), 'location': L(p, 'location'),
                     'year': str(p.get('year') or ''), 'type': L(p, 'place_type'), 'scope': L(p, 'scope'),
                     'group': g, 'groupLabel': gl, 'img': img(p.get('cover')), 'case': bool(p.get('case_study')),
+                    'building': fact(p, 'building'), 'use': fact(p, 'use'), 'scale': fact(p, 'scale') or fact(p, 'area'),
+                    'context': fact(p, 'context'), 'station': fact(p, 'station'), 'completed': fact(p, 'completed'),
+                    'tags': [str(x) for x in (p.get('site_tags_en') if EN() else p.get('site_tags')) or (p.get('site_tags') or [])],
+                    'source': L(p, 'facts_source'),
                     'url': '' if p.get('map_only') else p['_url']})
     if not pts:
         return ''
@@ -390,7 +395,9 @@ def map_section():
     chips = f'<button class="chip" type="button" data-mfilter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
         f'<button class="chip" type="button" data-mfilter="{g}" aria-pressed="false">{E(l)}</button>' for g, l in groups)
     data = json.dumps(pts, ensure_ascii=False).replace('</', '<\\/')
-    i18n = json.dumps({'view': U('사례 보기', 'View case'), 'work': U('작품', 'Work'), 'count': U('{n}건', '{n} projects'), 'case': U('심층 사례', 'Case study'),
+    i18n = json.dumps({'view': U('사례 보기', 'View case'), 'work': U('작품', 'Work'), 'use': U('용도', 'Use'),
+                       'scale': U('규모', 'Scale'), 'context': U('입지', 'Setting'), 'station': U('교통', 'Transit'),
+                       'completed': U('준공', 'Completed'), 'source': U('출처', 'Source'), 'count': U('{n}건', '{n} projects'), 'case': U('심층 사례', 'Case study'),
                        'artist': U('작가', 'Artist'), 'year': U('연도', 'Year'), 'type': U('용도', 'Use'), 'scope': U('수행 범위', 'Scope'),
                        'lang': LANG}, ensure_ascii=False)
     return (f'<section class="pmap-sec" id="map"><div class="wrap"><div class="sec-head"><h2>Project Map</h2>'
@@ -433,7 +440,8 @@ def case_page(i, p):
                 f'<div>{inner}</div></div></section>') if inner else ''
 
     facts = ''.join(f'<dt>{U(ko, en)}</dt><dd>{E(fact(p, k))}</dd>' for k, ko, en in FACTS if fact(p, k))
-    facts_html = f'<dl class="kv case-facts">{facts}</dl>' if facts else ''
+    src = L(p, 'facts_source')
+    facts_html = (f'<dl class="kv case-facts">{facts}</dl>' + (f'<p class="facts-src">{U("출처", "Source")} · {E(src)}</p>' if src else '')) if facts else ''
 
     site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                         for x in (p.get('site_images') or []) if x.get('image'))

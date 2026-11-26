@@ -19,8 +19,29 @@ gallery:
 - /img/projects/nabillera/detail-01.jpg
 - /img/projects/nabillera/detail-02.jpg
 - /img/projects/nabillera/detail-03.jpg
+facts:
+  building: 동탄 파크릭스 A55BL
+  location: 경기 화성시 동탄구 동탄신리천로5길 43
+  context: 동탄2신도시
+  station: 동탄역 (SRT·GTX-A) 직선 약 4.3km
+  use: 공동주택
+  scale: 14개 동, 최고 20층, 660세대
+  completed: '2025'
+site_tags:
+- 신도시 대단지
+site_tags_en:
+- Large new-town complex
+facts_source: LH 분양 공고, 공개 단지 정보 · 2026.11 확인
 summary: 양세훈 작가의 「나빌레라」. 동탄 아파트 단지의 정원에 물결 위로 내려앉은 나비 같은 형상이 선다.
 en:
+  facts:
+    building: Dongtan Parkrix A55BL
+    location: 43 Dongtansinricheon-ro 5-gil, Dongtan-gu, Hwaseong, Gyeonggi
+    context: Dongtan 2 New Town
+    station: Dongtan Station (SRT, GTX-A), about 4.3 km in a straight line
+    use: Apartment complex
+    scale: 14 buildings, up to 20 floors, 660 units
+  facts_source: LH sales notice, public complex listings · checked Nov 2026
   work: Nabillera
   artist: Yang Sehoon
   title: Sculpture for an Apartment Complex

@@ -1,14 +1,14 @@
 ---
 work: 북극곰 가족
-lat: 37.401
-lng: 127.1085
+lat: 37.4115
+lng: 127.099
 map_only: true
 title: Sculpture for an Office Site
 sample: false
 hidden: false
 order: 2
 type: public
-location: 성남 판교
+location: 성남 판교 제2테크노밸리
 year: '2025'
 size: 2,900 × 4,300 × 1,800(H)mm
 artist: 김도훈
@@ -20,12 +20,31 @@ gallery:
 - /img/projects/polar-bear-family/detail-01.jpg
 - /img/projects/polar-bear-family/detail-02.jpg
 - /img/projects/polar-bear-family/detail-03.jpg
+facts:
+  building: 에치에프알(HFR) 사옥
+  location: 경기 성남시 수정구 금토로80번길 40
+  context: 판교 제2테크노밸리 G2블록
+  station: 판교역 (신분당선·경강선) 직선 약 2.4km
+  use: 업무시설
+  completed: '2025'
+site_tags:
+- 업무지구
+site_tags_en:
+- Business district
+facts_source: 뉴시스 (2025.7), 기업 공시 주소 · 2026.11 확인
 summary: 김도훈 작가의 「북극곰 가족」. 업무 지구의 녹지에 놓였다. 스테인리스 스틸 조각을 겹겹이 이어 붙인 표면이 주변의 건물과 하늘, 풀빛을 비춘다.
 en:
+  facts:
+    building: HFR headquarters
+    location: 40 Geumto-ro 80beon-gil, Sujeong-gu, Seongnam, Gyeonggi
+    context: Block G2, Pangyo Techno Valley 2
+    station: Pangyo Station (Shinbundang and Gyeonggang Lines), about 2.4 km in a straight line
+    use: Office
+  facts_source: Newsis (July 2025), registered company address · checked Nov 2026
   work: Polar Bear Family
   artist: Kim Dohoon
   title: Sculpture for an Office Site
-  location: Pangyo, Seongnam
+  location: Pangyo Techno Valley 2, Seongnam
   place_type: Office
   scope: Review · Fabrication · Installation
   summary: Kim Dohoon's Polar Bear Family, set in the green of a business district. Its surface of stainless-steel pieces laid layer upon layer reflects the surrounding buildings, the sky and the grass.

@@ -74,12 +74,17 @@
     renderList();
   });
 
+  // summary card, laid out like a listing: building and use, the site facts, location tags, then the work, then the source
   function card(d) {
-    var rows = [[t.work, d.case ? d.work : ''], [t.artist, d.artist], [t.year, d.year], [t.type, d.type], [t.scope, d.scope]].filter(function (r) { return r[1]; });
+    var site = [[t.use, d.use], [t.scale, d.scale], [t.context, d.context], [t.station, d.station], [t.completed, d.completed]].filter(function (r) { return r[1]; });
+    var workLine = [d.work ? (t.lang === 'en' ? d.work : '「' + d.work + '」') : '', d.artist, d.year].filter(Boolean).join(' · ');
+    function dl(rows) { return rows.length ? '<dl>' + rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' : ''; }
     return '<div class="pmap-card">' + (d.img ? '<img src="' + esc(d.img) + '" alt="">' : '') +
       '<div class="pmap-card-txt">' + (d.case ? '<span class="case-label">' + esc(t.case) + '</span>' : '') +
-      '<h3>' + esc(head(d)) + '</h3><span class="meta">' + esc(d.location) + '</span>' +
-      '<dl>' + rows.map(function (r) { return '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' +
+      '<h3>' + esc(d.building || head(d)) + '</h3><span class="meta">' + esc(d.location) + '</span>' +
+      (d.tags && d.tags.length ? '<ul class="pmap-tags">' + d.tags.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : '') +
+      dl(site) + (workLine ? '<p class="pmap-work"><span>' + esc(t.work) + '</span>' + esc(workLine) + '</p>' : '') +
+      (d.source ? '<p class="pmap-src">' + esc(t.source) + ' · ' + esc(d.source) + '</p>' : '') +
       (d.url ? '<a class="more" href="' + esc(d.url) + '">' + esc(t.view) + '</a>' : '') + '</div></div>';
   }
 
@@ -87,9 +92,9 @@
     var d = data.filter(function (x) { return x.id === id; })[0];
     if (!d) return;
     if (popup) popup.remove();
-    popup = new maplibregl.Popup({ offset: 14, maxWidth: '300px', closeButton: true, focusAfterOpen: false }).setLngLat([d.lng, d.lat]).setHTML(card(d)).addTo(map);
+    popup = new maplibregl.Popup({ offset: 14, anchor: 'top', maxWidth: '300px', closeButton: true, focusAfterOpen: false }).setLngLat([d.lng, d.lat]).setHTML(card(d)).addTo(map);
     // keep the pin in the upper part of the map so the card below it fits
-    map[reduce ? 'jumpTo' : (fly ? 'flyTo' : 'easeTo')]({ center: [d.lng, d.lat], zoom: fly ? Math.max(map.getZoom(), 14) : map.getZoom(), offset: [0, -Math.min(170, el.clientHeight * 0.3)] });
+    map[reduce ? 'jumpTo' : (fly ? 'flyTo' : 'easeTo')]({ center: [d.lng, d.lat], zoom: fly ? Math.max(map.getZoom(), 14) : map.getZoom(), offset: [0, -el.clientHeight * 0.36] });
     // the page itself never jumps; only on phones, where the list sits under the map and the map is out of view, scroll back up to it
     var r = el.getBoundingClientRect();
     if (fly && list.getBoundingClientRect().top >= r.bottom - 1 && r.top < -40) window.scrollBy({ top: r.top - 16, behavior: reduce ? 'auto' : 'smooth' });
@@ -112,7 +117,7 @@
     list.innerHTML = items.map(function (d) {
       return '<li data-id="' + esc(d.id) + '"><button type="button">' + (d.img ? '<img src="' + esc(d.img) + '" alt="" loading="lazy">' : '<span class="ph"></span>') +
         '<span class="txt">' + (d.case ? '<span class="case-label">' + esc(t.case) + '</span>' : '<span class="meta">' + esc(d.groupLabel) + '</span>') +
-        '<b>' + esc(head(d)) + '</b><span class="meta">' + esc([d.location, d.artist, d.year].filter(Boolean).join(' · ')) + '</span></span></button></li>';
+        '<b>' + esc(head(d)) + '</b><span class="meta">' + esc([d.case ? '' : d.building, d.location, d.artist].filter(Boolean).join(' · ')) + '</span></span></button></li>';
     }).join('');
     visibleNote.textContent = t.count.replace('{n}', items.length);
     [].forEach.call(list.querySelectorAll('li'), function (li) {
