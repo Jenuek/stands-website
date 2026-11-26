@@ -488,16 +488,19 @@ def case_page(i, p):
     page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body_html, og=cover or None)
 
 def home_case(p, n):
-    """Home: one selected project as a large photo with a one-line caption underneath (number, title, place · year, one key figure)."""
-    cover = img(p.get('cover'))
-    cf = str(p.get('cover_focus') or '').strip()
+    """Home: one selected project as two grid cells, matching the 4-column Artists grid: a tall photo (3:5, like the artist cards)
+    and a text column beside it (number, title, a thick rule, place · year · use, setting; the key figure at the foot)."""
+    cover = img(p.get('cover_tall')) or img(p.get('cover'))
+    cf = str(p.get('home_focus') or ('' if p.get('cover_tall') else p.get('cover_focus')) or '').strip()
     focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
-    meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or '')) if x)
+    meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
     fig = L(p, 'key_figure')
+    ctx = fact(p, 'context')
     ph = f'<img src="{E(cover)}" alt="{E(L(p, "title"))}" loading="lazy"{focus}>' if cover else ''
-    return (f'<a class="hcase{" flip" if n % 2 == 0 else ""}" href="{p["_url"]}"><div class="ph">{ph}</div>'
-            f'<div class="cap"><div><span class="no">{n:02d}</span><h3>{E(L(p, "title"))}</h3><span class="meta">{E(meta)}</span></div>'
-            f'{f"<b class={chr(34)}fig{chr(34)}>{E(fig)}</b>" if fig else ""}</div></a>')
+    return (f'<a class="hcase" href="{p["_url"]}"><div class="ph">{ph}</div>'
+            f'<div class="txt"><span class="meta">{n:02d} · {U("STANDS 프로젝트", "STANDS Project")}</span><h3>{E(L(p, "title"))}</h3>'
+            f'<span class="meta sub">{E(meta)}</span>{f"<p class={chr(34)}ctx{chr(34)}>{E(ctx)}</p>" if ctx else ""}'
+            f'<div class="foot">{f"<b class={chr(34)}fig{chr(34)}>{E(fig)}</b>" if fig else ""}<span class="more">{U("사례 보기", "View case")}</span></div></div></a>')
 
 # reference places for the home map teaser (lon, lat, KO, EN)
 def map_teaser():
@@ -599,9 +602,8 @@ def build_lang():
 
 <section class="home-projects" aria-labelledby="pj-h">
   <div class="wrap">
-    <div class="sec-head"><h2 id="pj-h">Selected Projects</h2><a class="more" href="projects.html">{U('전체 프로젝트', 'All projects')}</a></div>
+    <div class="sec-head"><h2 id="pj-h">Selected Projects</h2><a class="more" href="projects.html#map">{U('프로젝트 맵', 'Project Map')}</a></div>
     <div class="hcases">{''.join(home_case(p, k) for k, p in enumerate(fp, 1))}</div>
-    {map_teaser()}
   </div>
 </section>
 

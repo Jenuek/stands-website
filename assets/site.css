@@ -213,21 +213,22 @@ section{padding-block:clamp(72px,11vw,150px)}
 .btn.dark{background:var(--black);color:var(--paper)}
 .btn.dark:hover{background:var(--accent)}
 
-/* home: selected projects as large photos with a one-line caption (number, title, place · year | one key figure), sides alternating; one quiet link to the map below */
-.home-projects .sec-head h2{font-size:clamp(30px,4.4vw,64px)}
-.hcases{display:flex;flex-direction:column;gap:clamp(64px,9vw,140px)}
-.hcase{display:block;width:76%}
-.hcase.flip{margin-left:auto}
-.hcase .ph{aspect-ratio:16/10;overflow:hidden;background:var(--paper-2)}
-.hcase .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
-.hcase:hover .ph img{transform:scale(1.025)}
-.hcase .cap{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-top:18px}
-.hcase .cap>div{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:baseline}
-.hcase .no{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
-.hcase h3{margin:0;font-size:clamp(18px,1.6vw,22px);font-weight:600;letter-spacing:-.02em}
-.hcase .cap .meta{grid-column:2;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
-.hcase .fig{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(26px,2.6vw,40px);line-height:1;letter-spacing:-.01em;white-space:nowrap}
-@media (max-width:860px){.hcase{width:100%}.hcase .cap{flex-direction:column;gap:12px}}
+/* home: selected projects on the same 4-column grid as the Artists cards: each case is a tall 3:5 photo plus a text column
+   (number, title, thick rule, place · year · use, setting; the key figure and "View case" at the foot) */
+.hcases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.hcase{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,28px);min-width:0}
+.hcase .ph{aspect-ratio:3/5;overflow:hidden;background:var(--paper-2)}
+.hcase .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.hcase:hover .ph img{transform:scale(1.03)}
+.hcase .txt{display:flex;flex-direction:column;min-width:0}
+.hcase .meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.hcase h3{margin:12px 0 0;font-size:clamp(19px,1.7vw,24px);line-height:1.3;font-weight:700;letter-spacing:-.02em;padding-bottom:16px;border-bottom:2px solid var(--black)}
+.hcase .sub{margin-top:14px;text-transform:none;letter-spacing:.03em;line-height:1.6}
+.hcase .ctx{margin:12px 0 0;font-size:14px;line-height:1.6;color:#3A393E}
+.hcase .foot{margin-top:auto;padding-top:24px;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.hcase .fig{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(28px,2.6vw,40px);line-height:1;letter-spacing:-.01em}
+@media (max-width:1000px){.hcases{grid-template-columns:1fr}}
+@media (max-width:560px){.hcase .ph{aspect-ratio:9/16}.hcase h3{font-size:18px}.hcase .ctx{font-size:13px}}
 .map-line{margin:clamp(56px,7vw,104px) 0 0;text-align:right}
 .map-line a{display:inline-flex;align-items:baseline;gap:14px;padding-bottom:6px;border-bottom:1px solid var(--black);font-size:15px}
 .map-line .meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
