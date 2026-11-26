@@ -213,38 +213,25 @@ section{padding-block:clamp(72px,11vw,150px)}
 .btn.dark{background:var(--black);color:var(--paper)}
 .btn.dark:hover{background:var(--accent)}
 
-/* home: selected projects as wide rows (photo beside key figures, alternating sides) and the map teaser band */
-.hcases{display:flex;flex-direction:column;gap:clamp(48px,6vw,96px)}
-.hcase{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:end}
-.hcase.flip{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}
-.hcase.flip .ph{order:2}
+/* home: selected projects as large photos with a one-line caption (number, title, place · year | one key figure), sides alternating; one quiet link to the map below */
+.home-projects .sec-head h2{font-size:clamp(30px,4.4vw,64px)}
+.hcases{display:flex;flex-direction:column;gap:clamp(64px,9vw,140px)}
+.hcase{display:block;width:76%}
+.hcase.flip{margin-left:auto}
 .hcase .ph{aspect-ratio:16/10;overflow:hidden;background:var(--paper-2)}
-.hcase .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
-.hcase:hover .ph img{transform:scale(1.03)}
-.hcase .txt{display:flex;flex-direction:column;min-width:0}
-.hcase h3{margin:12px 0 8px;font-size:clamp(24px,2.4vw,34px);line-height:1.2;letter-spacing:-.02em;font-weight:700}
-.hstats{list-style:none;margin:28px 0 0;padding:0;border-top:2px solid var(--black)}
-.hstats li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
-.hstats b{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(34px,3.6vw,54px);line-height:1;letter-spacing:-.01em}
-.hstats small{font-size:.42em;font-weight:800;margin-left:4px;letter-spacing:0}
-.hstats span{font-size:13px;color:var(--muted);text-align:right}
-.hcase .scope{margin-top:16px}
-.hcase .more{align-self:flex-start;margin-top:22px}
-@media (max-width:860px){.hcase,.hcase.flip{grid-template-columns:1fr}.hcase.flip .ph{order:0}}
-.map-teaser{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,4vw,64px);align-items:center;margin-top:clamp(56px,7vw,104px);padding:clamp(24px,3vw,40px);border:1px solid var(--black);transition:background .3s ease}
-.map-teaser:hover{background:#E6E5E1}
-.map-teaser .n{margin:6px 0 4px;line-height:1}
-.map-teaser .n b{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(72px,9vw,140px);letter-spacing:-.02em}
-.map-teaser .n{font-size:24px;font-weight:700}
-.map-teaser p{margin:0}
-.map-teaser .more{display:inline-block;margin-top:22px}
-.map-teaser .mini svg{display:block;width:100%;height:auto}
-.map-teaser .grid line{stroke:var(--line);stroke-width:.6}
-.map-teaser .ref{fill:var(--muted)}
-.map-teaser text{font-size:10px;fill:var(--muted);font-family:var(--body,inherit)}
-.map-teaser .pt{fill:var(--accent);stroke:var(--paper);stroke-width:2}
-.map-teaser .pt.c{fill:var(--black)}
-@media (max-width:760px){.map-teaser{grid-template-columns:1fr}}
+.hcase .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.hcase:hover .ph img{transform:scale(1.025)}
+.hcase .cap{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-top:18px}
+.hcase .cap>div{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:baseline}
+.hcase .no{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.hcase h3{margin:0;font-size:clamp(18px,1.6vw,22px);font-weight:600;letter-spacing:-.02em}
+.hcase .cap .meta{grid-column:2;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.hcase .fig{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:clamp(26px,2.6vw,40px);line-height:1;letter-spacing:-.01em;white-space:nowrap}
+@media (max-width:860px){.hcase{width:100%}.hcase .cap{flex-direction:column;gap:12px}}
+.map-line{margin:clamp(56px,7vw,104px) 0 0;text-align:right}
+.map-line a{display:inline-flex;align-items:baseline;gap:14px;padding-bottom:6px;border-bottom:1px solid var(--black);font-size:15px}
+.map-line .meta{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.map-line a:hover{color:var(--accent);border-color:var(--accent)}
 
 /* ---------- footer ---------- */
 .site-footer{background:var(--black);color:var(--paper);padding-block:64px calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid #2A2A2A}

@@ -205,8 +205,9 @@ content:
           - { name: image, label: 이미지, type: image }
           - { name: caption, label: 캡션, type: string }
           - { name: caption_en, label: 캡션 (영문), type: string }
+      - { name: key_figure, label: "대표 수치 (홈 캡션 오른쪽, 예: 34,215㎡)", type: string }
       - name: stats
-        label: "핵심 수치 (홈 Selected Projects, 3개 권장)"
+        label: "핵심 수치 (예비, 지금은 홈에 쓰지 않음)"
         type: object
         list: true
         fields:
@@ -267,6 +268,7 @@ content:
           - { name: summary, label: 요약 (영문), type: text }
           - { name: body, label: 본문 (영문), type: rich-text, options: { format: markdown } }
           - { name: cover_caption, label: 대표 사진 캡션 (영문), type: string }
+          - { name: key_figure, label: "대표 수치 (영문)", type: string }
           - { name: work, label: "작품명 (영문, 지도 카드)", type: string }
           - { name: artist, label: "작가 이름 (영문, 작가 페이지가 없을 때)", type: string }
           - { name: artist_names, label: "작가 이름 (영문)", type: string, list: true }

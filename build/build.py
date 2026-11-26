@@ -480,44 +480,24 @@ def case_page(i, p):
     page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body_html, og=cover or None)
 
 def home_case(p, n):
-    """Home: one selected project as a wide row, photo beside the key figures (alternating sides)."""
+    """Home: one selected project as a large photo with a one-line caption underneath (number, title, place · year, one key figure)."""
     cover = img(p.get('cover'))
     cf = str(p.get('cover_focus') or '').strip()
     focus = f' style="object-position:{E(cf)}"' if re.fullmatch(r'\d{1,3}% \d{1,3}%', cf) else ''
-    stats = ''.join(f'<li><b>{E(str(x.get("value") or ""))}<small>{E(str(LI(x, "unit") or ""))}</small></b><span>{E(LI(x, "label"))}</span></li>'
-                    for x in (p.get('stats') or []))
-    meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or ''), L(p, 'place_type')) if x)
-    return (f'<a class="hcase{" flip" if n % 2 == 0 else ""}" href="{p["_url"]}">'
-            f'<div class="ph">{f"<img src={chr(34)}{E(cover)}{chr(34)} alt={chr(34)}{chr(34)} loading={chr(34)}lazy{chr(34)}{focus}>" if cover else ""}</div>'
-            f'<div class="txt"><span class="case-label">{n:02d} · {U("STANDS 프로젝트", "STANDS Project")}</span>'
-            f'<h3>{E(L(p, "title"))}</h3><span class="meta">{E(meta)}</span>'
-            f'{f"<ul class={chr(34)}hstats{chr(34)}>{stats}</ul>" if stats else ""}'
-            f'<span class="meta scope">{U("수행 범위", "Scope")} · {E(L(p, "scope"))}</span>'
-            f'<span class="more">{U("사례 보기", "View case")}</span></div></a>')
+    meta = ' · '.join(x for x in (L(p, 'location'), str(p.get('year') or '')) if x)
+    fig = L(p, 'key_figure')
+    ph = f'<img src="{E(cover)}" alt="{E(L(p, "title"))}" loading="lazy"{focus}>' if cover else ''
+    return (f'<a class="hcase{" flip" if n % 2 == 0 else ""}" href="{p["_url"]}"><div class="ph">{ph}</div>'
+            f'<div class="cap"><div><span class="no">{n:02d}</span><h3>{E(L(p, "title"))}</h3><span class="meta">{E(meta)}</span></div>'
+            f'{f"<b class={chr(34)}fig{chr(34)}>{E(fig)}</b>" if fig else ""}</div></a>')
 
 # reference places for the home map teaser (lon, lat, KO, EN)
-MAP_REF = [(126.978, 37.566, '서울', 'Seoul'), (126.705, 37.456, '인천', 'Incheon'), (127.126, 37.420, '성남', 'Seongnam'),
-           (126.831, 37.322, '안산', 'Ansan'), (127.028, 37.264, '수원', 'Suwon'), (126.831, 37.199, '화성', 'Hwaseong')]
-
 def map_teaser():
-    """Home: a band with the number of sites and a small dot map built from the projects' coordinates; links to the Projects map."""
-    pts = [p for p in PROJECTS if p.get('lat') not in (None, '') and p.get('lng') not in (None, '')]
-    if not pts:
+    """Home: one quiet line under the selected projects that leads to the Projects map."""
+    if not any(p.get('lat') not in (None, '') for p in PROJECTS):
         return ''
-    lo0, lo1, la0, la1 = 126.55, 127.35, 37.08, 37.70
-    W, H = 400, 300
-    def xy(lo, la):
-        return (lo - lo0) / (lo1 - lo0) * W, (la1 - la) / (la1 - la0) * H
-    grid = ''.join(f'<line x1="{x}" y1="0" x2="{x}" y2="{H}"/>' for x in range(0, W + 1, 40)) + \
-           ''.join(f'<line x1="0" y1="{y}" x2="{W}" y2="{y}"/>' for y in range(0, H + 1, 40))
-    refs = ''.join(f'<circle cx="{xy(lo, la)[0]:.1f}" cy="{xy(lo, la)[1]:.1f}" r="1.6" class="ref"/>'
-                   f'<text x="{xy(lo, la)[0] + 5:.1f}" y="{xy(lo, la)[1] + 3:.1f}">{U(ko, en)}</text>' for lo, la, ko, en in MAP_REF)
-    dots = ''.join(f'<circle cx="{xy(float(p["lng"]), float(p["lat"]))[0]:.1f}" cy="{xy(float(p["lng"]), float(p["lat"]))[1]:.1f}" r="{7 if p.get("case_study") else 5}" class="{"pt c" if p.get("case_study") else "pt"}"/>'
-                   for p in pts)
-    svg = f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="{U("프로젝트 위치", "Project locations")}"><g class="grid">{grid}</g>{refs}{dots}</svg>'
-    return (f'<a class="map-teaser" href="projects.html#map"><div class="txt"><span class="eyebrow">Project Map</span>'
-            f'<p class="n"><b>{len(pts)}</b>{U("곳", "")}</p><p>{U("STANDS가 작품을 세운 자리", "Places where STANDS has set works")}</p>'
-            f'<span class="more">{U("지도에서 보기", "See on the map")}</span></div><div class="mini">{svg}</div></a>')
+    return (f'<p class="map-line"><a href="projects.html#map"><span class="meta">Project Map</span>'
+            f'<span>{U("그 밖의 작품이 선 자리 보기", "See where else our works stand")}</span><span aria-hidden="true">→</span></a></p>')
 
 def artist_card(a):
     i = ARTISTS.index(a)
@@ -611,7 +591,7 @@ def build_lang():
 
 <section class="home-projects" aria-labelledby="pj-h">
   <div class="wrap">
-    <div class="sec-head"><h2 id="pj-h">Selected<br>Projects</h2><a class="more" href="projects.html">{U('전체 프로젝트', 'All projects')}</a></div>
+    <div class="sec-head"><h2 id="pj-h">Selected Projects</h2><a class="more" href="projects.html">{U('전체 프로젝트', 'All projects')}</a></div>
     <div class="hcases">{''.join(home_case(p, k) for k, p in enumerate(fp, 1))}</div>
     {map_teaser()}
   </div>

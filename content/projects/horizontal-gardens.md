@@ -18,6 +18,7 @@ cover: /img/projects/horizontal-gardens/night-wide.jpg
 cover_tall: /img/projects/horizontal-gardens/night-portrait.jpg
 cover_focus: 50% 55%
 cover_caption: 야간 전경, 2024
+key_figure: 34,215㎡
 stats:
 - value: '16'
   unit: F
@@ -79,6 +80,7 @@ process:
 - title: 설치
   title_en: Installation
 en:
+  key_figure: 34,215㎡
   work: 233 Horizontal Gardens
   title: DMEC Headquarters
   location: Godeok, Gangdong, Seoul
