@@ -37,6 +37,16 @@ stats:
   unit_en: works
   label: 미술작품 수
   label_en: Artworks
+- value: '171.3'
+  unit: m
+  unit_en: m
+  label: 최고 높이
+  label_en: Height at the top
+stations:
+- name: 원시역
+  name_en: Wonsi Stn.
+  lat: 37.30256
+  lng: 126.78678
 site_tags:
 - 수변
 - 복합단지
