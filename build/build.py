@@ -394,6 +394,15 @@ def map_section():
             groups.append((x['group'], x['groupLabel']))
     chips = f'<button class="chip" type="button" data-mfilter="all" aria-pressed="true">{U("전체", "All")}</button>' + ''.join(
         f'<button class="chip" type="button" data-mfilter="{g}" aria-pressed="false">{E(l)}</button>' for g, l in groups)
+    # location tags, in order of first appearance; a second row of chips that combines with the place type
+    tags = []
+    for x in pts:
+        for tg in x['tags']:
+            if tg not in tags:
+                tags.append(tg)
+    tag_html = (f'<div class="filters pmap-tags-f" role="group" aria-label="{U("입지", "Setting")}"><span class="k">{U("입지", "Setting")}</span>'
+                + ''.join(f'<button class="chip sm" type="button" data-mtag="{E(tg)}" aria-pressed="false">{E(tg)}</button>' for tg in tags)
+                + '</div>') if tags else ''
     data = json.dumps(pts, ensure_ascii=False).replace('</', '<\\/')
     i18n = json.dumps({'view': U('사례 보기', 'View case'), 'work': U('작품', 'Work'), 'use': U('용도', 'Use'),
                        'scale': U('규모', 'Scale'), 'context': U('입지', 'Setting'), 'station': U('교통', 'Transit'),
@@ -403,6 +412,7 @@ def map_section():
     return (f'<section class="pmap-sec" id="map"><div class="wrap"><div class="sec-head"><h2>Project Map</h2>'
             f'<span class="meta pmap-total">{U("STANDS가 작품을 세운 자리", "Where STANDS has placed works")} · <b>{len(pts)}</b>{U("건", "")}</span></div>'
             f'<div class="pmap"><aside class="pmap-side"><div class="filters pmap-filters" role="group" aria-label="{U("공간 유형", "Place type")}">{chips}</div>'
+            f'{tag_html}'
             f'<p class="meta pmap-visible" aria-live="polite"></p><ol class="pmap-list"></ol></aside>'
             f'<div class="pmap-canvas" id="pmap" role="region" aria-label="{U("프로젝트 지도", "Project map")}"></div></div></div>'
             f'<script type="application/json" id="pmap-data">{data}</script><script type="application/json" id="pmap-i18n">{i18n}</script></section>')
