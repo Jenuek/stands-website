@@ -415,6 +415,15 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-stats span{font-size:13px;color:var(--muted)}
 @media (max-width:700px){.case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .locator{margin:0 0 32px}
+/* site analysis board: square diagram panels in a grid, like a competition board */
+.board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,22px)}
+.bpanel{margin:0}
+.bpanel img{display:block;width:100%;height:auto;aspect-ratio:1/1;background:var(--paper)}
+.bpanel figcaption{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.bpanel figcaption b{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.bpanel figcaption span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.board-src{margin:14px 0 32px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+@media (max-width:560px){.board{grid-template-columns:1fr}}
 .locator-map{aspect-ratio:16/9;background:#E6E5E1;border:1px solid var(--black)}
 .site-text{margin-top:8px}
 .scale{margin:40px 0 0}

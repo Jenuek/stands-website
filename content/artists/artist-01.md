@@ -4,7 +4,7 @@ medium: 금속, 복합매체
 born: ''
 based: 서울
 photo: /img/artists/kwon-chi-gyu/thumb.jpg
-summary: 나무와 숲의 형태를 단순한 형상으로 옮기고, 거울처럼 반사되는 금속 면과 선명한 색을 맞세워 생명의 회복력(Resilience)을 조각한다. 개인전 33회, 초대전·단체전 500여 회. 현 한국조각가협회 이사장.
+summary: 나무와 숲의 형태를 단순한 형상으로 옮기고, 거울처럼 반사되는 금속 면과 선명한 색을 대비시켜 생명의 회복력(Resilience)을 조각한다. 개인전 33회, 초대전·단체전 500여 회. 현 한국조각가협회 이사장.
 hero_image: /img/artists/kwon-chi-gyu/mother-nature-network-2021.jpg
 hero_caption: Mother Nature Network(대자연네트워크), 2021
 quote: 색(色)은 존재의 표정이고, 형태(形態)는 힘의 흔적이다.
@@ -131,7 +131,7 @@ works:
   title: 'Resilience'
   group: '공공미술 설치 제안 (렌더링)'
   group_en: 'Public art proposals (renderings)'
-note: 권치규의 조각은 서 있는 자리를 비추고, 그 자리를 작품 안으로 들인다. 거울처럼 마감한 바깥 면은 주변의 건축과 하늘을 담고, 안쪽의 색 면은 빛을 받아 형태를 드러낸다. 천장에 매달면 로비가 숲의 그늘이 되고, 광장에 세우면 사람이 모이는 나무가 된다. 아파트 단지, 병원, 기업 사옥의 공개공지에서 이미 그 쓰임이 확인되었다.
+note: 권치규의 조각은 놓인 자리를 비추고, 그 자리를 작품 안으로 들인다. 거울처럼 마감한 바깥 면은 주변의 건축과 하늘을 담고, 안쪽의 색 면은 빛을 받아 형태를 드러낸다. 천장에 매달면 로비가 숲의 그늘이 되고, 광장에 놓으면 사람이 모이는 나무가 된다. 아파트 단지, 병원, 기업 사옥의 공개공지에서 이미 그 쓰임이 확인되었다.
 fit:
 - 로비 천장
 - 아트리움
@@ -201,7 +201,7 @@ en:
   summary: Kwon turns trees and forests into simple forms and sets mirror-finished metal against vivid colour to sculpt the resilience of life. 33 solo exhibitions and some 500 invited and group shows. Chair of the Korean Sculptors Association.
   hero_caption: Mother Nature Network, 2021
   quote: Colour is the expression of being; form is the trace of force.
-  note: Kwon's sculptures reflect the place they stand in and draw it into the work. The mirror-finished outer surfaces take in the surrounding architecture and sky, and the coloured inner faces catch the light and reveal the form. Hung from a ceiling, they turn a lobby into the shade of a forest; set in a plaza, they become a tree people gather around. Apartment complexes, a hospital and a corporate headquarters have already put them to use in their public spaces.
+  note: Kwon's sculptures reflect the place around them and draw it into the work. The mirror-finished outer surfaces take in the surrounding architecture and sky, and the coloured inner faces catch the light and reveal the form. Hung from a ceiling, they turn a lobby into the shade of a forest; set in a plaza, they become a tree people gather around. Apartment complexes, a hospital and a corporate headquarters have already put them to use in their public spaces.
   fit:
   - Lobby ceiling
   - Atrium

@@ -276,7 +276,7 @@ en:
     The large open spaces on Bandal Island to the south form a community hub for the area. To the east, new retail is expected to make it the busiest commercial node.
 
     **Placement**
-    Twelve works stand in the ground-floor outdoor spaces and one in the 4th-floor landscape. Positions follow the central pedestrian axis, the water feature, the changes in level between steps and planting, and the view towards the water.
+    Twelve works are set in the ground-floor outdoor spaces and one in the 4th-floor landscape. Positions follow the central pedestrian axis, the water feature, the changes in level between steps and planting, and the view towards the water.
   curation_intro: On a site framed by Sihwa Lake, nature is both the subject of the works and their link to the surroundings. Images of trees, grass blades, insect wings and closed loops tie the works together.
   specs_note: Dimensions are as planned at review (W × D × H, mm). The works were made with laser cutting, forging, argon welding, mirror polishing, urethane paint and a UV clear finish, with an inspection checklist, a repair request procedure and a handover plan.
 ---

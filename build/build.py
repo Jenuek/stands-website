@@ -410,7 +410,7 @@ def map_section():
                        'artist': U('작가', 'Artist'), 'year': U('연도', 'Year'), 'type': U('용도', 'Use'), 'scope': U('수행 범위', 'Scope'),
                        'lang': LANG}, ensure_ascii=False)
     return (f'<section class="pmap-sec" id="map"><div class="wrap"><div class="sec-head"><h2>Project Map</h2>'
-            f'<span class="meta pmap-total">{U("STANDS가 작품을 세운 자리", "Where STANDS has placed works")} · <b>{len(pts)}</b>{U("건", "")}</span></div>'
+            f'<span class="meta pmap-total">{U("STANDS 프로젝트 위치", "STANDS project sites")} · <b>{len(pts)}</b>{U("건", "")}</span></div>'
             f'<div class="pmap"><aside class="pmap-side"><div class="filters pmap-filters" role="group" aria-label="{U("공간 유형", "Place type")}">{chips}</div>'
             f'{tag_html}'
             f'<p class="meta pmap-visible" aria-live="polite"></p><ol class="pmap-list"></ol></aside>'
@@ -525,6 +525,27 @@ def case_decisions(p):
         for k, x in enumerate(items, 1))
     return f'<ol class="decisions">{cards}</ol>'
 
+BOARD = [('ground', '도시 조직', 'Urban fabric', '반경 {r}m 안의 건물 배치 (figure-ground)', 'Buildings within {r} m (figure-ground)'),
+         ('green', '녹지 · 수변', 'Green and water', '녹지는 빗금, 물은 하늘색', 'Green hatched, water in blue'),
+         ('move', '동선 위계 · 대중교통', 'Movement and transit', '도로 위계를 선 굵기로, □ 버스정류장, 점선 화살표는 가까운 역 방향', 'Road hierarchy by line weight, □ bus stops, dashed arrow towards the nearest station'),
+         ('sun', '태양 궤적', 'Sun path', '하지 · 춘추분 · 동지의 궤적과 정오 고도', 'Paths at the solstices and equinox, with noon altitude')]
+
+def case_board(p):
+    """Site analysis board: square diagram panels drawn by build/site_boards.py from OpenStreetMap; a panel shows when its file exists."""
+    slug = os.path.splitext(p['_path'].split('/')[-1])[0]
+    panels = []
+    for k, ko, en, cko, cen in BOARD:
+        name = f'board-{k}-en.svg' if EN() and os.path.exists(os.path.join(ROOT, 'img', 'projects', slug, f'board-{k}-en.svg')) else f'board-{k}.svg'
+        if not os.path.exists(os.path.join(ROOT, 'img', 'projects', slug, name)):
+            continue
+        r = int(p.get('board_radius') or 500)
+        panels.append(f'<figure class="bpanel"><img src="{E(img(f"/img/projects/{slug}/{name}"))}" alt="{E(U(ko, en))}" loading="lazy">'
+                      f'<figcaption><b>{len(panels) + 1:02d} {E(U(ko, en))}</b><span>{E(U(cko, cen).format(r=r))}</span></figcaption></figure>')
+    if not panels:
+        return ''
+    return (f'<div class="board">{"".join(panels)}</div>'
+            f'<p class="board-src">{U("OpenStreetMap 데이터로 그린 도식입니다. 등록된 정보만 표시되므로 실제와 다를 수 있습니다.", "Diagrams drawn from OpenStreetMap data; only mapped features appear, so details may differ from the site.")}</p>')
+
 def case_page(i, p):
     """Case study: fixed sections in a fixed order, each hidden when empty."""
     title = L(p, 'title')
@@ -545,7 +566,8 @@ def case_page(i, p):
 
     site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                         for x in (p.get('site_images') or []) if x.get('image'))
-    site_html = case_locator(p) + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '') + (f'<div class="prose site-text">{rich(L(p, "site"))}</div>' if L(p, 'site') else '')
+    board = case_board(p)
+    site_html = (board or case_locator(p)) + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '') + (f'<div class="prose site-text">{rich(L(p, "site"))}</div>' if L(p, 'site') else '')
 
     rows = ''.join(f'<div class="case-row"><span class="meta">{E(LI(c, "condition"))}</span><h3>{E(LI(c, "work"))}</h3><p>{E(LI(c, "response"))}</p></div>'
                    for c in (p.get('curation') or []))
@@ -616,7 +638,7 @@ def map_teaser():
     if not any(p.get('lat') not in (None, '') for p in PROJECTS):
         return ''
     return (f'<p class="map-line"><a href="projects.html#map"><span class="meta">Project Map</span>'
-            f'<span>{U("그 밖의 작품이 선 자리 보기", "See where else our works stand")}</span><span aria-hidden="true">→</span></a></p>')
+            f'<span>{U("프로젝트 위치 전체 보기", "See all project sites")}</span><span aria-hidden="true">→</span></a></p>')
 
 def artist_card(a):
     i = ARTISTS.index(a)
@@ -793,8 +815,8 @@ def build_lang():
   </div>
 </section>
 <section class="cta"><div class="wrap"><h2>{T(L(AB, 'cta_title'))}</h2><a class="btn" href="contact.html">{E(L(AB, 'cta_button', U('문의하기', 'Get in touch')))}</a></div></section>'''
-    page('about.html', 'About', U('Art is complete where it stands. 작품 선정부터 설치까지, 한 팀이 맡는 아트 컴퍼니 STANDS.',
-                                  'Art is complete where it stands. STANDS is an art company where one team takes a work from selection to installation.'),
+    page('about.html', 'About', U('작품 선정부터 설치까지, 한 팀이 맡는 아트 컴퍼니 STANDS.',
+                                  'STANDS is an art company where one team takes a work from selection to installation.'),
          'about.html', about)
 
     # artists
@@ -836,7 +858,7 @@ def build_lang():
         note, fit = L(a, 'note'), [x for x in (L(a, 'fit', []) or []) if x]
         note_sec = (f'<section class="artist-note"><div class="wrap two-col"><span class="eyebrow">STANDS Note</span><div>'
                     f'{f"<p class=\"note\">{T(note)}</p>" if note else ""}'
-                    f'{("<div class=\"fit\"><span class=\"k\">" + U("어울리는 자리", "Where it stands") + "</span><ul>" + "".join(f"<li>{E(x)}</li>" for x in fit) + "</ul></div>") if fit else ""}'
+                    f'{("<div class=\"fit\"><span class=\"k\">" + U("어울리는 자리", "Where it fits") + "</span><ul>" + "".join(f"<li>{E(x)}</li>" for x in fit) + "</ul></div>") if fit else ""}'
                     f'</div></div></section>') if (note or fit) else ''
         inst = [i for i in (a.get('installs') or []) if i.get('image')]
         inst_html = ''.join(f'<figure><div class="ph"><img src="{E(img(i["image"]))}" alt="{E(LI(i, "place"))}" loading="lazy"></div>'
