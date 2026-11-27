@@ -48,11 +48,13 @@ stations:
   lat: 37.30256
   lng: 126.78678
 site_tags:
-- 수변
-- 복합단지
+- 수변 시야
+- 보행 중앙축
+- 수경공간
 site_tags_en:
-- Waterfront
-- Mixed-use complex
+- Waterfront view
+- Central pedestrian axis
+- Water feature
 facts_source: 건축물 미술작품 심의도서 (2024) · 2026.11 확인
 summary: 시화호 수변의 49층 복합단지. 1층 외부공간과 4층 조경에 미술작품 13점을 계획하고, 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
@@ -91,6 +93,57 @@ site_images:
   caption: 4층 작품 설치 위치 (심의도서, 2024)
   caption_en: Artwork location, 4th-floor landscape (review document, 2024)
 curation_intro: 시화호를 배경으로 한 장소에서 자연을 작품의 주제이자 주변과의 연결점으로 삼았다. 나무, 풀잎, 곤충의 날개, 순환하는 고리의 이미지로 작품들을 하나로 묶었다.
+decisions:
+- kind: 주제
+  kind_en: Theme
+  condition: 시화호 수변. 대지 3면을 녹지가 둘러싸고 서측 하천축에서 남측으로 자연녹지가 이어진다.
+  condition_en: Sihwa Lake waterfront. Green space surrounds the site on three sides, running from the river axis in the west to the south.
+  decision: 자연을 작품의 공통 주제로 삼았다. 나무, 풀잎, 곤충의 날개, 순환하는 고리의 이미지로 13점을 하나로 묶었다.
+  decision_en: Nature became the shared subject. Images of trees, grass blades, insect wings and closed loops tie the 13 works together.
+  evidence: 심의도서 경관 분석
+  evidence_en: Review document, landscape analysis
+- kind: 배치
+  kind_en: Placement
+  condition: 1층 보행 중앙축과 수경공간
+  condition_en: Central pedestrian axis and water feature, ground floor
+  reading: 사람이 걸어서 지나가는 축이다.
+  reading_en: People cross it on foot.
+  decision: 이성옥 「자연의 소리 SC25 / SG25」의 날개와 풀잎 형상을 보행 방향으로 나누어 놓아 이동의 리듬을 만들었다.
+  decision_en: Lee Sungok's wing and grass-blade forms (Sound of Nature SC25 / SG25) are spread along the direction of walking to set a rhythm of movement.
+  evidence: 심의도서 1층 배치
+  evidence_en: Review document, ground-floor layout
+- kind: 재료
+  kind_en: Material
+  condition: 수경공간의 물과 하루의 빛 변화
+  condition_en: Water in the water feature and the light changing through the day
+  decision: 스테인리스 반사면과 타공 구조를 써서 빛에 따라 다른 효과가 나게 했다.
+  decision_en: Reflective stainless steel and perforated structure make the works change with the light.
+  evidence: 심의도서 작품 설명
+  evidence_en: Review document, work descriptions
+- kind: 형태
+  kind_en: Form
+  condition: 1층, 규칙적인 건축 입면 앞 녹지
+  condition_en: Lawn in front of a regular building facade, ground floor
+  decision: 권치규 「Resilience-Promise」의 열린 원형이 시선을 모으고, 원형 안으로 건축과 조경이 함께 보인다.
+  decision_en: The open ring of Kwon Chi-gyu's Resilience-Promise draws the eye and frames the architecture and the landscape together.
+  evidence: 심의도서 1층 배치
+  evidence_en: Review document, ground-floor layout
+- kind: 규모
+  kind_en: Scale
+  condition: 4층 조경. 계단과 조경에 높이 차가 있고 수변 방향으로 시야가 열린다.
+  condition_en: 4th-floor landscape, with changes in level between steps and planting and an open view towards the water.
+  decision: 권치규 「서정적 풍경」의 수직 형상과 넓은 수관이 높이 차를 따라 리듬을 만들고 수변 풍경과 이어진다.
+  decision_en: The vertical forms and broad crowns of Kwon Chi-gyu's Lyrical Landscape follow the changes in level and connect with the waterfront view.
+  evidence: 심의도서 4층 배치
+  evidence_en: Review document, 4th-floor layout
+- kind: 운영
+  kind_en: Operation
+  condition: 대규모 외부공간에 13점을 장기간 설치한다.
+  condition_en: 13 works stay outdoors in a large open space for the long term.
+  decision: UV 클리어 마감을 쓰고, 점검 항목과 보수 요청 절차, 인계 체계를 함께 계획했다.
+  decision_en: A UV clear finish, with an inspection checklist, a repair request procedure and a handover plan.
+  evidence: 심의도서 제작·유지관리 계획
+  evidence_en: Review document, fabrication and maintenance plan
 curation:
 - condition: 1층 보행 중앙축과 수경공간
   work: 이성옥 「자연의 소리 SC25 / SG25」

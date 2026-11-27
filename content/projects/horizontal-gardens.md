@@ -48,9 +48,13 @@ day_night:
   caption: 같은 작품의 주간과 야간. 밤에는 기단 윗면의 조명이 작품을 비춘다.
   caption_en: The same work by day and by night. After dark, lights on top of the plinth light the work.
 site_tags:
-- 업무지구
+- 보행로 면
+- 고층 입면 앞
+- 야간 경관
 site_tags_en:
-- Business district
+- Facing the walkway
+- Before a high-rise facade
+- Night view
 facts_source: 강동구청 입주기업 현황, 대한경제 (2023.9) · 2026.11 확인
 summary: 고덕비즈밸리 업무시설 앞 외부 광장에 김병호 작가의 「233개의 수평정원」을 설치했다. 심의부터 제작, 설치까지 STANDS가 수행했다.
 facts:
@@ -71,6 +75,51 @@ site: |-
   고덕비즈밸리는 서울 강동구의 업무·지식기반산업 단지다. 대상 건물은 대지 3,917㎡ 위에 지하 6층, 지상 16층, 연면적 약 34,200㎡로 지어진 업무시설이다. 유리 커튼월과 석재 기둥이 반복되는 입면이다.
 
   작품은 건물 저층부 외부 광장의 석재 기단 위에 놓였다. 앞쪽은 보행로와 차도이고, 작품은 보행로를 따라 약 12m에 걸쳐 뻗는다.
+decisions:
+- kind: 배치
+  kind_en: Placement
+  condition: 업무지구, 보행로와 차도에 면한 저층부 외부 광장
+  condition_en: Business district; outdoor plaza at the base of the building, facing the walkway and the road
+  reading: 대부분 걸으면서, 혹은 차에서 스쳐 보는 자리다.
+  reading_en: Most people see it in passing, on foot or from a car.
+  decision: 보행로를 따라 12m로 길게 뻗는 수평 형태로, 걸으며 읽히게 했다.
+  decision_en: A horizontal form stretching 12 m along the walkway, read as you walk.
+  evidence: 사진 판독, 확인 전
+  evidence_en: From photos, not yet confirmed
+  draft: true
+- kind: 형태
+  kind_en: Form
+  condition: 유리 커튼월과 석재 기둥이 수직으로 반복되는 입면
+  condition_en: A facade of glass curtain wall and stone columns repeating vertically
+  reading: 배경이 차갑고 규칙적이다.
+  reading_en: The backdrop is cool and regular.
+  decision: 수평으로 기울어 뻗는 금빛 곡선 집합으로 입면과 대비를 이룬다.
+  decision_en: A golden mass of curves leaning out horizontally sets up a contrast with the facade.
+  evidence: 사진 판독, 확인 전
+  evidence_en: From photos, not yet confirmed
+  draft: true
+- kind: 재료
+  kind_en: Material
+  condition: 석재 기단 위, 보행자 눈높이보다 높은 자리
+  condition_en: On a stone plinth, above the eye level of passers-by
+  reading: 가까이서도 멀리서도 윤곽이 보여야 한다.
+  reading_en: Its outline has to read from close up and from a distance.
+  decision: 233개 단위가 반복되는 투과형 구조로, 뒤의 입면이 비치고 덩어리감이 가볍다.
+  decision_en: An open structure of 233 repeated units lets the facade show through and keeps the mass light.
+  evidence: 사진 판독, 확인 전
+  evidence_en: From photos, not yet confirmed
+  draft: true
+- kind: 빛
+  kind_en: Light
+  condition: 업무지구의 밤
+  condition_en: The business district at night
+  reading: 퇴근 후 건물 앞이 어두워진다.
+  reading_en: After office hours the front of the building goes dark.
+  decision: 기단 윗면 조명으로 밤에 건물 앞 시각 거점이 된다.
+  decision_en: Lights on top of the plinth make the work a landmark in front of the building at night.
+  evidence: 사진 판독, 확인 전
+  evidence_en: From photos, not yet confirmed
+  draft: true
 curation:
 - condition: 보행로에 면한 저층부 외부 광장, 석재 기단 위
   work: 김병호 「233개의 수평정원」

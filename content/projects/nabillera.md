@@ -28,9 +28,9 @@ facts:
   scale: 14개 동, 최고 20층, 660세대
   completed: '2025'
 site_tags:
-- 신도시 대단지
+- 단지 정원
 site_tags_en:
-- Large new-town complex
+- Garden in the complex
 facts_source: LH 분양 공고, 공개 단지 정보 · 2026.11 확인
 summary: 양세훈 작가의 「나빌레라」. 동탄 아파트 단지의 정원에 물결 위로 내려앉은 나비 같은 형상이 선다.
 en:
