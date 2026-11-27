@@ -415,15 +415,21 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-stats span{font-size:13px;color:var(--muted)}
 @media (max-width:700px){.case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .locator{margin:0 0 32px}
-/* site analysis board: square diagram panels in a grid, like a competition board */
-.board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1.6vw,22px)}
-.bpanel{margin:0}
-.bpanel img{display:block;width:100%;height:auto;aspect-ratio:1/1;background:var(--paper)}
-.bpanel figcaption{display:flex;flex-direction:column;gap:4px;margin-top:10px}
-.bpanel figcaption b{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
-.bpanel figcaption span{font-size:12.5px;color:var(--muted);line-height:1.5}
-.board-src{margin:14px 0 32px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
-@media (max-width:560px){.board{grid-template-columns:1fr}}
+/* site analysis map: switchable layers (chips, top left) and the site facts in a card over the map (bottom left); stacked on phones */
+.loc-wrap{position:relative}
+.locator .locator-map{aspect-ratio:16/11}
+.loc-layers{position:absolute;top:14px;left:14px;z-index:2;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 80px)}
+.loc-layers .chip{background:rgba(240,240,238,.94)}
+.loc-layers .chip[aria-pressed="true"]{background:var(--black);color:var(--paper)}
+.loc-card{position:absolute;left:14px;bottom:14px;z-index:2;width:min(300px,calc(100% - 28px));background:rgba(240,240,238,.96);border:1px solid var(--black);padding:16px 18px;box-shadow:0 6px 22px rgba(0,0,0,.12)}
+.loc-card h3{margin:6px 0 4px;font-size:18px;line-height:1.3;font-weight:700}
+.loc-card .addr{margin:0;font-size:12.5px;color:var(--muted)}
+.loc-tags{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:5px}
+.loc-tags li{border:1px solid var(--black);border-radius:999px;padding:2px 9px;font-size:11px}
+.loc-card dl{display:grid;grid-template-columns:52px minmax(0,1fr);gap:5px 10px;margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.45}
+.loc-card dt{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+.loc-card dd{margin:0}
+@media (max-width:860px){.locator .locator-map{aspect-ratio:4/5}.loc-card{position:static;width:auto;margin-top:10px;box-shadow:none}}
 .locator-map{aspect-ratio:16/9;background:#E6E5E1;border:1px solid var(--black)}
 .site-text{margin-top:8px}
 .scale{margin:40px 0 0}
