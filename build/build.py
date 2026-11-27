@@ -444,15 +444,27 @@ def case_stats(p):
         f'<li><b>{E(str(x.get("value")))}<small>{E(str(LI(x, "unit") or ""))}</small></b><span>{E(LI(x, "label"))}</span></li>' for x in items) + '</ul>'
 
 def case_locator(p):
-    """Site analysis: a small static map with the site and its nearest station(s) (`stations[]`), drawn by assets/locator.js."""
+    """Site analysis: a map with the site, the nearest station(s) and switchable analysis layers (green and water,
+    road hierarchy, transit, buildings), with the site facts in a card laid over it. Drawn by assets/locator.js."""
     if p.get('lat') in (None, '') or p.get('lng') in (None, ''):
         return ''
     st = [{'name': LI(x, 'name'), 'lat': float(x['lat']), 'lng': float(x['lng'])} for x in (p.get('stations') or []) if x.get('lat') and x.get('lng')]
     d = json.dumps({'lat': float(p['lat']), 'lng': float(p['lng']), 'label': fact(p, 'building') or L(p, 'title'), 'stations': st,
                     'lang': LANG, 'km': U('직선 {d}km', '{d} km')}, ensure_ascii=False).replace('</', '<\\/')
-    return (f'<figure class="case-fig locator"><div class="locator-map" role="img" aria-label="{U("위치 도식", "Location diagram")}"></div>'
+    rows = [(U('용도', 'Use'), fact(p, 'use')), (U('규모', 'Scale'), fact(p, 'scale')), (U('입지', 'Setting'), fact(p, 'context')),
+            (U('교통', 'Transit'), fact(p, 'station'))]
+    tags = (p.get('site_tags_en') if EN() else p.get('site_tags')) or p.get('site_tags') or []
+    card = (f'<div class="loc-card"><span class="meta">{U("대상지", "Site")}</span><h3>{E(fact(p, "building") or L(p, "title"))}</h3>'
+            f'<p class="addr">{E(fact(p, "location"))}</p>'
+            + (f'<ul class="loc-tags">{"".join(f"<li>{E(str(t))}</li>" for t in tags)}</ul>' if tags else '')
+            + '<dl>' + ''.join(f'<dt>{k}</dt><dd>{E(v)}</dd>' for k, v in rows if v) + '</dl></div>')
+    layers = [('green', U('녹지 · 수변', 'Green · water'), True), ('roads', U('도로 위계', 'Road hierarchy'), False),
+              ('transit', U('대중교통', 'Transit'), True), ('buildings', U('건물', 'Buildings'), False)]
+    chips = ''.join(f'<button type="button" class="chip sm" data-layer="{k}" aria-pressed="{"true" if on else "false"}">{E(n)}</button>' for k, n, on in layers)
+    return (f'<figure class="case-fig locator"><div class="loc-wrap"><div class="locator-map" role="region" aria-label="{U("입지 분석 지도", "Site analysis map")}"></div>'
+            f'<div class="loc-layers" role="group" aria-label="{U("분석 레이어", "Analysis layers")}">{chips}</div>{card}</div>'
             f'<script type="application/json" class="locator-data">{d}</script>'
-            f'<figcaption>{U("위치 도식 · 지도 데이터 OpenStreetMap", "Location diagram · map data OpenStreetMap")}</figcaption></figure>')
+            f'<figcaption>{U("입지 분석 지도 · 레이어를 켜고 끌 수 있습니다 · 지도 데이터 OpenStreetMap", "Site analysis map · switch the layers on and off · map data OpenStreetMap")}</figcaption></figure>')
 
 def _dims(size):
     """'12,000 × 2,200 × 4,000(H)' -> (W, H) in mm, or None."""
@@ -525,27 +537,6 @@ def case_decisions(p):
         for k, x in enumerate(items, 1))
     return f'<ol class="decisions">{cards}</ol>'
 
-BOARD = [('ground', '도시 조직', 'Urban fabric', '반경 {r}m 안의 건물 배치 (figure-ground)', 'Buildings within {r} m (figure-ground)'),
-         ('green', '녹지 · 수변', 'Green and water', '녹지는 빗금, 물은 하늘색', 'Green hatched, water in blue'),
-         ('move', '동선 위계 · 대중교통', 'Movement and transit', '도로 위계를 선 굵기로, □ 버스정류장, 점선 화살표는 가까운 역 방향', 'Road hierarchy by line weight, □ bus stops, dashed arrow towards the nearest station'),
-         ('sun', '태양 궤적', 'Sun path', '하지 · 춘추분 · 동지의 궤적과 정오 고도', 'Paths at the solstices and equinox, with noon altitude')]
-
-def case_board(p):
-    """Site analysis board: square diagram panels drawn by build/site_boards.py from OpenStreetMap; a panel shows when its file exists."""
-    slug = os.path.splitext(p['_path'].split('/')[-1])[0]
-    panels = []
-    for k, ko, en, cko, cen in BOARD:
-        name = f'board-{k}-en.svg' if EN() and os.path.exists(os.path.join(ROOT, 'img', 'projects', slug, f'board-{k}-en.svg')) else f'board-{k}.svg'
-        if not os.path.exists(os.path.join(ROOT, 'img', 'projects', slug, name)):
-            continue
-        r = int(p.get('board_radius') or 500)
-        panels.append(f'<figure class="bpanel"><img src="{E(img(f"/img/projects/{slug}/{name}"))}" alt="{E(U(ko, en))}" loading="lazy">'
-                      f'<figcaption><b>{len(panels) + 1:02d} {E(U(ko, en))}</b><span>{E(U(cko, cen).format(r=r))}</span></figcaption></figure>')
-    if not panels:
-        return ''
-    return (f'<div class="board">{"".join(panels)}</div>'
-            f'<p class="board-src">{U("OpenStreetMap 데이터로 그린 도식입니다. 등록된 정보만 표시되므로 실제와 다를 수 있습니다.", "Diagrams drawn from OpenStreetMap data; only mapped features appear, so details may differ from the site.")}</p>')
-
 def case_page(i, p):
     """Case study: fixed sections in a fixed order, each hidden when empty."""
     title = L(p, 'title')
@@ -566,8 +557,7 @@ def case_page(i, p):
 
     site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                         for x in (p.get('site_images') or []) if x.get('image'))
-    board = case_board(p)
-    site_html = (board or case_locator(p)) + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '') + (f'<div class="prose site-text">{rich(L(p, "site"))}</div>' if L(p, 'site') else '')
+    site_html = case_locator(p) + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '') + (f'<div class="prose site-text">{rich(L(p, "site"))}</div>' if L(p, 'site') else '')
 
     rows = ''.join(f'<div class="case-row"><span class="meta">{E(LI(c, "condition"))}</span><h3>{E(LI(c, "work"))}</h3><p>{E(LI(c, "response"))}</p></div>'
                    for c in (p.get('curation') or []))
