@@ -239,6 +239,23 @@ content:
           - { name: unit_en, label: 단위 (영문), type: string }
           - { name: label, label: 설명, type: string }
           - { name: label_en, label: 설명 (영문), type: string }
+      - name: decisions
+        label: "조건과 결정 (환경 조건 → 작품 결정)"
+        description: "한 줄에 조건 하나와 그에 따른 결정 하나. '확인 전'을 켜 두면 사이트에 나오지 않습니다"
+        type: object
+        list: true
+        fields:
+          - { name: kind, label: "구분 (주제 / 배치 / 형태 / 규모 / 재료 / 빛 / 운영)", type: string }
+          - { name: kind_en, label: 구분 (영문), type: string }
+          - { name: condition, label: "조건 (환경, 입지, 공간)", type: text }
+          - { name: condition_en, label: 조건 (영문), type: text }
+          - { name: reading, label: "해석 (선택)", type: text }
+          - { name: reading_en, label: 해석 (영문), type: text }
+          - { name: decision, label: 작품 결정, type: text }
+          - { name: decision_en, label: 작품 결정 (영문), type: text }
+          - { name: evidence, label: "근거 (예: 심의도서 1층 배치)", type: string }
+          - { name: evidence_en, label: 근거 (영문), type: string }
+          - { name: draft, label: 확인 전, type: boolean }
       - { name: curation_intro, label: 큐레이션 근거 도입 문장, type: text }
       - name: curation
         label: 큐레이션 근거

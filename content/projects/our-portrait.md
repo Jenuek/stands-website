@@ -29,9 +29,9 @@ facts:
   scale: 516세대
   completed: 2022.8 사용승인
 site_tags:
-- 역세권
+- 단지 쉼터
 site_tags_en:
-- Station area
+- Resting place in the complex
 facts_source: 공개 단지 정보 (당근 부동산) · 2026.11 확인, 건축물대장 대조 전
 summary: 김우진 작가의 「우리들의 모습」. 아파트 단지 안 쉼터에 크레파스 그림처럼 선명한 색의 말 가족이 노닌다.
 en:

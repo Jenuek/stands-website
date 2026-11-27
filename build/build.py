@@ -509,6 +509,22 @@ def case_daynight(p):
             f'<div><img src="{E(img(dn["night"]))}" alt="" loading="lazy"><span>{U("야간", "Night")}</span></div></div>'
             f'{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>')
 
+def case_decisions(p):
+    """Conditions -> decisions: each card links one site condition (and how STANDS read it) to one decision about the work.
+    `draft: true` cards are kept out of the site until confirmed."""
+    items = [x for x in (p.get('decisions') or []) if not x.get('draft') and x.get('condition') and x.get('decision')]
+    if not items:
+        return ''
+    cards = ''.join(
+        f'<li class="dcard"><div class="dhead"><span class="meta">{k:02d}</span><span class="dkind">{E(LI(x, "kind"))}</span></div>'
+        f'<div class="dcond"><span class="meta">{U("조건", "Condition")}</span><p>{E(LI(x, "condition"))}</p>'
+        f'{f"<p class={chr(34)}dread{chr(34)}>{E(LI(x, chr(114)+chr(101)+chr(97)+chr(100)+chr(105)+chr(110)+chr(103)))}</p>" if x.get("reading") else ""}</div>'
+        f'<div class="darrow" aria-hidden="true">→</div>'
+        f'<div class="ddec"><span class="meta">{U("결정", "Decision")}</span><p>{E(LI(x, "decision"))}</p>'
+        f'{f"<span class={chr(34)}dsrc{chr(34)}>{E(LI(x, chr(101)+chr(118)+chr(105)+chr(100)+chr(101)+chr(110)+chr(99)+chr(101)))}</span>" if x.get("evidence") else ""}</div></li>'
+        for k, x in enumerate(items, 1))
+    return f'<ol class="decisions">{cards}</ol>'
+
 def case_page(i, p):
     """Case study: fixed sections in a fixed order, each hidden when empty."""
     title = L(p, 'title')
@@ -525,7 +541,7 @@ def case_page(i, p):
 
     facts = ''.join(f'<dt>{U(ko, en)}</dt><dd>{E(fact(p, k))}</dd>' for k, ko, en in FACTS if fact(p, k))
     src = L(p, 'facts_source')
-    facts_html = case_stats(p) + ((f'<dl class="kv case-facts">{facts}</dl>' + (f'<p class="facts-src">{U("출처", "Source")} · {E(src)}</p>' if src else '')) if facts else '')
+    facts_html = ((f'<dl class="kv case-facts">{facts}</dl>' + (f'<p class="facts-src">{U("출처", "Source")} · {E(src)}</p>' if src else '')) if facts else '')
 
     site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                         for x in (p.get('site_images') or []) if x.get('image'))
@@ -551,8 +567,13 @@ def case_page(i, p):
     steps = ''.join(f'<li><span class="meta">{k:02d}</span><span>{E(LI(x, "title"))}</span></li>' for k, x in enumerate(p.get('process') or [], 1))
     proc_html = f'<ol class="case-steps">{steps}</ol>' if steps else ''
 
-    blocks = [('개요', 'Overview', facts_html), ('사이트 분석', 'Site analysis', site_html), ('큐레이션 근거', 'Curation', cur_html),
-              ('작품 사양', 'Specifications', spec_html), ('결과', 'Result', res_html), ('프로세스 · 수행 범위', 'Process · Scope', proc_html)]
+    dec = case_decisions(p)
+    if dec:  # decisions replace the older condition / work / response rows
+        cur_html = (dec
+                    + (f'<div class="prose case-note">{rich(body)}</div>' if body and str(body).strip() else ''))
+    blocks = [('사이트와 조건', 'Site and conditions', site_html), ('조건과 결정', 'Conditions → decisions', cur_html),
+              ('작품 사양', 'Specifications', spec_html), ('결과', 'Result', res_html), ('프로세스 · 수행 범위', 'Process · Scope', proc_html),
+              ('근거 자료', 'Reference data', facts_html)]
     secs, n = '', 0
     for ko, en, inner in blocks:
         if inner:
@@ -566,6 +587,7 @@ def case_page(i, p):
 <p class="case-head-meta"><span>{arts_html}</span><span class="meta">{E(head_meta)}</span></p>
 <p class="lead">{T(L(p, 'summary'))}</p></div></div>
 {f'<figure class="full-ph case-cover"><img src="{E(cover)}" alt="{E(title)}">{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>' if cover else ''}
+{f'<div class="wrap case-stats-wrap">{case_stats(p)}</div>' if case_stats(p) else ''}
 {secs}
 {f'<div class="wrap case-credit">{E(credit)}</div>' if credit else ''}
 {f'<section><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
