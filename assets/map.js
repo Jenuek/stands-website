@@ -9,10 +9,11 @@
   var list = document.querySelector('.pmap-list');
   var visibleNote = document.querySelector('.pmap-visible');
   var filter = 'all';
+  var tag = '';  // location tag chip; combines with the place type, click again to clear
   var popup = null;
 
   function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-  function shown() { return data.filter(function (d) { return filter === 'all' || d.group === filter; }); }
+  function shown() { return data.filter(function (d) { return (filter === 'all' || d.group === filter) && (!tag || (d.tags || []).indexOf(tag) > -1); }); }
   function geo(items) {
     return { type: 'FeatureCollection', features: items.map(function (d) {
       return { type: 'Feature', geometry: { type: 'Point', coordinates: [d.lng, d.lat] },
@@ -125,17 +126,28 @@
     });
   }
 
+  function apply() {
+    if (popup) popup.remove();
+    var src = map.getSource('p');
+    if (src) src.setData(geo(shown()));
+    var s = shown();
+    if (s.length) map.fitBounds(bounds(s), { padding: 60, maxZoom: 13, animate: !reduce });
+    renderList();
+  }
   [].forEach.call(document.querySelectorAll('[data-mfilter]'), function (b) {
     b.addEventListener('click', function () {
       filter = b.dataset.mfilter;
       [].forEach.call(document.querySelectorAll('[data-mfilter]'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      if (popup) popup.remove();
-      var src = map.getSource('p');
-      if (src) src.setData(geo(shown()));
-      var s = shown();
-      if (s.length) map.fitBounds(bounds(s), { padding: 60, maxZoom: 13, animate: !reduce });
-      renderList();
+      apply();
       track('map_filter', { group: filter });
+    });
+  });
+  [].forEach.call(document.querySelectorAll('[data-mtag]'), function (b) {
+    b.addEventListener('click', function () {
+      tag = tag === b.dataset.mtag ? '' : b.dataset.mtag;
+      [].forEach.call(document.querySelectorAll('[data-mtag]'), function (x) { x.setAttribute('aria-pressed', x.dataset.mtag === tag ? 'true' : 'false'); });
+      apply();
+      track('map_filter', { tag: tag || 'none' });
     });
   });
 })();
