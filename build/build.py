@@ -435,6 +435,80 @@ def case_feature(p, n, total):
             f'<div class="case-hero-foot"><span class="meta">{E(meta)}</span><span class="more">{U("사례 보기", "View case")}</span></div>'
             f'</div></div></a>')
 
+def case_stats(p):
+    """Overview: the key figures as large numbers (from `stats[]`, up to 4)."""
+    items = [x for x in (p.get('stats') or []) if x.get('value')][:4]
+    if not items:
+        return ''
+    return '<ul class="case-stats">' + ''.join(
+        f'<li><b>{E(str(x.get("value")))}<small>{E(str(LI(x, "unit") or ""))}</small></b><span>{E(LI(x, "label"))}</span></li>' for x in items) + '</ul>'
+
+def case_locator(p):
+    """Site analysis: a small static map with the site and its nearest station(s) (`stations[]`), drawn by assets/locator.js."""
+    if p.get('lat') in (None, '') or p.get('lng') in (None, ''):
+        return ''
+    st = [{'name': LI(x, 'name'), 'lat': float(x['lat']), 'lng': float(x['lng'])} for x in (p.get('stations') or []) if x.get('lat') and x.get('lng')]
+    d = json.dumps({'lat': float(p['lat']), 'lng': float(p['lng']), 'label': fact(p, 'building') or L(p, 'title'), 'stations': st,
+                    'lang': LANG, 'km': U('직선 {d}km', '{d} km')}, ensure_ascii=False).replace('</', '<\\/')
+    return (f'<figure class="case-fig locator"><div class="locator-map" role="img" aria-label="{U("위치 도식", "Location diagram")}"></div>'
+            f'<script type="application/json" class="locator-data">{d}</script>'
+            f'<figcaption>{U("위치 도식 · 지도 데이터 OpenStreetMap", "Location diagram · map data OpenStreetMap")}</figcaption></figure>')
+
+def _dims(size):
+    """'12,000 × 2,200 × 4,000(H)' -> (W, H) in mm, or None."""
+    nums = [float(n.replace(',', '')) for n in re.findall(r'\d[\d,]*(?:\.\d+)?', str(size or ''))]
+    return (nums[0], nums[2]) if len(nums) >= 3 else None
+
+def case_scale(p):
+    """Specifications: the works' outer dimensions (W × H) drawn to one scale beside a 1.7 m person, wrapped into rows."""
+    works = [(LI(x, 'work'), _dims(LI(x, 'size') or x.get('size'))) for x in (p.get('specs') or [])]
+    works = [(n, d) for n, d in works if d]
+    if not works:
+        return ''
+    gap, row_max, person = 2500, 40000, 1700
+    u = max(sum(W for _, (W, _) in works), 14000) / 640  # first guess of one screen pixel, refined below
+    for _ in range(2):
+        fs = 13 * u
+        slot = lambda n, W: max(W, len(str(n)) * fs * 0.62 + fs)
+        rows, cur, w = [], [], person + gap
+        for n, (W, H) in works:
+            if cur and w + slot(n, W) > row_max:
+                rows.append(cur); cur, w = [], 0
+            cur.append((n, W, H)); w += slot(n, W) + gap
+        rows.append(cur)
+        width = max(14000, max(sum(slot(n, W) + gap for n, W, _ in r) + (person + gap if k == 0 else 0) for k, r in enumerate(rows)))
+        u = width / 640   # one screen pixel at the usual column width, so labels and lines stay the same size in every case
+    fs, fd, sw = 13 * u, 11 * u, 1.3 * u
+    tallest = max([H for r in rows for _, _, H in r] + [person])
+    row_h = tallest + 4.2 * fs
+    out = []
+    for k, r in enumerate(rows):
+        base = k * row_h + tallest
+        x = 0
+        out.append(f'<line x1="0" y1="{base:.0f}" x2="{width:.0f}" y2="{base:.0f}" stroke-width="{sw:.0f}" class="g"/>')
+        if k == 0:  # a person, 1.7 m
+            out.append(f'<g class="p" stroke-width="{1.6 * sw:.0f}" transform="translate(300 {base:.0f})"><circle cx="300" cy="-1550" r="150"/>'
+                       f'<path d="M300 -1400 V-750 M300 -1250 L60 -900 M300 -1250 L540 -900 M300 -750 L120 0 M300 -750 L480 0"/></g>')
+            x = person + gap
+        for n, W, H in r:
+            slot = max(W, len(str(n)) * fs * 0.62 + fs)  # never let a label run into the next work
+            out.append(f'<rect x="{x:.0f}" y="{base - H:.0f}" width="{W:.0f}" height="{H:.0f}" stroke-width="{sw:.0f}" class="w"/>'
+                       f'<text x="{x:.0f}" y="{base + 1.6 * fs:.0f}" font-size="{fs:.0f}" class="t">{E(n)}</text>'
+                       f'<text x="{x:.0f}" y="{base + 2.9 * fs:.0f}" font-size="{fd:.0f}" class="d">{W / 1000:g} × {H / 1000:g}m</text>')
+            x += slot + gap
+    h = len(rows) * row_h
+    return (f'<figure class="case-fig scale"><svg viewBox="{-u * 4:.0f} {-u * 10:.0f} {width + u * 8:.0f} {h + u * 10:.0f}" role="img" aria-label="{U("작품 크기 비교 도식", "Scale diagram of the works")}">{"".join(out)}</svg>'
+            f'<figcaption>{U("작품 외곽 치수 (가로 × 높이), 같은 축척 · 사람 1.7m", "Outer dimensions of the works (width × height) to one scale · person 1.7 m")}</figcaption></figure>')
+
+def case_daynight(p):
+    dn = p.get('day_night') or {}
+    if not (dn.get('day') and dn.get('night')):
+        return ''
+    cap = LI(dn, 'caption')
+    return (f'<figure class="case-fig daynight"><div class="dn"><div><img src="{E(img(dn["day"]))}" alt="" loading="lazy"><span>{U("주간", "Day")}</span></div>'
+            f'<div><img src="{E(img(dn["night"]))}" alt="" loading="lazy"><span>{U("야간", "Night")}</span></div></div>'
+            f'{f"<figcaption>{E(cap)}</figcaption>" if cap else ""}</figure>')
+
 def case_page(i, p):
     """Case study: fixed sections in a fixed order, each hidden when empty."""
     title = L(p, 'title')
@@ -451,11 +525,11 @@ def case_page(i, p):
 
     facts = ''.join(f'<dt>{U(ko, en)}</dt><dd>{E(fact(p, k))}</dd>' for k, ko, en in FACTS if fact(p, k))
     src = L(p, 'facts_source')
-    facts_html = (f'<dl class="kv case-facts">{facts}</dl>' + (f'<p class="facts-src">{U("출처", "Source")} · {E(src)}</p>' if src else '')) if facts else ''
+    facts_html = case_stats(p) + ((f'<dl class="kv case-facts">{facts}</dl>' + (f'<p class="facts-src">{U("출처", "Source")} · {E(src)}</p>' if src else '')) if facts else '')
 
     site_imgs = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                         for x in (p.get('site_images') or []) if x.get('image'))
-    site_html = (f'<div class="prose">{rich(L(p, "site"))}</div>' if L(p, 'site') else '') + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '')
+    site_html = case_locator(p) + (f'<div class="case-figs">{site_imgs}</div>' if site_imgs else '') + (f'<div class="prose site-text">{rich(L(p, "site"))}</div>' if L(p, 'site') else '')
 
     rows = ''.join(f'<div class="case-row"><span class="meta">{E(LI(c, "condition"))}</span><h3>{E(LI(c, "work"))}</h3><p>{E(LI(c, "response"))}</p></div>'
                    for c in (p.get('curation') or []))
@@ -468,11 +542,11 @@ def case_page(i, p):
                         for x in (p.get('specs') or []))
     spec_html = ((f'<div class="case-table"><table><thead><tr><th scope="col">{U("작품", "Work")}</th><th scope="col">{U("규격 (mm)", "Dimensions (mm)")}</th>'
                   f'<th scope="col">{U("재료", "Materials")}</th></tr></thead><tbody>{spec_rows}</tbody></table></div>') if spec_rows else '') + \
-                (f'<p class="case-intro">{T(L(p, "specs_note"))}</p>' if L(p, 'specs_note') else '')
+                (f'<p class="case-intro">{T(L(p, "specs_note"))}</p>' if L(p, 'specs_note') else '') + case_scale(p)
 
     res = ''.join(f'<figure class="case-fig"><img src="{E(img(x.get("image")))}" alt="" loading="lazy"><figcaption>{E(LI(x, "caption"))}</figcaption></figure>'
                   for x in (p.get('results') or []) if x.get('image'))
-    res_html = f'<div class="case-figs results">{res}</div>' if res else ''
+    res_html = case_daynight(p) + (f'<div class="case-figs results">{res}</div>' if res else '')
 
     steps = ''.join(f'<li><span class="meta">{k:02d}</span><span>{E(LI(x, "title"))}</span></li>' for k, x in enumerate(p.get('process') or [], 1))
     proc_html = f'<ol class="case-steps">{steps}</ol>' if steps else ''
@@ -495,7 +569,9 @@ def case_page(i, p):
 {secs}
 {f'<div class="wrap case-credit">{E(credit)}</div>' if credit else ''}
 {f'<section><div class="wrap"><div class="sec-head"><h2>Next</h2></div><div class="cards">{"".join(project_card(q) for q in nxt)}</div></div></section>' if nxt else ''}'''
-    page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body_html, og=cover or None)
+    loc_js = (f'<link rel="stylesheet" href="{P}assets/vendor/maplibre-gl.css?v={VER}">'
+              f'<script src="{P}assets/vendor/maplibre-gl.js?v={VER}"></script><script src="{P}assets/locator.js?v={VER}"></script>') if 'locator-map' in body_html else ''
+    page(p['_url'], title or 'Project', L(p, 'summary') or U('STANDS 프로젝트.', 'Project by STANDS.'), 'projects.html', body_html, extra_js=loc_js, og=cover or None)
 
 def home_case(p, n):
     """Home: one selected project as two grid cells, matching the 4-column Artists grid: a tall photo (3:5, like the artist cards)

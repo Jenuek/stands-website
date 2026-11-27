@@ -202,6 +202,23 @@ content:
       - { name: site_tags, label: "입지 태그 (예: 역세권, 수변)", type: string, list: true }
       - { name: site_tags_en, label: 입지 태그 (영문), type: string, list: true }
       - { name: facts_source, label: "개요 출처와 확인 시점 (예: 건축물대장 · 2026.11 확인)", type: string }
+      - name: stations
+        label: "가까운 역 (위치 도식에 표시)"
+        type: object
+        list: true
+        fields:
+          - { name: name, label: "역 이름 (예: 상일동역)", type: string }
+          - { name: name_en, label: 역 이름 (영문), type: string }
+          - { name: lat, label: 위도, type: number }
+          - { name: lng, label: 경도, type: number }
+      - name: day_night
+        label: "주간 / 야간 비교 (같은 작품, 사진 두 장)"
+        type: object
+        fields:
+          - { name: day, label: 주간 사진, type: image }
+          - { name: night, label: 야간 사진, type: image }
+          - { name: caption, label: 캡션, type: string }
+          - { name: caption_en, label: 캡션 (영문), type: string }
       - { name: site, label: 사이트 분석, type: rich-text, options: { format: markdown } }
       - name: site_images
         label: 사이트 분석 이미지
@@ -213,7 +230,7 @@ content:
           - { name: caption_en, label: 캡션 (영문), type: string }
       - { name: key_figure, label: "대표 수치 (홈 캡션 오른쪽, 예: 34,215㎡)", type: string }
       - name: stats
-        label: "핵심 수치 (예비, 지금은 홈에 쓰지 않음)"
+        label: "핵심 수치 (사례 개요 상단 큰 숫자, 4개까지)"
         type: object
         list: true
         fields:

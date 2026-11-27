@@ -32,6 +32,21 @@ stats:
   unit: m
   label: 작품 길이
   label_en: Length of the work
+- value: '233'
+  unit: 개
+  unit_en: units
+  label: 반복되는 물방울 형상
+  label_en: Repeated drop forms
+stations:
+- name: 상일동역
+  name_en: Sangil-dong Stn.
+  lat: 37.55677
+  lng: 127.16678
+day_night:
+  day: /img/projects/horizontal-gardens/day-side.jpg
+  night: /img/projects/horizontal-gardens/night-wide.jpg
+  caption: 같은 작품의 주간과 야간. 밤에는 기단 윗면의 조명이 작품을 비춘다.
+  caption_en: The same work by day and by night. After dark, lights on top of the plinth light the work.
 site_tags:
 - 업무지구
 site_tags_en:
@@ -76,9 +91,6 @@ results:
 - image: /img/projects/horizontal-gardens/main.jpg
   caption: 주간, 보행로에서
   caption_en: Day, from the walkway
-- image: /img/projects/horizontal-gardens/day-side.jpg
-  caption: 주간 측면, 2024
-  caption_en: Day, side view, 2024
 process:
 - title: 심의
   title_en: Review

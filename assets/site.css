@@ -405,6 +405,29 @@ section{padding-block:clamp(72px,11vw,150px)}
 .case-fig figcaption{margin-top:10px}
 .case-figs.results .case-fig:first-child{grid-column:1/-1}
 @media (max-width:640px){.case-figs{grid-template-columns:1fr}}
+/* case study visuals shared by every case: key figures, location diagram, scale diagram, day / night pair */
+.case-stats{list-style:none;margin:0 0 40px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--black)}
+.case-stats li{padding:18px 16px 18px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.case-stats b{font-family:var(--display);font-stretch:75%;font-weight:900;font-size:clamp(34px,3.6vw,56px);line-height:1;letter-spacing:-.01em}
+.case-stats small{font-size:.4em;font-weight:800;margin-left:4px;letter-spacing:0}
+.case-stats span{font-size:13px;color:var(--muted)}
+@media (max-width:700px){.case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.locator{margin:0 0 32px}
+.locator-map{aspect-ratio:16/9;background:#E6E5E1;border:1px solid var(--black)}
+.site-text{margin-top:8px}
+.scale{margin:40px 0 0}
+.scale svg{display:block;width:100%;height:auto;max-height:520px;overflow:visible}
+.scale .g{stroke:var(--black)}
+.scale .w{fill:rgba(125,120,137,.14);stroke:var(--black)}
+.scale .p{fill:none;stroke:var(--black);stroke-linecap:round}
+.scale .t{font-weight:600;fill:var(--black)}
+.scale .d{fill:var(--muted);font-family:var(--mono)}
+.daynight{margin:0 0 36px}
+.dn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,1vw,14px)}
+.dn>div{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--paper-2)}
+.dn img{width:100%;height:100%;object-fit:cover}
+.dn span{position:absolute;left:10px;top:10px;padding:3px 8px;background:rgba(0,0,0,.62);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+@media (max-width:560px){.dn{grid-template-columns:1fr}}
 .case-intro{font-size:17px;max-width:40em;margin:0 0 32px}
 .case-rows{border-top:1px solid var(--black)}
 .case-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.6fr);gap:20px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline}
